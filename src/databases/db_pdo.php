@@ -9,16 +9,6 @@
  * @link 		https://github.com/aviat4ion/OpenSQLManager
  * @license 	http://philsturgeon.co.uk/code/dbad-license 
  */
-class Main extends GtkWindow {
-
-	function __construct()
-	{
-		parent::__construct();
-		
-		$this->set_title('OpenSQLManager');
-		
-		// Quit when this window is closed
-		$this->connect_simple('destroy', array('gtk', 'main_quit'));
-	}
+class DB_PDO extends PDO {
 
 }

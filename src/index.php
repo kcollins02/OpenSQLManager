@@ -14,12 +14,23 @@ if ( ! class_exists('gtk'))
     die("Please load the php-gtk2 module in your php.ini\r\n");
 }
 
-//Load modules
-$dbs = array_map('require_once', glob('./databases/*.php'));
-$wnds = array_map('require_once', glob('./windows/*.php'));
+$dir = dirname(__FILE__);
 
+// Load modules
+{
 
+	$requires = glob("{$dir}/databases/*.php");
+	$requires = array_merge($requires, glob("{$dir}/windows/*.php"));
+	
+	for($i=0, $count=count($requires); $i<$count; $i++)
+	{
+		require_once($requires[$i]);
+	}
+}
 
+// Create the main window
+$wnd = new Main();
+$wnd->show_all();
 
-//Start the GTK event loop
+// Start the GTK event loop
 GTK::main();
