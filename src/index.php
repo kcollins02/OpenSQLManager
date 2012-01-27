@@ -14,18 +14,18 @@ if ( ! class_exists('gtk'))
     die("Please load the php-gtk2 module in your php.ini\r\n");
 }
 
+// Wrapper workaround for PHP < 5.4
+function do_include($path)
+{
+	require_once($path);
+}
+
 $dir = dirname(__FILE__);
 
 // Load modules
 {
-
-	$requires = glob("{$dir}/databases/*.php");
-	$requires = array_merge($requires, glob("{$dir}/windows/*.php"));
-	
-	for($i=0, $count=count($requires); $i<$count; $i++)
-	{
-		require_once($requires[$i]);
-	}
+	array_map('do_include',  glob("{$dir}/databases/*.php"));
+	array_map('do_include',  glob("{$dir}/windows/*.php"));
 }
 
 // Create the main window
