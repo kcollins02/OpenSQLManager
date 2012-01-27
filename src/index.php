@@ -9,6 +9,17 @@
  * @link 		https://github.com/aviat4ion/OpenSQLManager
  * @license 	http://philsturgeon.co.uk/code/dbad-license 
  */
+
+ // --------------------------------------------------------------------------
+
+ /**
+  * Bootstrap file
+  *
+  * Initializes parent window and starts the GTK event loop
+  */
+
+// --------------------------------------------------------------------------
+
 if ( ! class_exists('gtk')) 
 {
     die("Please load the php-gtk2 module in your php.ini\r\n");
@@ -30,7 +41,8 @@ $dir = dirname(__FILE__);
 
 // Create the main window
 $wnd = new Main();
-$wnd->show_all();
 
 // Start the GTK event loop
 GTK::main();
+
+// End of index.php
