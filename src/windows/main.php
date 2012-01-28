@@ -87,7 +87,7 @@ class Main extends GtkWindow {
 			//Set up the quit item
 			$quit = new GtkImageMenuItem(GTK::STOCK_QUIT);
 			$quit->connect_simple('activate', array($this, 'quit'));
-			$file_menu->append($quit);			
+			$file_menu->append($quit);
 
 			// Add the top level menu to the menubar
 			$menu_bar->append($top_file_menu);
@@ -113,7 +113,16 @@ class Main extends GtkWindow {
 	 */
 	function about()
 	{
+		$dlg = new GtkAboutDialog();
 
+		$dlg->set_name('OpenSQLManager');
+		$dlg->set_version('0.0.1pre');
+
+		$dlg->set_copyright("Copyright (c) ".date('Y')." Timothy J. Warren");
+
+		$dlg->set_website('https://github.com/aviat4ion/OpenSQLManager');
+
+		$dlg->run();
 	}
 
 	/** 

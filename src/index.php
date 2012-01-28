@@ -25,7 +25,10 @@ if ( ! class_exists('gtk'))
     die("Please load the php-gtk2 module in your php.ini\r\n");
 }
 
-// Wrapper workaround for PHP < 5.4
+// Set the stupid timezone so PHP shuts up.
+date_default_timezone_set('GMT');
+
+// Bulk loading wrapper workaround for PHP < 5.4
 function do_include($path)
 {
 	require_once($path);
