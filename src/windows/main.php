@@ -32,6 +32,40 @@ class Main extends GtkWindow {
 		$this->_main_layout();
 	}
 
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Display About menu with version information
+	 */
+	function about()
+	{
+		$dlg = new GtkAboutDialog();
+		$dlg->set_transient_for($this);
+
+		$dlg->set_program_name($this->get_title());
+		$dlg->set_version('0.0.1pre');
+
+		$dlg->set_copyright("Copyright (c) ".date('Y')." Timothy J. Warren");
+
+		$dlg->set_website('https://github.com/aviat4ion/OpenSQLManager');
+
+		$dlg->run();
+
+		$dlg->destroy();
+	}
+
+	// --------------------------------------------------------------------------
+
+	/** 
+	 * Quits the GTK loop
+	 */
+	function quit()
+	{
+		Gtk::main_quit();
+	}
+
+	// --------------------------------------------------------------------------
+
 	/**
 	 * Layout the main interface
 	 * 
@@ -67,6 +101,8 @@ class Main extends GtkWindow {
 		$this->show_all();
 	}
 
+	// --------------------------------------------------------------------------
+
 	/**
 	 * Create the main toolbar
 	 *
@@ -83,6 +119,8 @@ class Main extends GtkWindow {
 
 		return $tbar;
 	}
+
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Create the menu for the program
@@ -135,10 +173,12 @@ class Main extends GtkWindow {
 		return $menu_bar;
 	}
 
+	// --------------------------------------------------------------------------
+
 	/**
 	 * Display Info box for errors/message
 	 */
-	function _create_infobox()
+	private function _create_infobox()
 	{
 		$this->infobar = new GtkInfoBar();
 		$this->messagelabel = new GtkLabel('Welcome to OpenSQLManager!');
@@ -150,33 +190,7 @@ class Main extends GtkWindow {
         return ($this->infobar);
 	}
 
-	/**
-	 * Display About menu with version information
-	 */
-	function about()
-	{
-		$dlg = new GtkAboutDialog();
-		$dlg->set_transient_for($this);
-
-		$dlg->set_program_name($this->get_title());
-		$dlg->set_version('0.0.1pre');
-
-		$dlg->set_copyright("Copyright (c) ".date('Y')." Timothy J. Warren");
-
-		$dlg->set_website('https://github.com/aviat4ion/OpenSQLManager');
-
-		$dlg->run();
-
-		$dlg->destroy();
-	}
-
-	/** 
-	 * Quits the GTK loop
-	 */
-	function quit()
-	{
-		Gtk::main_quit();
-	}	
+		
 }
 
 // End of main.php
