@@ -13,15 +13,14 @@
 // --------------------------------------------------------------------------
 
 /**
- * PostgreSQL specifc class
- *
- * @extends DB_PDO
+ * Window controlling addtion of database connections
  */
-class pgSQL extends DB_PDO {
-
-	function __construct($dsn, $username=null, $password=null, $options=array())
+class Add_DB extends GtkWindow {
+	
+	function __construct()
 	{
-		parent::__construct($dsn, $username, $password, $options);
+		parent::__construct();
 	}
-
 }
+
+// End of add_db.php

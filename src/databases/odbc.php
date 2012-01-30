@@ -16,8 +16,15 @@
   * ODBC Database Driver
   *
   * For general database access for databases not specified by the main drivers
+  *
+  * @extends DB_PDO
   */
 class ODBC extends DB_PDO {
+
+	function __construct($dsn, $username=null, $password=null, $options=array())
+	{
+		parent::__construct($dsn, $username, $password, $options);
+	}
 
 }
 

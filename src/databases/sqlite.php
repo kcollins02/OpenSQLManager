@@ -9,7 +9,19 @@
  * @link 		https://github.com/aviat4ion/OpenSQLManager
  * @license 	http://philsturgeon.co.uk/code/dbad-license 
  */
-class SQLite {
 
+// --------------------------------------------------------------------------
+
+/**
+ * SQLite specific class 
+ *
+ * @extends DB_PDO
+ */
+class SQLite extends DB_PDO {
+
+	function __construct($dsn)
+	{
+		parent::__construct($dsn);
+	}
 
 }
