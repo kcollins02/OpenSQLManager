@@ -43,7 +43,7 @@ class Main extends GtkWindow {
 		$dlg->set_transient_for($this);
 
 		$dlg->set_program_name($this->get_title());
-		$dlg->set_version('0.0.1pre');
+		$dlg->set_version('0.1.0pre');
 
 		$dlg->set_copyright("Copyright (c) ".date('Y')." Timothy J. Warren");
 
@@ -87,9 +87,6 @@ class Main extends GtkWindow {
 		// Add the menubar
 		$main_vbox->pack_start($this->_create_menu(), FALSE, FALSE);
 
-		// Add the toolbar
-		//$main_vbox->pack_start($this->_create_toolbar(), FALSE, FALSE);
-
 		// Add the info box
 		$main_vbox->pack_start($this->_create_infobox(), FALSE, FALSE);
 
@@ -99,25 +96,6 @@ class Main extends GtkWindow {
 		// Add the Vbox, and show the window
 		$this->add($main_vbox);
 		$this->show_all();
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Create the main toolbar
-	 *
-	 * @return GtkToolBar
-	 */
-	private function _create_toolbar()
-	{
-		$tbar = new GtkToolBar();
-
-		$open = new GtkToolButton();
-		$open->set_stock_id(Gtk::STOCK_OPEN);
-
-		$tbar->insert($open);
-
-		return $tbar;
 	}
 
 	// --------------------------------------------------------------------------
@@ -182,10 +160,10 @@ class Main extends GtkWindow {
 	{
 		$this->infobar = new GtkInfoBar();
 		$this->messagelabel = new GtkLabel('Welcome to OpenSQLManager!');
-        $contentarea = $this->infobar->get_content_area();
-        $contentarea->add($this->messagelabel);
-        $this->infobar->add_button(GTK::STOCK_OK, GTK::RESPONSE_OK);
-        $this->infobar->connect_simple('response', array($this->infobar, 'hide'));
+		$contentarea = $this->infobar->get_content_area();
+		$contentarea->add($this->messagelabel);
+		$this->infobar->add_button(GTK::STOCK_OK, GTK::RESPONSE_OK);
+		$this->infobar->connect_simple('response', array($this->infobar, 'hide'));
 
         return ($this->infobar);
 	}
