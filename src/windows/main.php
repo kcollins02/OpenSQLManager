@@ -114,8 +114,9 @@ class Main extends GtkWindow {
 	function about()
 	{
 		$dlg = new GtkAboutDialog();
+		$dlg->set_transient_for($this);
 
-		$dlg->set_name('OpenSQLManager');
+		$dlg->set_program_name($this->get_title());
 		$dlg->set_version('0.0.1pre');
 
 		$dlg->set_copyright("Copyright (c) ".date('Y')." Timothy J. Warren");
@@ -123,6 +124,8 @@ class Main extends GtkWindow {
 		$dlg->set_website('https://github.com/aviat4ion/OpenSQLManager');
 
 		$dlg->run();
+
+		$dlg->destroy();
 	}
 
 	/** 
