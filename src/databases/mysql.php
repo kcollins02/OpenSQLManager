@@ -24,4 +24,14 @@ class MySQL extends DB_PDO {
 		parent::__construct($dsn, $username, $password, $options);
 	}
 
+	/**
+	 * Empty a table
+	 *
+	 * @param string $table
+	 */
+	function truncate($table)
+	{
+		
+	}
+
 }

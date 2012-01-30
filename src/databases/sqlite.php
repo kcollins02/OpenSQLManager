@@ -24,4 +24,14 @@ class SQLite extends DB_PDO {
 		parent::__construct($dsn);
 	}
 
+	/**
+	 * Empty a table
+	 *
+	 * @param string $table
+	 */
+	function truncate($table)
+	{
+		
+	}
+
 }

@@ -25,42 +25,6 @@ class DB_PDO extends PDO {
 	{
 		parent::__construct($dsn, $username, $password, $driver_options);
 	}
-
-	// -------------------------------------------------------------------------
- 	
- 	/** 
- 	 * PHP magic method to facilitate dynamic methods
- 	 *
- 	 * @param string $name
- 	 * @param array $args
- 	 */
- 	function __call($name, $args)
- 	{
- 		if(is_callable($this->$name))
- 		{
- 			//Add $this to the beginning of the args array
- 			array_unshift($args, $this);
- 			
- 			//Call the dynamic function
- 			return call_user_func_array($this->$name, $args);
- 		}
- 	}
- 	
- 	// -------------------------------------------------------------------------
- 	
- 	/**
- 	 * PHP magic methods to call non-static methods statically
- 	 *
- 	 * @param string $name
- 	 * @param array $args
- 	 */
- 	public static function __callStatic($name, $args)
- 	{
- 		if(is_callable(parent::$name))
- 		{
- 			return call_user_func_array(parent::$name, $args);
- 		}
- 	}
 	
 	// -------------------------------------------------------------------------
 	
