@@ -72,6 +72,40 @@ class DB_PDO extends PDO {
 		
 	}
 
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Retreives the data from a select query
+	 *
+	 * @param PDOStatement $statement
+	 * @return array
+	 */
+	function get_query_data($statement)
+	{
+		// Execute the query
+		$statement->execute();
+
+		// Return the data array fetched
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Returns number of rows affected by an INSERT, UPDATE, DELETE type query
+	 *
+	 * @param PDOStatement $statement
+	 * @return int
+	 */
+	function get_rows_changed($statement)
+	{
+		// Execute the query
+		$statement->execute();
+
+		// Return number of rows affected
+		return $statement->rowCount();
+	}
+
 }
 
 // End of db_pdo.php
