@@ -53,12 +53,35 @@ class Main extends GtkWindow {
 		// Add the menubar
 		$main_vbox->pack_start($this->_create_menu(), FALSE, FALSE);
 
+		// Add the toolbar
+		//$main_vbox->pack_start($this->_create_toolbar(), FALSE, FALSE);
+
+		// Add the info box
+		$main_vbox->pack_start($this->_create_infobox(), FALSE, FALSE);
+
 		// Add the main interface area hbox
 		$main_vbox->pack_start($main_hbox, FALSE, FALSE);
 
 		// Add the Vbox, and show the window
 		$this->add($main_vbox);
 		$this->show_all();
+	}
+
+	/**
+	 * Create the main toolbar
+	 *
+	 * @return GtkToolBar
+	 */
+	private function _create_toolbar()
+	{
+		$tbar = new GtkToolBar();
+
+		$open = new GtkToolButton();
+		$open->set_stock_id(Gtk::STOCK_OPEN);
+
+		$tbar->insert($open);
+
+		return $tbar;
 	}
 
 	/**
@@ -84,6 +107,10 @@ class Main extends GtkWindow {
 		
 		//File Menu
 		{
+			//Set up the open item
+			$open = new GtkImageMenuItem(GTK::STOCK_OPEN);
+			$file_menu->append($open);
+
 			//Set up the quit item
 			$quit = new GtkImageMenuItem(GTK::STOCK_QUIT);
 			$quit->connect_simple('activate', array($this, 'quit'));
@@ -106,6 +133,21 @@ class Main extends GtkWindow {
 
 		
 		return $menu_bar;
+	}
+
+	/**
+	 * Display Info box for errors/message
+	 */
+	function _create_infobox()
+	{
+		$this->infobar = new GtkInfoBar();
+		$this->messagelabel = new GtkLabel('Welcome to OpenSQLManager!');
+        $contentarea = $this->infobar->get_content_area();
+        $contentarea->add($this->messagelabel);
+        $this->infobar->add_button(GTK::STOCK_OK, GTK::RESPONSE_OK);
+        $this->infobar->connect_simple('response', array($this->infobar, 'hide'));
+
+        return ($this->infobar);
 	}
 
 	/**
@@ -135,7 +177,6 @@ class Main extends GtkWindow {
 	{
 		Gtk::main_quit();
 	}	
-
 }
 
 // End of main.php

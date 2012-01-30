@@ -26,7 +26,7 @@ class DB_PDO extends PDO {
 		parent::__construct($dsn, $username, $password, $driver_options);
 	}
 
-	// --------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
  	
  	/** 
  	 * PHP magic method to facilitate dynamic methods
@@ -46,7 +46,7 @@ class DB_PDO extends PDO {
  		}
  	}
  	
- 	// --------------------------------------------------------------------------
+ 	// -------------------------------------------------------------------------
  	
  	/**
  	 * PHP magic methods to call non-static methods statically
@@ -62,7 +62,7 @@ class DB_PDO extends PDO {
  		}
  	}
 	
-	// --------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	
 	/**
 	 * Simplifies prepared statements for database queries
