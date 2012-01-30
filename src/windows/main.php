@@ -113,10 +113,10 @@ class Main extends GtkWindow {
 
 		/*$notebook = new GtkNoteBook();
 		$notebook->append_page(new GtkLabel('Test'));
-		$notebook->append_page(new GtkLabel('Test'));*/
+		$notebook->append_page(new GtkLabel('Test'));
 
 		//Add a notebook, just for fun
-		$main_hbox->pack_start($notebook, FALSE, FALSE);
+		$main_hbox->pack_start($notebook, FALSE, FALSE);*/
 
 		// Add the Vbox, and show the window
 		$this->add($main_vbox);
