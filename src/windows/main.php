@@ -158,14 +158,14 @@ class Main extends GtkWindow {
 	 */
 	private function _create_infobox()
 	{
-		$this->infobar = new GtkInfoBar();
-		$this->messagelabel = new GtkLabel('Welcome to OpenSQLManager!');
-		$contentarea = $this->infobar->get_content_area();
-		$contentarea->add($this->messagelabel);
-		$this->infobar->add_button(GTK::STOCK_OK, GTK::RESPONSE_OK);
-		$this->infobar->connect_simple('response', array($this->infobar, 'hide'));
+		$infobar = new GtkInfoBar();
+		$messagelabel = new GtkLabel('Welcome to OpenSQLManager!');
+		$contentarea = $infobar->get_content_area();
+		$contentarea->add($messagelabel);
+		$infobar->add_button(GTK::STOCK_OK, GTK::RESPONSE_OK);
+		$infobar->connect_simple('response', array($infobar, 'hide'));
 
-        return ($this->infobar);
+        return ($infobar);
 	}
 
 		
