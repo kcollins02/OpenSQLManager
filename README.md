@@ -8,9 +8,14 @@ OpenSQLManager is an attempt to create an alternative to Navicat that is free an
 
 The databases currently slated to be suported are:
 
-* PostgreSQL
-* MySQL
-* SQLite
+* [PostgreSQL](http://www.postgresql.org)
+* [MySQL](http://www.mysql.com/)
+* [SQLite](http://sqlite.org/)
 
+Plan to implement, not support:
 
+* ODBC
+* [Firebird](http://firebirdsql.org/)
 
+### Won't Support
+Closed source dbs, like Oracle, Sybase, MSSQL, etc. 
