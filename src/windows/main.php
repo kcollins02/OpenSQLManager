@@ -28,6 +28,9 @@ class Main extends GtkWindow {
 	{
 		parent::__construct();
 		
+		//Resize to a sane size
+		$this->resize(640, 480);
+
 		//Layout the interface
 		$this->_main_layout();
 	}
@@ -48,6 +51,18 @@ class Main extends GtkWindow {
 		$dlg->set_copyright("Copyright (c) ".date('Y')." Timothy J. Warren");
 
 		$dlg->set_website('https://github.com/aviat4ion/OpenSQLManager');
+		$dlg->set_website_label('Fork on Github');
+
+		$dlg->set_license(file_get_contents("LICENSE"));
+
+		$dlg->set_authors(array(
+			'Timothy J. Warren',
+			'Nathan Dupuie',
+		));
+
+		$dlg->set_artists(array(
+			'Nathan Dupuie',
+		));
 
 		$dlg->run();
 
@@ -88,10 +103,20 @@ class Main extends GtkWindow {
 		$main_vbox->pack_start($this->_create_menu(), FALSE, FALSE);
 
 		// Add the info box
-		$main_vbox->pack_start($this->_create_infobox(), FALSE, FALSE);
+		//$main_vbox->pack_start($this->_create_infobox(), FALSE, FALSE);
 
 		// Add the main interface area hbox
 		$main_vbox->pack_start($main_hbox, FALSE, FALSE);
+
+		// Add the left column to the hbox
+		$main_hbox->pack_start($this->_connection_sidebar(), FALSE, FALSE);
+
+		/*$notebook = new GtkNoteBook();
+		$notebook->append_page(new GtkLabel('Test'));
+		$notebook->append_page(new GtkLabel('Test'));*/
+
+		//Add a notebook, just for fun
+		$main_hbox->pack_start($notebook, FALSE, FALSE);
 
 		// Add the Vbox, and show the window
 		$this->add($main_vbox);
@@ -124,8 +149,8 @@ class Main extends GtkWindow {
 		//File Menu
 		{
 			//Set up the open item
-			$open = new GtkImageMenuItem(GTK::STOCK_OPEN);
-			$file_menu->append($open);
+			//$open = new GtkImageMenuItem(GTK::STOCK_OPEN);
+			//$file_menu->append($open);
 
 			//Set up the quit item
 			$quit = new GtkImageMenuItem(GTK::STOCK_QUIT);
@@ -168,6 +193,23 @@ class Main extends GtkWindow {
         return ($infobar);
 	}
 
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Lays out the left sidebar in the main window
+	 *
+	 * @return GtkVbox
+	 */
+	private function _connection_sidebar()
+	{
+		$dblabel = new GtkLabel('Database Connections');
+		$dblabel->set_alignment(0,0);
+		$conn_vbox = new GtkVBox();
+
+		$conn_vbox->pack_start($dblabel);
+		
+		return $conn_vbox;
+	}
 		
 }
 
