@@ -210,12 +210,19 @@ class Main extends GtkWindow {
 		$add_button->set_label("New Connnection");
 		$add_button->set_image(GTKImage::new_from_stock(GTK::STOCK_ADD, Gtk::ICON_SIZE_SMALL_TOOLBAR));
 
+		$add_button->connect_simple('clicked', array($this, 'new_conn'));
+
 		$conn_vbox = new GtkVBox();
 
 		$conn_vbox->pack_start($dblabel, FALSE);
 		$conn_vbox->pack_start($add_button, FALSE);
 		
 		return $conn_vbox;
+	}
+
+	function new_conn()
+	{
+		return new Add_DB();
 	}
 		
 }
