@@ -20,7 +20,7 @@
 
 // --------------------------------------------------------------------------
 
-error_reporting(-1);
+error_reporting(-1 & ~(E_STRICT));
 
 if ( ! class_exists('gtk')) 
 {
@@ -39,16 +39,10 @@ function do_include($path)
 $dir = dirname(__FILE__);
 
 // Load modules
-//{
+{
 	array_map('do_include',  glob("{$dir}/databases/*.php"));
 	array_map('do_include',  glob("{$dir}/windows/*.php"));
-//}
-
-
-
-//$gtk = new GTKSettings();
-
-//print_r($gtk);
+}
 
 // Create the main window
 $wnd = new Main();

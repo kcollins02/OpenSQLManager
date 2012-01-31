@@ -103,20 +103,20 @@ class Main extends GtkWindow {
 		$main_vbox->pack_start($this->_create_menu(), FALSE, FALSE);
 
 		// Add the info box
-		//$main_vbox->pack_start($this->_create_infobox(), FALSE, FALSE);
+		$main_vbox->pack_start($this->_create_infobox(), FALSE, FALSE);
 
 		// Add the main interface area hbox
-		$main_vbox->pack_start($main_hbox, FALSE, FALSE);
+		$main_vbox->pack_start($main_hbox);
 
 		// Add the left column to the hbox
-		$main_hbox->pack_start($this->_connection_sidebar(), FALSE, FALSE);
+		$main_hbox->pack_start($this->_connection_sidebar(), FALSE);
 
-		/*$notebook = new GtkNoteBook();
+		$notebook = new GtkNoteBook();
 		$notebook->append_page(new GtkLabel('Test'));
 		$notebook->append_page(new GtkLabel('Test'));
 
 		//Add a notebook, just for fun
-		$main_hbox->pack_start($notebook, FALSE, FALSE);*/
+		$main_hbox->pack_start($notebook);
 
 		// Add the Vbox, and show the window
 		$this->add($main_vbox);
@@ -147,7 +147,7 @@ class Main extends GtkWindow {
 
 		
 		//File Menu
-		//{
+		{
 			//Set up the open item
 			//$open = new GtkImageMenuItem(GTK::STOCK_OPEN);
 			//$file_menu->append($open);
@@ -159,10 +159,10 @@ class Main extends GtkWindow {
 
 			// Add the top level menu to the menubar
 			$menu_bar->append($top_file_menu);
-		//}
+		}
 
 		//Help Menu
-		//{
+		{
 			//Set up the about item
 			$about = new GtkImageMenuItem(GTK::STOCK_ABOUT);
 			$about->connect_simple('activate', array($this, 'about'));
@@ -170,7 +170,7 @@ class Main extends GtkWindow {
 
 			// Add the top level menu to the menubar
 			$menu_bar->append($top_help_menu);
-		//}
+		}
 
 		
 		return $menu_bar;
@@ -204,9 +204,16 @@ class Main extends GtkWindow {
 	{
 		$dblabel = new GtkLabel('Database Connections');
 		$dblabel->set_alignment(0,0);
+
+
+		$add_button = new GtkButton();
+		$add_button->set_label("New Connnection");
+		$add_button->set_image(GTKImage::new_from_stock(GTK::STOCK_ADD, Gtk::ICON_SIZE_SMALL_TOOLBAR));
+
 		$conn_vbox = new GtkVBox();
 
-		$conn_vbox->pack_start($dblabel);
+		$conn_vbox->pack_start($dblabel, FALSE);
+		$conn_vbox->pack_start($add_button, FALSE);
 		
 		return $conn_vbox;
 	}
