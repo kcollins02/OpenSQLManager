@@ -12,6 +12,12 @@
 
 // --------------------------------------------------------------------------
 
+// Test for support
+if( ! in_array('pgsql', pdo_drivers()))
+{
+	return FALSE;
+}
+
 /**
  * PostgreSQL specifc class
  *

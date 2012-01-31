@@ -12,6 +12,12 @@
 
  // --------------------------------------------------------------------------
 
+// Test for support
+if( ! in_array('mysql', pdo_drivers()))
+{
+	return FALSE;
+}
+
  /**
   * MySQL specific class
   *

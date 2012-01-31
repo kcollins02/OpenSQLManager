@@ -12,6 +12,12 @@
 
 // --------------------------------------------------------------------------
 
+// Test for support
+if( ! function_exists('ibase_connect'))
+{
+	return FALSE;
+}
+
 /**
  * Firebird Database class
  * 

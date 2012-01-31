@@ -39,12 +39,7 @@ class Add_DB extends GtkWindow {
 	{
 		$table = new GtkTable();
 
-		$db_types = array(
-			'MySQL',
-			'PostgreSQL',
-			'SQLite',
-			'ODBC'
-		);
+		$db_types = $this->get_available_dbs();
 
 		//Table attach 
 		//$tbl->attach(left_start, right_stop, top_start, bottom_stop)
@@ -101,6 +96,33 @@ class Add_DB extends GtkWindow {
 
 
 		return $table;
+	}
+
+	/**
+	 * Checks what database drivers are available
+	 * 
+	 * @return array
+	 */
+	function get_available_dbs()
+	{
+		$drivers = array();
+
+		// Check if there is pdo support
+		if( ! function_exists('pdo_drivers'))
+		{
+			return FALSE;
+		}
+
+		$drivers = pdo_drivers();
+
+		if(function_exists('ibase_connect'))
+		{
+			$drivers[] = "Firebird";
+		}
+
+		sort($drivers);
+
+		return $drivers;
 	}
 }
 

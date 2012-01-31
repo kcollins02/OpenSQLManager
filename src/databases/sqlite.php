@@ -12,6 +12,12 @@
 
 // --------------------------------------------------------------------------
 
+// Test for support
+if( ! in_array('sqlite', pdo_drivers()))
+{
+	return FALSE;
+}
+
 /**
  * SQLite specific class 
  *

@@ -12,6 +12,12 @@
 
  // --------------------------------------------------------------------------
 
+// Test for support
+if( ! in_array('odbc', pdo_drivers()))
+{
+	return FALSE;
+}
+
  /**
   * ODBC Database Driver
   *
