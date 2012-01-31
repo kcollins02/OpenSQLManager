@@ -147,7 +147,7 @@ class Main extends GtkWindow {
 
 		
 		//File Menu
-		{
+		//{
 			//Set up the open item
 			//$open = new GtkImageMenuItem(GTK::STOCK_OPEN);
 			//$file_menu->append($open);
@@ -159,10 +159,10 @@ class Main extends GtkWindow {
 
 			// Add the top level menu to the menubar
 			$menu_bar->append($top_file_menu);
-		}
+		//}
 
 		//Help Menu
-		{
+		//{
 			//Set up the about item
 			$about = new GtkImageMenuItem(GTK::STOCK_ABOUT);
 			$about->connect_simple('activate', array($this, 'about'));
@@ -170,7 +170,7 @@ class Main extends GtkWindow {
 
 			// Add the top level menu to the menubar
 			$menu_bar->append($top_help_menu);
-		}
+		//}
 
 		
 		return $menu_bar;
