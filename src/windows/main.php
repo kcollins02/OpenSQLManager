@@ -45,7 +45,7 @@ class Main extends GtkWindow {
 		$dlg = new GtkAboutDialog();
 		$dlg->set_transient_for($this);
 
-		$dlg->set_program_name($this->get_title());
+		$dlg->set_name($this->get_title());
 		$dlg->set_version('0.1.0pre');
 
 		$dlg->set_copyright("Copyright (c) ".date('Y')." Timothy J. Warren");

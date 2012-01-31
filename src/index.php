@@ -20,7 +20,27 @@
 
 // --------------------------------------------------------------------------
 
-error_reporting(-1 & ~(E_STRICT));
+error_reporting(-1 & ~(E_STRICT | E_DEPRECATED));
+
+/**
+ * Log fatal errors
+ */
+function log_fatal()
+{
+	// Catch the last error
+    $error = error_get_last();
+
+    // types of errors that are fatal
+    $fatal = array(E_ERROR, E_PARSE, E_RECOVERABLE_ERROR);
+
+    // Display pretty error page
+    if(in_array($error['type'], $fatal))
+    {
+   		file_put_contents('errors.txt', print_r($error, TRUE), FILE_APPEND);
+    }
+}
+
+register_shutdown_function('log_fatal');
 
 if ( ! class_exists('gtk')) 
 {
