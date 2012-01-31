@@ -113,8 +113,19 @@ class Add_DB extends GtkWindow {
 			return FALSE;
 		}
 
-		$drivers = pdo_drivers();
+		// Add PDO drivers
+		foreach(pdo_drivers() as $d)
+		{
+			// Skip sqlite2
+			if($d === 'sqlite2')
+			{
+				continue;
+			}
 
+			$drivers[] = $d;
+		}
+
+		// Add firebird support, if exists
 		if(function_exists('ibase_connect'))
 		{
 			$drivers[] = "Firebird";

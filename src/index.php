@@ -42,6 +42,7 @@ function log_fatal()
 
 register_shutdown_function('log_fatal');
 
+// Make sure php-gtk works
 if ( ! class_exists('gtk')) 
 {
     die("Please load the php-gtk2 module in your php.ini\r\n");

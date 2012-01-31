@@ -27,8 +27,23 @@ class firebird {
 
 	protected $conn;
 	
+	/**
+	 * Open the link to the database
+	 * 
+	 * @param string $db
+	 * @param string $user 
+	 * @param string $pass
+	 */
 	function __construct($db, $user, $pass)
 	{
 		$this->conn = @ibase_connect($db, $user, $pass);
+	}
+
+	/**
+	 * Close the link to the database
+	 */
+	function __destruct()
+	{
+		@ibase_close($this->conn);
 	}
 }

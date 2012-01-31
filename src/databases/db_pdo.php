@@ -12,6 +12,12 @@
 
 // --------------------------------------------------------------------------
 
+// Make sure PDO exists!
+if( ! function_exists('pdo_drivers'))
+{
+	return FALSE;
+}
+
 /**
  * Base Database class
  *
