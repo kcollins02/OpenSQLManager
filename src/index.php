@@ -28,16 +28,16 @@ error_reporting(-1 & ~(E_STRICT | E_DEPRECATED));
 function log_fatal()
 {
 	// Catch the last error
-    $error = error_get_last();
+	$error = error_get_last();
 
-    // types of errors that are fatal
-    $fatal = array(E_ERROR, E_PARSE, E_RECOVERABLE_ERROR);
+	// types of errors that are fatal
+	$fatal = array(E_ERROR, E_PARSE, E_RECOVERABLE_ERROR);
 
-    // Display pretty error page
-    if(in_array($error['type'], $fatal))
-    {
-   		file_put_contents('errors.txt', print_r($error, TRUE), FILE_APPEND);
-    }
+	// Display pretty error page
+	if(in_array($error['type'], $fatal))
+	{
+		file_put_contents('errors.txt', print_r($error, TRUE), FILE_APPEND);
+	}
 }
 
 register_shutdown_function('log_fatal');
@@ -45,7 +45,7 @@ register_shutdown_function('log_fatal');
 // Make sure php-gtk works
 if ( ! class_exists('gtk')) 
 {
-    die("Please load the php-gtk2 module in your php.ini\r\n");
+	die("Please load the php-gtk2 module in your php.ini\r\n");
 }
 
 // Set the stupid timezone so PHP shuts up.

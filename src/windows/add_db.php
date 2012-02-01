@@ -74,37 +74,16 @@ class Add_DB extends GtkWindow {
 		// Host
 		{
 			$this->_add_row($table, "DB Host", $this->host, $y1, $y2);
-			/*$hostlbl = new GtkLabel("DB Host");
-			$this->host = new GtkEntry();
-			$hostalign = new GtkAlignment(0, 0.5, 0, 0);
-			$hostalign->add($hostlbl);
-
-			$table->attach($hostalign, 0, 1, ++$y1, ++$y2);
-			$table->attach($this->host, 1, 2, $y1, $y2);*/
 		}
 
 		// Username
 		{
 			$this->_add_row($table, "DB User", $this->user, $y1, $y2);
-			/*$userlbl = new GtkLabel("DB User");
-			$this->user = new GtkEntry();
-			$useralign = new GtkAlignment(0, 0.5, 0, 0);
-			$useralign->add($userlbl);
-
-			$table->attach($useralign, 0, 1, ++$y1, ++$y2);
-			$table->attach($this->user, 1, 2, $y1, $y2);*/
 		}
 
 		// Password
 		{
 			$this->_add_row($table, "DB Password", $this->pass, $y1, $y2);
-			/*$passlbl = new GtkLabel("DB Password");
-			$this->pass = new GtkEntry();
-			$passalign = new GtkAlignment(0, 0.5, 0, 0);
-			$passalign->add($passlbl);
-
-			$table->attach($passalign, 0, 1, ++$y1, ++$y2);
-			$table->attach($this->pass, 1, 2, $y1, $y2);*/
 		}
 
 
