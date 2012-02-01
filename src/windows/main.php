@@ -108,13 +108,6 @@ class Main extends GtkWindow {
 		// Add the left column to the hbox
 		$main_hbox->pack_start($this->_connection_sidebar(), FALSE);
 
-		$notebook = new GtkNoteBook();
-		$notebook->append_page(new GtkLabel('Test'));
-		$notebook->append_page(new GtkLabel('Test'));
-
-		//Add a notebook, just for fun
-		$main_hbox->pack_start($notebook);
-
 		// Add the Vbox, and show the window
 		$this->add($main_vbox);
 		$this->show_all();

@@ -17,7 +17,7 @@
  */
 class Add_DB extends GtkWindow {
 
-	var $dbtype, $host, $user, $password, $database;
+	var $conn, $dbtype, $host, $user, $password, $database;
 	
 	function __construct()
 	{
@@ -48,7 +48,12 @@ class Add_DB extends GtkWindow {
 		// easily moved
 		$y1 = -1;
 		$y2 = 0;
-		
+
+		// Connection name
+		{
+			$this->_add_row($table, "Connection name", $this->conn, $y1, $y2);
+		}
+
 		// Database type
 		{
 			$dbtypelbl = new GtkLabel("Database Type");
@@ -68,35 +73,38 @@ class Add_DB extends GtkWindow {
 
 		// Host
 		{
-			$hostlbl = new GtkLabel("DB Host");
+			$this->_add_row($table, "DB Host", $this->host, $y1, $y2);
+			/*$hostlbl = new GtkLabel("DB Host");
 			$this->host = new GtkEntry();
 			$hostalign = new GtkAlignment(0, 0.5, 0, 0);
 			$hostalign->add($hostlbl);
 
 			$table->attach($hostalign, 0, 1, ++$y1, ++$y2);
-			$table->attach($this->host, 1, 2, $y1, $y2);
+			$table->attach($this->host, 1, 2, $y1, $y2);*/
 		}
 
 		// Username
 		{
-			$userlbl = new GtkLabel("DB User");
+			$this->_add_row($table, "DB User", $this->user, $y1, $y2);
+			/*$userlbl = new GtkLabel("DB User");
 			$this->user = new GtkEntry();
 			$useralign = new GtkAlignment(0, 0.5, 0, 0);
 			$useralign->add($userlbl);
 
 			$table->attach($useralign, 0, 1, ++$y1, ++$y2);
-			$table->attach($this->user, 1, 2, $y1, $y2);
+			$table->attach($this->user, 1, 2, $y1, $y2);*/
 		}
 
 		// Password
 		{
-			$passlbl = new GtkLabel("DB Password");
+			$this->_add_row($table, "DB Password", $this->pass, $y1, $y2);
+			/*$passlbl = new GtkLabel("DB Password");
 			$this->pass = new GtkEntry();
 			$passalign = new GtkAlignment(0, 0.5, 0, 0);
 			$passalign->add($passlbl);
 
 			$table->attach($passalign, 0, 1, ++$y1, ++$y2);
-			$table->attach($this->pass, 1, 2, $y1, $y2);
+			$table->attach($this->pass, 1, 2, $y1, $y2);*/
 		}
 
 
@@ -121,7 +129,7 @@ class Add_DB extends GtkWindow {
 		// Add PDO drivers
 		foreach(pdo_drivers() as $d)
 		{
-			// Skip sqlite2
+			// Skip sqlite2 as opposed to sqlite3
 			if($d === 'sqlite2')
 			{
 				continue;
@@ -139,6 +147,26 @@ class Add_DB extends GtkWindow {
 		sort($drivers);
 
 		return $drivers;
+	}
+
+	/**
+	 * Simple helper function for adding a row to the GtkTable
+	 * 
+	 * @param GtkTable &$table
+	 * @param string $label
+	 * @param mixed &$vname
+	 * @param int &$y1
+	 * @param int &$y2
+	 */
+	private function _add_row(&$table, $label, &$vname, &$y1, &$y2)
+	{
+		$lbl = new GtkLabel($label);
+		$vname = new GtkEntry();
+		$lblalign = new GtkAlignment(0, 0.5, 0, 0);
+		$lblalign->add($lbl);
+
+		$table->attach($lblalign, 0, 1, ++$y1, ++$y2);
+		$table->attach($vname, 1, 2, $y1, $y2);
 	}
 }
 
