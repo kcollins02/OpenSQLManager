@@ -17,13 +17,15 @@
  */
 class Add_DB extends GtkWindow {
 
-	var $conn, $dbtype, $host, $user, $password, $database;
+	var $conn, $dbtype, $host, $user, $password, $database, $settings;
 	
 	function __construct()
 	{
 		parent::__construct();
 
-		$this->set_title("OpenSQLManager - Add Database Connection");
+		$this->settings = new Settings();
+
+		$this->set_title("Add Database Connection");
 
 		// Add the Vbox, and show the window
 		$this->add($this->_layout());
@@ -113,6 +115,11 @@ class Add_DB extends GtkWindow {
 			{
 				continue;
 			}
+
+			// Replace default capitalization with something that looks better.
+			$d = str_replace("sql", "SQL", $d);
+			$d = str_ireplace("pg", "Postgre", $d);
+			$d = ucfirst($d);
 
 			$drivers[] = $d;
 		}

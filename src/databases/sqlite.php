@@ -12,12 +12,6 @@
 
 // --------------------------------------------------------------------------
 
-// Test for support
-if( ! in_array('sqlite', pdo_drivers()))
-{
-	return FALSE;
-}
-
 /**
  * SQLite specific class 
  *
@@ -25,9 +19,25 @@ if( ! in_array('sqlite', pdo_drivers()))
  */
 class SQLite extends DB_PDO {
 
+	/**
+	 * Static function to simply creating dsn for the current database driver
+	 * 
+	 * @return SQLite object
+	 */
+	static function connect()
+	{
+		
+	}
+
+	/**
+	 * Open SQLite Database
+	 * 
+	 * @param string $dsn 
+	 */
 	function __construct($dsn)
 	{
-		parent::__construct($dsn);
+		// DSN is simply `sqlite:/path/to/db`
+		parent::__construct("sqlite:{$dsn}");
 	}
 
 	/**
@@ -37,7 +47,23 @@ class SQLite extends DB_PDO {
 	 */
 	function truncate($table)
 	{
-		
+		// SQLite has a TRUNCATE optimization,
+		// but no support for the actual command.
+		$sql = "DELETE FROM {$table}";
+		$this->query($sql);
 	}
 
+	/**
+	 * Create an sqlite database file
+	 * 
+	 * @param  $path
+	 */
+	function create_db($path)
+	{
+		// Create the file if it doesn't exist
+		if( ! file_exists($path))
+		{
+			touch($path);
+		}
+	}
 }

@@ -39,6 +39,12 @@ class Settings {
 			$this->current = json_decode(file_get_contents($path));
 		}
 
+		// Add the DB object under the settings if it doesn't already exist
+		if( ! isset($this->current->dbs))
+		{
+			$this->current->dbs = new stdClass();
+		}
+
 	}
 
 	// --------------------------------------------------------------------------
@@ -48,22 +54,78 @@ class Settings {
 	 */
 	function __destruct()
 	{
-		file_put_contents(json_encode($this->current), BASE_DIR.'/settings.json');
+		file_put_contents(BASE_DIR.'/settings.json', json_encode($this->current));
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Magic method to simplify isset checking for config options
+	 * 
+	 * @param string $key
+	 * @return $mixed
+	 */
+	function __get($key)
+	{
+		return (isset($this->current->{$key})) ? $this->current->{$key} : NULL;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Magic method to simplify setting config options
+	 * 
+	 * @param string $key
+	 * @param mixed $val
+	 */
+	function __set($key, $val)
+	{
+		//Don't allow direct db config changes
+		if($key == "dbs")
+		{
+			return FALSE;
+		}
+
+		$this->current->{$key} = $val;
 	}
 
 	// --------------------------------------------------------------------------
 
 	/**
 	 * Add a database connection
-	 * 
-	 * @param string $type
-	 * @param string $host
-	 * @param string $user
-	 * @param string $pass
+	 *
+	 * @param string $name
+	 * @param array $params
 	 */
-	function add_db($type, $host, $user, $pass)
+	function add_db($name, $params)
 	{
-		
+		if(empty($this->current->dbs->{$name}))
+		{
+			$this->current->dbs->{$name} = $params;
+		}
+		else
+		{
+			return FALSE;
+		}
 	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Remove a database connection
+	 * 
+	 * @param  string $name
+	 */
+	function remove_db($name)
+	{
+		if( ! isset($this->current->dbs->{$name}))
+		{
+			return FALSE;
+		}
+
+		// Remove the db name from the object
+		unset($this->current->dbs->{$name});
+	}
+
 }
 // End of settings.php

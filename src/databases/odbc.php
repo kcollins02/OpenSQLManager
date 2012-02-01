@@ -12,12 +12,6 @@
 
  // --------------------------------------------------------------------------
 
-// Test for support
-if( ! in_array('odbc', pdo_drivers()))
-{
-	return FALSE;
-}
-
  /**
   * ODBC Database Driver
   *
@@ -29,7 +23,7 @@ class ODBC extends DB_PDO {
 
 	function __construct($dsn, $username=null, $password=null, $options=array())
 	{
-		parent::__construct($dsn, $username, $password, $options);
+		parent::__construct("odbc:$dsn", $username, $password, $options);
 	}
 
 }

@@ -12,12 +12,6 @@
 
 // --------------------------------------------------------------------------
 
-// Test for support
-if( ! in_array('pgsql', pdo_drivers()))
-{
-	return FALSE;
-}
-
 /**
  * PostgreSQL specifc class
  *
@@ -27,7 +21,7 @@ class pgSQL extends DB_PDO {
 
 	function __construct($dsn, $username=null, $password=null, $options=array())
 	{
-		parent::__construct($dsn, $username, $password, $options);
+		parent::__construct("pgsql:$dsn", $username, $password, $options);
 	}
 
 	/**

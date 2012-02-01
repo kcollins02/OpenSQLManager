@@ -12,12 +12,6 @@
 
  // --------------------------------------------------------------------------
 
-// Test for support
-if( ! in_array('mysql', pdo_drivers()))
-{
-	return FALSE;
-}
-
  /**
   * MySQL specific class
   *
@@ -27,7 +21,9 @@ class MySQL extends DB_PDO {
 
 	function __construct($dsn, $username=null, $password=null, $options=array())
 	{
-		parent::__construct($dsn, $username, $password, $options);
+		parent::__construct("mysql:$dsn", $username, $password, $options);
+
+
 	}
 
 	/**
