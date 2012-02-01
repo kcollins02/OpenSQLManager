@@ -57,12 +57,14 @@ function do_include($path)
 	require_once($path);
 }
 
-$dir = dirname(__FILE__);
+define('BASE_DIR', dirname(__FILE__));
 
 // Load modules
+// Load everything so that we don't have to do requires later
 {
-	array_map('do_include',  glob("{$dir}/databases/*.php"));
-	array_map('do_include',  glob("{$dir}/windows/*.php"));
+	array_map('do_include', glob(BASE_DIR . "/common/*.php"));
+	array_map('do_include',  glob(BASE_DIR . "/databases/*.php"));
+	array_map('do_include',  glob(BASE_DIR . "/windows/*.php"));
 }
 
 // Create the main window

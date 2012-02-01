@@ -44,7 +44,12 @@ class Add_DB extends GtkWindow {
 		//Table attach 
 		//$tbl->attach(left_start, right_stop, top_start, bottom_stop)
 
-		//Row 1 - Database type
+		// Placeholder vars for y values, so that rows can be
+		// easily moved
+		$y1 = -1;
+		$y2 = 0;
+		
+		// Database type
 		{
 			$dbtypelbl = new GtkLabel("Database Type");
 			$this->dbtype = GtkComboBox::new_text();
@@ -56,42 +61,42 @@ class Add_DB extends GtkWindow {
 				$this->dbtype->append_text($t);
 			}
 
-			$table->attach($typealign, 0, 1, 0, 1);
-			$table->attach($this->dbtype, 1, 2, 0, 1);
+			$table->attach($typealign, 0, 1, ++$y1, ++$y2);
+			$table->attach($this->dbtype, 1, 2, $y1, $y2);
 
 		}
 
-		//Row 2 - Host
+		// Host
 		{
 			$hostlbl = new GtkLabel("DB Host");
 			$this->host = new GtkEntry();
 			$hostalign = new GtkAlignment(0, 0.5, 0, 0);
 			$hostalign->add($hostlbl);
 
-			$table->attach($hostalign, 0, 1, 1, 2);
-			$table->attach($this->host, 1, 2, 1, 2);
+			$table->attach($hostalign, 0, 1, ++$y1, ++$y2);
+			$table->attach($this->host, 1, 2, $y1, $y2);
 		}
 
-		//Row 3 - Username
+		// Username
 		{
 			$userlbl = new GtkLabel("DB User");
 			$this->user = new GtkEntry();
 			$useralign = new GtkAlignment(0, 0.5, 0, 0);
 			$useralign->add($userlbl);
 
-			$table->attach($useralign, 0, 1, 2, 3);
-			$table->attach($this->user, 1, 2, 2, 3);
+			$table->attach($useralign, 0, 1, ++$y1, ++$y2);
+			$table->attach($this->user, 1, 2, $y1, $y2);
 		}
 
-		//Row 4 - Password
+		// Password
 		{
 			$passlbl = new GtkLabel("DB Password");
 			$this->pass = new GtkEntry();
 			$passalign = new GtkAlignment(0, 0.5, 0, 0);
 			$passalign->add($passlbl);
 
-			$table->attach($passalign, 0, 1, 3, 4);
-			$table->attach($this->pass, 1, 2, 3, 4);
+			$table->attach($passalign, 0, 1, ++$y1, ++$y2);
+			$table->attach($this->pass, 1, 2, $y1, $y2);
 		}
 
 

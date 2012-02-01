@@ -53,7 +53,7 @@ class Main extends GtkWindow {
 		$dlg->set_website('https://github.com/aviat4ion/OpenSQLManager');
 		$dlg->set_website_label('Fork on Github');
 
-		$dlg->set_license(file_get_contents("LICENSE"));
+		$dlg->set_license(file_get_contents(BASE_DIR . "/LICENSE"));
 
 		$dlg->set_authors(array(
 			'Timothy J. Warren',
@@ -220,6 +220,13 @@ class Main extends GtkWindow {
 		return $conn_vbox;
 	}
 
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Returns window for creating a new database connection
+	 * 
+	 * @return Add_DB object
+	 */
 	function new_conn()
 	{
 		return new Add_DB();

@@ -47,3 +47,4 @@ class firebird {
 		@ibase_close($this->conn);
 	}
 }
+// End of firebird.php
