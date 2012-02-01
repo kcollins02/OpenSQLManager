@@ -18,7 +18,7 @@ Because php-gtk is such a pain to compile on Windows, I've put together this pac
 * CRUD (Create, Read, Update, Delete) functionality
 * Database table creation and backup 
 
-The databases currently slated to be suported are:
+The databases currently slated to be supported are:
 
 * [PostgreSQL](http://www.postgresql.org)
 * [MySQL](http://www.mysql.com/)
@@ -30,5 +30,5 @@ Plan to implement, not support:
 
 
 ## Won't Support
-Closed source dbs, like Oracle, Sybase, MSSQL, etc. 
+Closed source DBs, like Oracle, MSSQL, etc. 
 
