@@ -102,9 +102,6 @@ class Main extends GtkWindow {
 		// Add the menubar
 		$main_vbox->pack_start($this->_create_menu(), FALSE, FALSE);
 
-		// Add the info box
-		$main_vbox->pack_start($this->_create_infobox(), FALSE, FALSE);
-
 		// Add the main interface area hbox
 		$main_vbox->pack_start($main_hbox);
 
@@ -174,23 +171,6 @@ class Main extends GtkWindow {
 
 		
 		return $menu_bar;
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Display Info box for errors/message
-	 */
-	private function _create_infobox()
-	{
-		$infobar = new GtkInfoBar();
-		$messagelabel = new GtkLabel('Welcome to OpenSQLManager!');
-		$contentarea = $infobar->get_content_area();
-		$contentarea->add($messagelabel);
-		$infobar->add_button(GTK::STOCK_OK, GTK::RESPONSE_OK);
-		$infobar->connect_simple('response', array($infobar, 'hide'));
-
-        return ($infobar);
 	}
 
 	// --------------------------------------------------------------------------
