@@ -42,7 +42,7 @@ function log_fatal()
 	// types of errors that are fatal
 	$fatal = array(E_ERROR, E_PARSE, E_RECOVERABLE_ERROR);
 
-	// Display pretty error page
+	// Log error.
 	if(in_array($error['type'], $fatal))
 	{
 		file_put_contents('errors.txt', print_r($error, TRUE), FILE_APPEND);
