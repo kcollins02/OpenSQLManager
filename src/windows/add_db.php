@@ -119,6 +119,7 @@ class Add_DB extends GtkWindow {
 			// Replace default capitalization with something that looks better.
 			$d = str_replace("sql", "SQL", $d);
 			$d = str_ireplace("pg", "Postgre", $d);
+			$d = str_ireplace("odbc", "ODBC", $d);
 			$d = ucfirst($d);
 
 			$drivers[] = $d;

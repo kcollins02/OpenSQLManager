@@ -21,9 +21,12 @@ class MySQL extends DB_PDO {
 
 	function __construct($dsn, $username=null, $password=null, $options=array())
 	{
+		$options = array_merge(array(
+
+		),
+		$options);
+
 		parent::__construct("mysql:$dsn", $username, $password, $options);
-
-
 	}
 
 	/**
@@ -33,7 +36,9 @@ class MySQL extends DB_PDO {
 	 */
 	function truncate($table)
 	{
-		
+		$sql = "TRUNCATE `{$table}`";
+
+		$this->query($sql);
 	}
 
 }
