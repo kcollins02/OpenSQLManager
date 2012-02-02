@@ -106,7 +106,7 @@ if(function_exists('ibase_connect'))
 // --------------------------------------------------------------------------
 
 // Create the main window
-$wnd = new Main();
+new Main();
 
 // Start the GTK event loop
 GTK::main();

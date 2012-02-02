@@ -19,7 +19,7 @@
  */
 class firebird {
 
-	protected $conn;
+	protected $conn, $statement;
 	
 	/**
 	 * Open the link to the database
@@ -28,9 +28,9 @@ class firebird {
 	 * @param string $user 
 	 * @param string $pass
 	 */
-	function __construct($db, $user, $pass)
+	function __construct($db, $user="sysdba", $pass="masterkey")
 	{
-		$this->conn = @ibase_connect($db, $user, $pass);
+		$this->conn = ibase_connect($db, $user, $pass);
 	}
 
 	/**
@@ -38,7 +38,20 @@ class firebird {
 	 */
 	function __destruct()
 	{
-		@ibase_close($this->conn);
+		ibase_close($this->conn);
 	}
+	
+	/**
+	 * Wrapper function to better match PDO
+	 *
+	 * @param string $sql
+	 * @return resource
+	 */
+	function query($sql)
+	{
+		$this->statement = ibase_query($this->conn, $sql);
+		return $this->statement;
+	}
+	 
 }
 // End of firebird.php
