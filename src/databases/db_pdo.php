@@ -17,7 +17,7 @@
  *
  * Extends PDO to simplify cross-database issues
  */
-class DB_PDO extends PDO {
+abstract class DB_PDO extends PDO {
 
 	protected $statement;
 
@@ -108,10 +108,10 @@ class DB_PDO extends PDO {
 
 	// -------------------------------------------------------------------------
 
-	abstract function create_database($name){}
-
-
+	/**
+	 * Abstract functions to override in child classes
+	 */
+	abstract function get_dbs(){}
 
 }
-
 // End of db_pdo.php

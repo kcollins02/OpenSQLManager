@@ -19,6 +19,14 @@
   */
 class MySQL extends DB_PDO {
 
+	/**
+	 * Connect to MySQL Database
+	 * 
+	 * @param string $dsn
+	 * @param string $username=null
+	 * @param string $password=null
+	 * @param array $options=array()
+	 */
 	function __construct($dsn, $username=null, $password=null, $options=array())
 	{
 		$options = array_merge(array(
@@ -37,8 +45,28 @@ class MySQL extends DB_PDO {
 	function truncate($table)
 	{
 		$sql = "TRUNCATE `{$table}`";
-
 		$this->query($sql);
 	}
 
+	/**
+	 * Returns the datbases available for the current connection
+	 * 
+	 * @return array
+	 */
+	function get_dbs()
+	{
+		$sql = "SHOW TABLES";
+		$res = $this->query($sql);
+
+		return $res->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+}
+
+class MySQL_manip extends MySQL {
+
+	function __construct($dsn, $user=null, $pass=null, $opt=array())
+	{
+		parent::__construct($dsn, $user, $pass, $opt);
+	}	
 }

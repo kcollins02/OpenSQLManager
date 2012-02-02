@@ -26,6 +26,8 @@ class ODBC extends DB_PDO {
 		parent::__construct("odbc:$dsn", $username, $password, $options);
 	}
 
+	function get_dbs(){}
+
 }
 
 // End of odbc.php

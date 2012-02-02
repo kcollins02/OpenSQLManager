@@ -20,6 +20,7 @@
 class firebird {
 
 	protected $conn, $statement;
+	private $esc_char = "''";
 	
 	/**
 	 * Open the link to the database
@@ -40,6 +41,18 @@ class firebird {
 	{
 		ibase_close($this->conn);
 	}
+
+	/**
+	 * Empty a database table
+	 * 
+	 * @param string $table
+	 */
+	function truncate($table)
+	{
+		// Firebird lacka a truncate command
+		$sql = "DELETE FROM {$table}";
+		$this->query($sql);
+	}
 	
 	/**
 	 * Wrapper function to better match PDO
@@ -52,6 +65,28 @@ class firebird {
 		$this->statement = ibase_query($this->conn, $sql);
 		return $this->statement;
 	}
+
+	/**
+	 * Gets all the databases for the current connection
+	 * 
+	 * @return mixed
+	 */
+	function get_dbs()
+	{
+		// I don't think this is possible with Firebird
+		return FALSE;
+	}
 	 
+}
+
+class firebird_manip extends firebird {
+	
+	function __construct($db, $user="sysdba", $pass="masterkey")
+	{
+		parent::__construct($db, $user, $pass);
+	}
+
+
+	
 }
 // End of firebird.php

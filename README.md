@@ -3,7 +3,7 @@
 OpenSQLManager is an attempt to create an alternative to Navicat that is free and open. It is build with PHP-GTK, so I'm looking for a way to create normal binaries. 
 
 ### Included pre-configured version of php for windows
-Because php-gtk is such a pain to compile on Windows, I've put together this package from the latest php-gtk windows package in `php-gtk2-win.7z`.
+Because php-gtk is such a pain to compile on Windows, I've put together this package from the latest php-gtk windows package. It's available in the downloads section.
 
 ## PHP Requirements
 * Version 5.2 - 5.3.*
@@ -21,7 +21,7 @@ Because php-gtk is such a pain to compile on Windows, I've put together this pac
 The databases currently slated to be supported are:
 
 * [PostgreSQL](http://www.postgresql.org)
-* [MySQL](http://www.mysql.com/)
+* [MySQL](http://www.mysql.com/) / [MariaDB](http://mariadb.org/)
 * [SQLite](http://sqlite.org/)
 
 Plan to implement, not support:

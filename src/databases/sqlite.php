@@ -20,16 +20,6 @@
 class SQLite extends DB_PDO {
 
 	/**
-	 * Static function to simply creating dsn for the current database driver
-	 * 
-	 * @return SQLite object
-	 */
-	static function connect()
-	{
-		
-	}
-
-	/**
 	 * Open SQLite Database
 	 * 
 	 * @param string $dsn 
@@ -51,6 +41,49 @@ class SQLite extends DB_PDO {
 		// but no support for the actual command.
 		$sql = "DELETE FROM {$table}";
 		$this->query($sql);
+	}
+
+	/**
+	 * List databases for the current connection
+	 * 
+	 * @return mixed
+	 */
+	function get_dbs()
+	{	
+		// SQLite doesn't have a way of doing this
+		return FALSE;
+	}
+}
+
+class SQLite_manip extends SQLite {
+	
+	function __construct($dsn)
+	{
+		parent::__construct($dsn);
+	}
+
+	/**
+	 * Convenience function to create a new table
+	 * 
+	 * @param string $name //Name of the table
+	 * @param array $columns //columns as straight array and/or column => type pairs
+	 * @param array $constraints // column => constraint pairs
+	 * @param array $indexes // column => index pairs
+	 * @return  srtring
+	 */
+	function create_table($name, $columns, $constraints, $indexes)
+	{
+		$sql = "CREATE TABLE {$name} (";
+
+		foreach($columns as $colname => $type)
+		{
+			if(is_numeric($colname))
+			{
+				$colname = $type;
+			}
+		}
+
+
 	}
 
 	/**
