@@ -26,7 +26,16 @@ class ODBC extends DB_PDO {
 		parent::__construct("odbc:$dsn", $username, $password, $options);
 	}
 
-	function get_dbs(){}
+	/**
+	 * List tables for the current database
+	 * 
+	 * @return mixed
+	 */
+	function get_tables()
+	{	
+		//Not possible reliably with this driver
+		return FALSE;
+	}
 
 }
 

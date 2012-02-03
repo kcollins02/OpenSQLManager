@@ -44,11 +44,11 @@ class pgSQL extends DB_PDO {
 	}
 
 	/**
-	 * Get the list of databases for the current db connection
+	 * Get the list of tables for the current db
 	 * 
 	 * @return array
 	 */
-	function get_dbs()
+	function get_tables()
 	{
 		$sql = 'SELECT "tablename" FROM "pg_tables" 
 			WHERE "tablename" NOT LIKE pg\_%
@@ -62,7 +62,7 @@ class pgSQL extends DB_PDO {
 	}
 
 	/**
-	 * Get a list of views for the current db connection
+	 * Get a list of views for the current db
 	 * 
 	 * @return array
 	 */

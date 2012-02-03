@@ -49,11 +49,11 @@ class MySQL extends DB_PDO {
 	}
 
 	/**
-	 * Returns the datbases available for the current connection
+	 * Returns the tables available in the current database
 	 * 
 	 * @return array
 	 */
-	function get_dbs()
+	function get_tables()
 	{
 		$sql = "SHOW TABLES";
 		$res = $this->query($sql);

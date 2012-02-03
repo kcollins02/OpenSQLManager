@@ -67,14 +67,13 @@ class firebird {
 	}
 
 	/**
-	 * Gets all the databases for the current connection
+	 * List tables for the current database
 	 * 
 	 * @return mixed
 	 */
-	function get_dbs()
-	{
-		// I don't think this is possible with Firebird
-		return FALSE;
+	function get_tables()
+	{	
+		//TODO: implement
 	}
 	 
 }

@@ -44,14 +44,13 @@ class SQLite extends DB_PDO {
 	}
 
 	/**
-	 * List databases for the current connection
+	 * List tables for the current database
 	 * 
 	 * @return mixed
 	 */
-	function get_dbs()
+	function get_tables()
 	{	
-		// SQLite doesn't have a way of doing this
-		return FALSE;
+		//TODO: implement
 	}
 }
 
