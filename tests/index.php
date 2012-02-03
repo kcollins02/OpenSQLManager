@@ -17,3 +17,23 @@
  */
 
 define('BASE_DIR', '../src');
+
+// Include simpletest
+// it has to be set in your php path, or put in the tests folder
+require_once('simpletest/autorun.php');
+
+
+// Bulk loading wrapper workaround for PHP < 5.4
+function do_include($path)
+{
+	require_once($path);
+}
+
+// Include core tests
+require_once("core.php");
+
+// Include db classes
+array_map('do_include', glob("../src/databases/*.php"));
+
+// Include db tests
+array_map('do_include', glob("./databases/*.php"));
