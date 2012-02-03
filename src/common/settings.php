@@ -127,5 +127,16 @@ class Settings {
 		unset($this->current->dbs->{$name});
 	}
 
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Retreive all db connections
+	 * 
+	 * @return  array 
+	 */
+	 function get_dbs()
+	 {
+	 	return $this->current->dbs;
+	 }
 }
 // End of settings.php

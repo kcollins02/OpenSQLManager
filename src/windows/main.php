@@ -19,7 +19,7 @@
  */
 class Main extends GtkWindow {
 
-	private $main_vbox, $main_hbox;
+	private $settings;
 
 	/**
 	 * Create and display the main window on startup
@@ -30,6 +30,9 @@ class Main extends GtkWindow {
 		
 		//Resize to a sane size
 		$this->resize(640, 480);
+
+		$this->set_position(Gtk::WIN_POS_CENTER);
+		$this->settings = new Settings();
 
 		//Layout the interface
 		$this->_main_layout();
@@ -179,7 +182,6 @@ class Main extends GtkWindow {
 		$dblabel = new GtkLabel('Database Connections');
 		$dblabel->set_alignment(0,0);
 
-
 		$add_button = new GtkButton();
 		$add_button->set_label("New Connnection");
 		$add_button->set_image(GTKImage::new_from_stock(GTK::STOCK_ADD, Gtk::ICON_SIZE_SMALL_TOOLBAR));
@@ -188,10 +190,64 @@ class Main extends GtkWindow {
 
 		$conn_vbox = new GtkVBox();
 
-		$conn_vbox->pack_start($dblabel, FALSE);
+		// Treeview to show database connections
+		{
+			// Create a Storage object for connection list
+			$model = new GtkListStore(GObject::TYPE_PHP_VALUE, GObject::TYPE_STRING);
+
+			// Add the existing connections to the model
+			$db_conns = $this->settings->get_dbs();
+			if( ! empty($db_conns))
+			{
+				foreach($db_conns as $name => $props)
+				{
+					$db = $props;
+					$db['name'] = $name;
+
+					$iter = $model->append();
+					$model->set($iter, 0, $db);
+				}
+			}
+			
+			// Initialize the treeview with the data
+			$treeview = new GtkTreeView($model);
+
+			$cell_renderer = new GtkCellRendererText();
+			$treeview->insert_column_with_data_func(-1, 'Database Connections', $cell_renderer, array(&$this, 'set_label'));
+
+			$selection = $treeview->get_selection();
+			$selection->set_mode(GTK::SELECTION_SINGLE);
+		}
+		
+
+		$conn_vbox->pack_start($treeview);
 		$conn_vbox->pack_start($add_button, FALSE);
 		
 		return $conn_vbox;
+	}
+
+	/**
+	 * Sets the label of the current db connection
+	 * 
+	 * @param GtkTreeViewColumn $col
+	 * @param GtkCellRenderer $cell
+	 * @param GtkTreeModel $model
+	 * @param GtkTreeIter $iter
+	 */
+	function set_label($col, $cell, $model, $iter)
+	{
+		$info = $model->get_value($iter, 0);
+		$cell->set_property('text', $info['name']);
+	}
+
+	/**
+	 * Redraws the data area based on the which connection is selected
+	 * 
+	 * @param $selection
+	 */
+	private function _render_selected($selection)
+	{
+		
 	}
 
 	// --------------------------------------------------------------------------
