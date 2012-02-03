@@ -57,7 +57,6 @@ register_shutdown_function('log_fatal');
 if ( ! class_exists('gtk')) 
 {
 	trigger_error("PHP-gtk not found. Please load the php-gtk2 module in your php.ini", E_USER_ERROR);
-
 	die();
 }
 

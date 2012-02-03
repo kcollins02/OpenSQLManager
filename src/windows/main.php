@@ -96,17 +96,18 @@ class Main extends GtkWindow {
 		// Main Vbox that everything is contained in
 		$main_vbox  = new GTKVBox();
 
-		// Main Hbox for columns
-		$main_hbox = new GTKHBox();
+		// Main Hpaned for columns
+		$hpane = new GTKHPaned();
 
 		// Add the menubar
 		$main_vbox->pack_start($this->_create_menu(), FALSE, FALSE);
 
 		// Add the main interface area hbox
-		$main_vbox->pack_start($main_hbox);
+		$main_vbox->pack_start($hpane);
 
-		// Add the left column to the hbox
-		$main_hbox->pack_start($this->_connection_sidebar(), FALSE);
+		// Add the left column to the hpane
+		$hpane->pack1($this->_connection_sidebar(), FALSE);
+		$hpane->pack2(new GtkVBox());
 
 		// Add the Vbox, and show the window
 		$this->add($main_vbox);
