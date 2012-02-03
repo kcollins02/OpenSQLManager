@@ -25,6 +25,7 @@ class Add_DB extends GtkWindow {
 
 		$this->settings = new Settings();
 
+		$this->set_position(Gtk::WIN_POS_CENTER);
 		$this->set_title("Add Database Connection");
 
 		// Add the Vbox, and show the window

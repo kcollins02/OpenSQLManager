@@ -21,7 +21,7 @@
 // --------------------------------------------------------------------------
 
 // Suppress errors that php-gtk puts out
-error_reporting(-1 & ~(E_STRICT | E_DEPRECATED));
+error_reporting(-1 & ~(E_STRICT));
 
 // Set the stupid timezone so PHP shuts up.
 date_default_timezone_set('GMT');
@@ -56,7 +56,7 @@ register_shutdown_function('log_fatal');
 // Make sure php-gtk works
 if ( ! class_exists('gtk')) 
 {
-	trigger_error("PHP-gtk not found. Please load the php-gtk2 module in your php.ini", E_USER_ERROR);
+	trigger_error("PHP-gtk not found. Please load the php-gtk2 extension in your php.ini", E_USER_ERROR);
 	die();
 }
 
