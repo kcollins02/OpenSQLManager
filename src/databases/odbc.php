@@ -37,6 +37,17 @@ class ODBC extends DB_PDO {
 		return FALSE;
 	}
 
+	/**
+	 * Empty the current database
+	 * 
+	 * @return void
+	 */
+	function truncate($table)
+	{
+		$sql = "DELETE FROM {$table}";
+		$this->query($sql);
+	}
+
 }
 
 // End of odbc.php

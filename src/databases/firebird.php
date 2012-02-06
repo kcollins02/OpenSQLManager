@@ -67,13 +67,34 @@ class firebird {
 	}
 
 	/**
+	 * Emulate PDO fetch function
+	 * 
+	 * @return mixed
+	 */
+	function fetch()
+	{
+		//TODO implement
+	}
+
+	/**
+	 * Emulate PDO fetchAll function
+	 * 
+	 * @return mixed
+	 */
+	function fetchAll()
+	{
+		//TODO implement
+	}
+
+	/**
 	 * List tables for the current database
 	 * 
 	 * @return mixed
 	 */
 	function get_tables()
 	{	
-		//TODO: implement
+		$sql="SELECT rdb\$relation_name FROM rdb\$relations WHERE rdb\$relation_name NOT LIKE 'RDB\$%'";
+		$res = $this->query($sql);
 	}
 	 
 }

@@ -81,8 +81,6 @@ class SQLite_manip extends SQLite {
 				$colname = $type;
 			}
 		}
-
-
 	}
 
 	/**

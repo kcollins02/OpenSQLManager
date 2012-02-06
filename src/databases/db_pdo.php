@@ -112,6 +112,7 @@ abstract class DB_PDO extends PDO {
 	 * Abstract functions to override in child classes
 	 */
 	abstract function get_tables();
+	abstract function truncate($table);
 
 }
 // End of db_pdo.php

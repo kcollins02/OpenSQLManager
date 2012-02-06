@@ -44,8 +44,18 @@ class MySQL extends DB_PDO {
 	 */
 	function truncate($table)
 	{
-		$sql = "TRUNCATE `{$table}`";
-		$this->query($sql);
+		$this->query("TRUNCATE `{$table}`");
+	}
+
+	/**
+	 * Get databases for the current connection
+	 * 
+	 * @return array
+	 */
+	function get_dbs()
+	{
+		$res = $this->query("SHOW DATABASES");
+		return $this->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	/**
@@ -55,9 +65,7 @@ class MySQL extends DB_PDO {
 	 */
 	function get_tables()
 	{
-		$sql = "SHOW TABLES";
-		$res = $this->query($sql);
-
+		$res = $this->query("SHOW TABLES");
 		return $res->fetchAll(PDO::FETCH_ASSOC);
 	}
 
