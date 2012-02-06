@@ -134,13 +134,5 @@ abstract class DB_PDO extends PDO {
 	 * @return int
 	 */
 	abstract function num_rows();
-
-	/**
-	 * Return the number of rows affected by the last query
-	 * 
-	 * @return int
-	 */
-	abstract function affected_rows();
-
 }
 // End of db_pdo.php

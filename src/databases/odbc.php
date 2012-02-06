@@ -49,16 +49,6 @@ class ODBC extends DB_PDO {
 	}
 
 	/**
-	 * Return the number of rows affected by the previous query
-	 * 
-	 * @return int
-	 */
-	function affected_rows()
-	{
-		// TODO: Implement
-	}
-
-	/**
 	 * Return the number of rows returned for a SELECT query
 	 * 
 	 * @return int
@@ -67,7 +57,5 @@ class ODBC extends DB_PDO {
 	{
 		// TODO: Implement
 	}
-
 }
-
 // End of odbc.php

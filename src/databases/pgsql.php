@@ -94,16 +94,6 @@ class pgSQL extends DB_PDO {
 	}
 
 	/**
-	 * Return the number of rows affected by the previous query
-	 * 
-	 * @return int
-	 */
-	function affected_rows()
-	{
-		// TODO: Implement
-	}
-
-	/**
 	 * Return the number of rows returned for a SELECT query
 	 * 
 	 * @return int
@@ -112,7 +102,6 @@ class pgSQL extends DB_PDO {
 	{
 		// TODO: Implement
 	}
-
 }
 
 /**
@@ -126,3 +115,4 @@ class pgSQL_manip extends pgSQL {
 	}
 
 }
+//End of pgsql.php
