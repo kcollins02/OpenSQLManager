@@ -17,7 +17,7 @@
  *
  * Extends PDO to simplify cross-database issues
  */
-class DB_PDO extends PDO {
+abstract class DB_PDO extends PDO {
 
 	protected $statement;
 
@@ -97,7 +97,7 @@ class DB_PDO extends PDO {
 	 * @param PDOStatement $statement
 	 * @return int
 	 */
-	function get_rows_changed($statement)
+	function affected_rows($statement)
 	{
 		// Execute the query
 		$statement->execute();
@@ -106,6 +106,41 @@ class DB_PDO extends PDO {
 		return $statement->rowCount();
 	}
 
-}
+	// -------------------------------------------------------------------------
 
+	/**
+	 * Abstract functions to override in child classes
+	 */
+	
+	/**
+	 * Return list of tables for the current database
+	 * 
+	 * @return array
+	 */
+	abstract function get_tables();
+
+	/**
+	 * Empty the passed table
+	 * 
+	 * @param string $table
+	 * 
+	 * @return void
+	 */
+	abstract function truncate($table);
+
+	/**
+	 * Return the number of rows for the last SELECT query
+	 * 
+	 * @return int
+	 */
+	abstract function num_rows();
+
+	/**
+	 * Return the number of rows affected by the last query
+	 * 
+	 * @return int
+	 */
+	abstract function affected_rows();
+
+}
 // End of db_pdo.php
