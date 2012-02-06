@@ -2,4 +2,5 @@
 *.DS_Store
 settings.json
 errors.txt
+*/simpletest/*
 

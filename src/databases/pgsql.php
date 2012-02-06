@@ -44,6 +44,21 @@ class pgSQL extends DB_PDO {
 	}
 
 	/**
+	 * Get list of databases for the current connection
+	 * 
+	 * @return array
+	 */
+	function get_dbs()
+	{
+		$sql = "SELECT datname FROM pg_database WHERE datname NOT IN ('template0','template1') ORDER BY 1";
+		$res = $this->query($sql);
+
+		$dbs = $res->fetchAll(PDO::FETCH_ASSOC);
+
+		return $dbs;
+	}
+
+	/**
 	 * Get the list of tables for the current db
 	 * 
 	 * @return array
