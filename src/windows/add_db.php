@@ -17,7 +17,7 @@
  */
 class Add_DB extends GtkWindow {
 
-	var $conn, $dbtype, $host, $user, $password, $database, $settings;
+	var $conn, $dbtype, $host, $user, $pass, $database, $settings;
 	
 	function __construct()
 	{
@@ -89,6 +89,15 @@ class Add_DB extends GtkWindow {
 			$this->_add_row($table, "DB Password", $this->pass, $y1, $y2);
 		}
 
+		// Add connection button
+		{
+			$add_button = new GtkButton();
+			$add_button->set_label("Add Connnection");
+			$add_button->set_image(GTKImage::new_from_stock(GTK::STOCK_ADD, Gtk::ICON_SIZE_SMALL_TOOLBAR));	
+			$table->attach($add_button, 0, 3, ++$y1, ++$y2);
+			$add_button->connect_simple("clicked", array($this, 'db_add'));	
+		}
+
 
 		return $table;
 	}
@@ -155,6 +164,24 @@ class Add_DB extends GtkWindow {
 
 		$table->attach($lblalign, 0, 1, ++$y1, ++$y2);
 		$table->attach($vname, 1, 2, $y1, $y2);
+	}
+
+	/**
+	 * Adds the database to the settings file
+	 */
+	function db_add()
+	{
+		$data = array(
+			'type' => $this->dbtype->get_active_text(),
+			'host' => $this->host->get_text(),
+			'user' => $this->user->get_text(),
+			'pass' => $this->pass->get_text(),
+		);
+
+		$this->settings->add_db($this->conn->get_text(), $data);
+
+		// Destroy this window
+		$this->destroy();
 	}
 }
 

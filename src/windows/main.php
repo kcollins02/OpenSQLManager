@@ -202,7 +202,7 @@ class Main extends GtkWindow {
 				foreach($db_conns as $name => $props)
 				{
 					$db = $props;
-					$db['name'] = $name;
+					$db->name = $name;
 
 					$iter = $model->append();
 					$model->set($iter, 0, $db);
@@ -237,7 +237,7 @@ class Main extends GtkWindow {
 	function set_label($col, $cell, $model, $iter)
 	{
 		$info = $model->get_value($iter, 0);
-		$cell->set_property('text', $info['name']);
+		$cell->set_property('text', $info->name);
 	}
 
 	/**
