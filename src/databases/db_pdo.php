@@ -111,8 +111,36 @@ abstract class DB_PDO extends PDO {
 	/**
 	 * Abstract functions to override in child classes
 	 */
+	
+	/**
+	 * Return list of tables for the current database
+	 * 
+	 * @return array
+	 */
 	abstract function get_tables();
+
+	/**
+	 * Empty the passed table
+	 * 
+	 * @param string $table
+	 * 
+	 * @return void
+	 */
 	abstract function truncate($table);
+
+	/**
+	 * Return the number of rows for the last SELECT query
+	 * 
+	 * @return int
+	 */
+	abstract function num_rows();
+
+	/**
+	 * Return the number of rows affected by the last query
+	 * 
+	 * @return int
+	 */
+	abstract function affected_rows();
 
 }
 // End of db_pdo.php

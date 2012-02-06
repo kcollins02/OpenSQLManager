@@ -69,6 +69,26 @@ class MySQL extends DB_PDO {
 		return $res->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	/**
+	 * Return the number of rows affected by the previous query
+	 * 
+	 * @return int
+	 */
+	function affected_rows()
+	{
+		// TODO: Implement
+	}
+
+	/**
+	 * Return the number of rows returned for a SELECT query
+	 * 
+	 * @return int
+	 */
+	function num_rows()
+	{
+		// TODO: Implement
+	}
+
 }
 
 class MySQL_manip extends MySQL {
