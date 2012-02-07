@@ -20,9 +20,11 @@ Because php-gtk is such a pain to compile on Windows, I've put together this pac
 
 The databases currently slated to be supported are:
 
-* [PostgreSQL](http://www.postgresql.org)
+* [Firebird](http://www.firebirdsql.org/)
 * [MySQL](http://www.mysql.com/) / [MariaDB](http://mariadb.org/)
+* [PostgreSQL](http://www.postgresql.org)
 * [SQLite](http://sqlite.org/)
+
 
 Plan to implement, not support:
 
