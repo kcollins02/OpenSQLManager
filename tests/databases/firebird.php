@@ -28,11 +28,12 @@ class FirebirdTest extends UnitTestCase {
 	function __construct()
 	{
 		parent::__construct();
+		
+		$this->db = new Firebird(dirname(__FILE__)."/../test_dbs/FB_TEST_DB.FDB");
 	}
 
 	function TestConnection()
 	{
-		$this->firebird = new Firebird(dirname(__FILE__)."/../test_dbs/FB_TEST_DB.FDB");
-		$this->assertIsA($this->firebird, 'Firebird');
+		$this->assertIsA($this->db, 'Firebird');
 	}
 }
