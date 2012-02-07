@@ -157,24 +157,6 @@ class firebird {
 	function num_rows()
 	{
 		// TODO: Implement
-	}
-	 
-}
-
-/**
- * Database manipulation class
- */
-class firebird_manip extends firebird {
-	
-	function __construct($db, $user="sysdba", $pass="masterkey")
-	{
-		parent::__construct($db, $user, $pass);
-	}
-
-	function create_table($name, $fields, $constraints=array())
-	{
-		$sql = "CREATE TABLE {$name}";
-	}
-	
+	}	 
 }
 // End of firebird.php

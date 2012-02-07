@@ -103,16 +103,4 @@ class pgSQL extends DB_PDO {
 		// TODO: Implement
 	}
 }
-
-/**
- * PostgreSQL DB Structure manipulation class
- */
-class pgSQL_manip extends pgSQL {
-	
-	function __construct($dsn, $username=null, $password=null, $options=array())
-	{
-		parent::__construct($dsn, $username, $password, $options);
-	}
-
-}
 //End of pgsql.php

@@ -79,12 +79,4 @@ class MySQL extends DB_PDO {
 		// TODO: Implement
 	}
 }
-
-class MySQL_manip extends MySQL {
-
-	function __construct($dsn, $user=null, $pass=null, $opt=array())
-	{
-		parent::__construct($dsn, $user, $pass, $opt);
-	}	
-}
 //End of mysql.php
