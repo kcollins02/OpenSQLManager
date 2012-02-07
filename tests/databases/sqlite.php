@@ -29,4 +29,10 @@ class SQLiteTest extends UnitTestCase {
 	{
 		parent::__construct();
 	}
+
+	function TestConnection()
+	{
+		$this->sqlite = new SQLite("../test_dbs/test_sqlite.db");
+		$this->assertIsA($this->sqlite, 'SQLite');
+	}
 }

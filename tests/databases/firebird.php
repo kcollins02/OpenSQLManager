@@ -29,4 +29,10 @@ class FirebirdTest extends UnitTestCase {
 	{
 		parent::__construct();
 	}
+
+	function TestConnection()
+	{
+		$this->firebird = new Firebird("../test_dbs/FB_TEST_DB.FDB");
+		$this->assertIsA($this->firebird, 'Firebird');
+	}
 }
