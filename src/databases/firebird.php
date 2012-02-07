@@ -69,21 +69,50 @@ class firebird {
 	/**
 	 * Emulate PDO fetch function
 	 * 
+	 * @param  int $fetch_style
 	 * @return mixed
 	 */
-	function fetch()
+	function fetch($fetch_style=PDO::FETCH_ASSOC)
 	{
-		//TODO implement
+		switch($fetch_style)
+		{
+			case PDO::FETCH_OBJ:
+				return ibase_fetch_object($this->statement);
+			break;
+
+			case PDO::FETCH_NUM:
+				return ibase_fetch_row($this->statement);
+			break;
+
+			case PDO::FETCH_BOTH:
+				return array_merge(
+					ibase_fetch_row($this->statement),
+					ibase_fetch_assoc($this->statement)
+				);
+			break;
+
+			default:
+				return ibase_fetch_assoc($this->statement);
+			break;
+		}
 	}
 
 	/**
 	 * Emulate PDO fetchAll function
 	 * 
+	 * @param  int  $fetch_style
 	 * @return mixed
 	 */
-	function fetchAll()
+	function fetchAll($fetch_style=PDO::FETCH_ASSOC)
 	{
-		//TODO implement
+		$all = array();
+
+		while($row = $this->fetch($fetch_style))
+		{
+			$all[] = $row;
+		}
+
+		return $all;
 	}
 
 	/**
@@ -115,7 +144,7 @@ class firebird {
 	 */
 	function affected_rows()
 	{
-		// TODO: Implement
+		return ibase_affected_rows($this->conn);
 	}
 
 	/**
@@ -137,7 +166,10 @@ class firebird_manip extends firebird {
 		parent::__construct($db, $user, $pass);
 	}
 
-
+	function create_table($name, $fields, $constraints=array())
+	{
+		$sql = "CREATE TABLE {$name}";
+	}
 	
 }
 // End of firebird.php
