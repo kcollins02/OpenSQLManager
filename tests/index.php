@@ -32,8 +32,27 @@ function do_include($path)
 // Include core tests
 require_once("core.php");
 
-// Include db classes
-array_map('do_include', glob("../src/databases/*.php"));
-
 // Include db tests
-array_map('do_include', glob("./databases/*.php"));
+// Load db classes based on capability
+$src_path = "../src/databases/";
+$test_path = "./databases/";
+
+foreach(pdo_drivers() as $d)
+{
+
+	$src_file = "{$src_path}{$d}.php";
+	$test_file = "{$test_path}{$d}.php";
+	
+	if(is_file($file))
+	{
+		require_once($src_file);
+		require_once($test_file);
+	}
+}
+
+// Load Firebird if there is support
+if(function_exists('ibase_connect'))
+{
+	require_once("{$src_path}firebird.php");
+	require_once("{$test_path}firebird.php");
+}
