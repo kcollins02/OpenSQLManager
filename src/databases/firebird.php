@@ -29,9 +29,9 @@ class firebird {
 	 * @param string $user 
 	 * @param string $pass
 	 */
-	function __construct($db, $user="sysdba", $pass="masterkey")
+	function __construct($dbpath, $user="sysdba", $pass="masterkey")
 	{
-		$this->conn = ibase_connect($db, $user, $pass);
+		$this->conn = ibase_connect($dbpath, $user, $pass);
 	}
 
 	/**
@@ -134,7 +134,9 @@ class firebird {
 	function get_tables()
 	{	
 		$sql="SELECT rdb\$relation_name FROM rdb\$relations WHERE rdb\$relation_name NOT LIKE 'RDB\$%'";
-		$res = $this->query($sql);
+		$this->statement = $this->query($sql);
+		
+		return $this->fetch(PDO::FETCH_NUM);
 	}
 
 	/**
