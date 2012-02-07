@@ -32,7 +32,7 @@ class FirebirdTest extends UnitTestCase {
 
 	function TestConnection()
 	{
-		$this->firebird = new Firebird("../test_dbs/FB_TEST_DB.FDB");
+		$this->firebird = new Firebird(dirname(__FILE__)."/../test_dbs/FB_TEST_DB.FDB");
 		$this->assertIsA($this->firebird, 'Firebird');
 	}
 }

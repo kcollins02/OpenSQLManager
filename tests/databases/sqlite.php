@@ -32,7 +32,7 @@ class SQLiteTest extends UnitTestCase {
 
 	function TestConnection()
 	{
-		$this->sqlite = new SQLite("../test_dbs/test_sqlite.db");
+		$this->sqlite = new SQLite("./test_dbs/test_sqlite.db");
 		$this->assertIsA($this->sqlite, 'SQLite');
 	}
 }
