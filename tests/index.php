@@ -43,7 +43,7 @@ foreach(pdo_drivers() as $d)
 	$src_file = "{$src_path}{$d}.php";
 	$test_file = "{$test_path}{$d}.php";
 	
-	if(is_file($file))
+	if(is_file($src_file))
 	{
 		require_once($src_file);
 		require_once($test_file);
