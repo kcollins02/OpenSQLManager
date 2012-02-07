@@ -161,6 +161,9 @@ class firebird {
 	 
 }
 
+/**
+ * Database manipulation class
+ */
 class firebird_manip extends firebird {
 	
 	function __construct($db, $user="sysdba", $pass="masterkey")

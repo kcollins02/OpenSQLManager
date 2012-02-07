@@ -48,7 +48,7 @@ class Main extends GtkWindow {
 		$dlg = new GtkAboutDialog();
 		$dlg->set_transient_for($this);
 
-		$dlg->set_name($this->get_title());
+		$dlg->set_program_name($this->get_title());
 		$dlg->set_version('0.1.0pre');
 
 		$dlg->set_copyright("Copyright (c) ".date('Y')." Timothy J. Warren");
@@ -60,12 +60,12 @@ class Main extends GtkWindow {
 
 		$dlg->set_authors(array(
 			'Timothy J. Warren',
-			'Nathan Dupuie',
+			//'Nathan Dupuie',
 		));
 
-		$dlg->set_artists(array(
+		/*$dlg->set_artists(array(
 			'Nathan Dupuie',
-		));
+		));*/
 
 		$dlg->run();
 
@@ -108,9 +108,11 @@ class Main extends GtkWindow {
 		// Add the main interface area hbox
 		$main_vbox->pack_start($hpane);
 
+
+
 		// Add the left column to the hpane
 		$hpane->pack1($this->_connection_sidebar(), FALSE);
-		$hpane->pack2(new GtkVBox());
+		$hpane->pack2(new DataGrid());
 
 		// Add the Vbox, and show the window
 		$this->add($main_vbox);
