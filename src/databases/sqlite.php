@@ -65,6 +65,9 @@ class SQLite extends DB_PDO {
 	}
 }
 
+/**
+ * Database manipulation class
+ */
 class SQLite_manip extends SQLite {
 	
 	function __construct($dsn)
@@ -79,19 +82,48 @@ class SQLite_manip extends SQLite {
 	 * @param array $columns //columns as straight array and/or column => type pairs
 	 * @param array $constraints // column => constraint pairs
 	 * @param array $indexes // column => index pairs
-	 * @return  srtring
+	 * @return  string
 	 */
 	function create_table($name, $columns, $constraints, $indexes)
 	{
-		$sql = "CREATE TABLE {$name} (";
-
+		$column_array = array();
+		
+		// Reorganize into an array indexed with column information
+		// Eg $column_array[$colname] = array(
+		// 		'type' => ...,
+		// 		'constraint' => ...,
+		// 		'index' => ...,
+		// )
 		foreach($columns as $colname => $type)
 		{
 			if(is_numeric($colname))
 			{
 				$colname = $type;
 			}
+
+			$column_array[$colname] = array();
+			$column_array[$colname]['type'] = ($type !== $colname) ? $type : '';
 		}
+
+		if( ! empty($constraints))
+		{
+			foreach($constraints as $col => $const)
+			{
+				$column_array[$col]['constraint'] = $const;
+			}
+		}
+
+		if( ! empty($indexes))
+		{
+			foreach($indexes as $col => $ind)
+			{
+				$column_array[$col]['index'] = $ind;
+			}
+		}
+
+		// Generate the sql for the creation of the table
+		$sql = "CREATE TABLE {$name} (";
+		$sql .= ")";
 	}
 
 	/**
