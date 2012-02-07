@@ -31,6 +31,7 @@ function do_include($path)
 
 // Include core tests
 require_once("core.php");
+require_once("../src/common/db_pdo.php");
 
 // Include db tests
 // Load db classes based on capability
