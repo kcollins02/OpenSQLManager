@@ -17,11 +17,12 @@
   *
   * @extends ODBC
   */
-class ODBC_manip extends ODBC {
+class ODBC_manip extends db_manip {
 
-	function __construct($dsn, $username=null, $password=null, $options=array())
+	function create_table()
 	{
-		parent::__construct("odbc:$dsn", $username, $password, $options);
+		//ODBC can't know how to create a table
+		return FALSE;
 	}
 }
 // End of odbc_manip.php

@@ -15,11 +15,11 @@
  /**
   * MySQL Database manipulation class 
   */
- class MySQL_manip extends MySQL {
+ class MySQL_manip extends db_manip{
 
-	function __construct($dsn, $user=null, $pass=null, $opt=array())
+	function create_table($name, $columns, $constraints, $indexes)
 	{
-		parent::__construct($dsn, $user, $pass, $opt);
+		//TODO: implement
 	}	
 }
-//End of mysqlL_manip.php
+//End of mysql_manip.php

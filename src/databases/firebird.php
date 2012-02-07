@@ -156,7 +156,21 @@ class firebird {
 	 */
 	function num_rows()
 	{
-		// TODO: Implement
+		$count = 0;
+
+		if(isset($this->statement))
+		{
+			while($row = $this->fetch())
+			{
+				$count++;
+			}
+		}
+		else
+		{
+			return FALSE;
+		}
+
+		return $count;
 	}	 
 }
 // End of firebird.php

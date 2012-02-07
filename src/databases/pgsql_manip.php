@@ -17,11 +17,11 @@
  *
  * @extends PgSQL
  */
-class pgSQL_manip extends pgSQL {
+class pgSQL_manip extends db_manip {
 	
-	function __construct($dsn, $username=null, $password=null, $options=array())
+	function create_table($name, $columns, $constraints, $indexes)
 	{
-		parent::__construct($dsn, $username, $password, $options);
+		//TODO: implement
 	}
 
 }

@@ -17,12 +17,7 @@
  * 
  * PDO-firebird isn't stable, so this is a wrapper of the ibase_ functions.
  */
-class firebird_manip extends firebird {
-	
-	function __construct($db, $user="sysdba", $pass="masterkey")
-	{
-		parent::__construct($db, $user, $pass);
-	}
+class firebird_manip extends db_manip{
 
 	function create_table($name, $fields, $constraints=array())
 	{

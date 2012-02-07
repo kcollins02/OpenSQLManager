@@ -15,12 +15,7 @@
 /**
  * SQLite Database manipulation class
  */
-class SQLite_manip extends SQLite {
-	
-	function __construct($dsn)
-	{
-		parent::__construct($dsn);
-	}
+class SQLite_manip extends db_manip {
 
 	/**
 	 * Convenience function to create a new table

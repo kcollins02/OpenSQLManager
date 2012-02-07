@@ -24,6 +24,9 @@ abstract class DB_PDO extends PDO {
 	function __construct($dsn, $username=NULL, $password=NULL, $driver_options=array())
 	{
 		parent::__construct($dsn, $username, $password, $driver_options);
+
+		$class = __CLASS__.'_manip';
+		$this->manip = new $class;
 	}
 	
 	// -------------------------------------------------------------------------
@@ -134,5 +137,25 @@ abstract class DB_PDO extends PDO {
 	 * @return int
 	 */
 	abstract function num_rows();
+}
+
+// -------------------------------------------------------------------------
+
+/**
+ * Abstract parent for database manipulation subclasses
+ */
+abstract class db_manip {
+	
+	/**
+	 * Get database-specific sql to create a new table
+	 * 
+	 * @param string $name 
+	 * @param array $columns 
+	 * @param array $constraints 
+	 * @param array $indexes 
+	 * 
+	 * @return string
+	 */
+	abstract function create_table($name, $columns, $constraints, $indexes);
 }
 // End of db_pdo.php
