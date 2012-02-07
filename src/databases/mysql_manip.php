@@ -17,7 +17,7 @@
   */
  class MySQL_manip extends db_manip{
 
-	function create_table($name, $columns, $constraints, $indexes)
+	function create_table($name, $columns, $constraints=array(), $indexes=array())
 	{
 		//TODO: implement
 	}	

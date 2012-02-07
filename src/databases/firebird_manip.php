@@ -19,7 +19,7 @@
  */
 class firebird_manip extends db_manip{
 
-	function create_table($name, $fields, $constraints=array())
+	function create_table($name, $fields, $constraints=array(), $indexes=array())
 	{
 		$sql = "CREATE TABLE {$name}";
 	}

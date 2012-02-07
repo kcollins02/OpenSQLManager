@@ -7,7 +7,7 @@ Because php-gtk is such a pain to compile on Windows, I've put together this pac
 
 ## PHP Requirements
 * Version 5.2 - 5.3.*
-* PHP-Cario PECL extension
+* PHP-Cairo PECL extension
 * [PHP-GTK](http://gtk.php.net) PHP Extension
 * Curl
 * OpenSSL

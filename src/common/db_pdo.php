@@ -159,6 +159,6 @@ abstract class db_manip {
 	 * 
 	 * @return string
 	 */
-	abstract function create_table($name, $columns, $constraints, $indexes);
+	abstract function create_table($name, $columns, $constraints=array(), $indexes=array());
 }
 // End of db_pdo.php
