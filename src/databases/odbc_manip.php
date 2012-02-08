@@ -24,5 +24,10 @@ class ODBC_manip extends db_manip {
 		//ODBC can't know how to create a table
 		return FALSE;
 	}
+
+	function delete_table($name)
+	{
+		return "DROP TABLE {$name}";
+	}
 }
 // End of odbc_manip.php

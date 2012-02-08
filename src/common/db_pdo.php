@@ -160,5 +160,14 @@ abstract class db_manip {
 	 * @return string
 	 */
 	abstract function create_table($name, $columns, $constraints=array(), $indexes=array());
+
+	/**
+	 * Get database-specific sql to drop a table
+	 * 
+	 * @param string $name
+	 * 
+	 * @return string
+	 */
+	abstract function delete_table($name);
 }
 // End of db_pdo.php

@@ -23,6 +23,17 @@ class firebird_manip extends db_manip{
 	{
 		$sql = "CREATE TABLE {$name}";
 	}
+
+	/**
+	 * Drop the selected table
+	 * 
+	 * @param string $name
+	 * @return string
+	 */
+	function delete_table($name)
+	{
+		return "DELETE TABLE {$name}";
+	}
 	
 }
 //End of firebird_manip.php

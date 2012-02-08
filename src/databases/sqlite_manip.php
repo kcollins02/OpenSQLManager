@@ -75,6 +75,17 @@ class SQLite_manip extends db_manip {
 	}
 
 	/**
+	 * SQL to drop the specified table
+	 * 
+	 * @param string $name
+	 * @return string
+	 */
+	function delete_table($name)
+	{
+		return "DROP TABLE IF EXISTS {$table}";
+	}
+
+	/**
 	 * Create an sqlite database file
 	 * 
 	 * @param  $path

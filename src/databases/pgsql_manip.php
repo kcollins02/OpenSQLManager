@@ -24,5 +24,10 @@ class pgSQL_manip extends db_manip {
 		//TODO: implement
 	}
 
+	function delete_table($name)
+	{
+		return 'DROP TABLE "'.$name.'"';
+	}
+
 }
 //End of pgsql_manip.php
