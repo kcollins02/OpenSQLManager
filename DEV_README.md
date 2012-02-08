@@ -12,6 +12,7 @@ Follow the CodeIgniter [Style Guide](https://github.com/timw4mail/CodeIgniter/bl
 * [Reference](http://gtk.php.net/manual/en/reference.php)
 * [Official Tutorials](http://gtk.php.net/manual/en/tutorials.php)
 * [Community site](http://php-gtk.eu/) - Contains various tutorials
+* [php-gtk2 Cookbook](http://www.kksou.com/php-gtk2/) - Various tutorials, requires registration
 
 ## Database reference material
 ### Firebird
