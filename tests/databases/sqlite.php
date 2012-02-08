@@ -29,12 +29,17 @@ class SQLiteTest extends UnitTestCase {
 	{
 		parent::__construct();
 		
-		$this->db = new SQLite("./test_dbs/test_sqlite.db");
+		$this->db = new SQLite(dirname(__FILE__)."/../test_dbs/test_sqlite.db");
 	}
 
 	function TestConnection()
 	{
-		
 		$this->assertIsA($this->db, 'SQLite');
+	}
+
+	function TestGetTables()
+	{
+		$tables = $this->db->get_tables();
+		$this->assertEqual($tables[0]['name'], 'test');
 	}
 }

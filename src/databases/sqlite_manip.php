@@ -26,7 +26,7 @@ class SQLite_manip extends db_manip {
 	 * @param array $indexes // column => index pairs
 	 * @return  string
 	 */
-	function create_table($name, $columns, $constraints=array())
+	function create_table($name, $columns, $constraints=array(), $indexes=array())
 	{
 		$column_array = array();
 		
