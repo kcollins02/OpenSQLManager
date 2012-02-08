@@ -36,4 +36,14 @@ class FirebirdTest extends UnitTestCase {
 	{
 		$this->assertIsA($this->db, 'Firebird');
 	}
+
+	function TestCreateDatabase()
+	{
+		
+	}
+
+	function TestDeleteDatabase()
+	{
+		
+	}
 }
