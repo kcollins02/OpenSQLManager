@@ -26,7 +26,7 @@ class SQLite_manip extends db_manip {
 	 * @param array $indexes // column => index pairs
 	 * @return  string
 	 */
-	function create_table($name, $columns, $constraints=array(), $indexes=array())
+	function create_table($name, $columns, $constraints=array())
 	{
 		$column_array = array();
 		
@@ -55,17 +55,23 @@ class SQLite_manip extends db_manip {
 			}
 		}
 
-		if( ! empty($indexes))
+		// Join column definitons together 
+		$columns = array();
+		foreach($coumn_array as $name => $props)
 		{
-			foreach($indexes as $col => $ind)
-			{
-				$column_array[$col]['index'] = $ind;
-			}
+			$str = "{$name} ";
+			$str .= (isset($props['type'])) ? "{$props['type']}" : "";
+			$str .= (isset($props['constraint'])) ? "{$props['constraint']} " : "";
+
+			$columns[] = $str;
 		}
 
 		// Generate the sql for the creation of the table
 		$sql = "CREATE TABLE {$name} (";
+		$sql .= implode(",", $columns);
 		$sql .= ")";
+
+		return $sql;
 	}
 
 	/**
