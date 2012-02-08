@@ -39,7 +39,7 @@ class firebird_manip extends db_manip{
 		// 		'constraint' => ...,
 		// 		'index' => ...,
 		// )
-		foreach($columns as $colname => $type)
+		foreach($fields as $colname => $type)
 		{
 			if(is_numeric($colname))
 			{
@@ -63,7 +63,7 @@ class firebird_manip extends db_manip{
 		foreach($column_array as $n => $props)
 		{
 			$str = "{$n} ";
-			$str .= (isset($props['type'])) ? "{$props['type']}" : "";
+			$str .= (isset($props['type'])) ? "{$props['type']} " : "";
 			$str .= (isset($props['constraint'])) ? "{$props['constraint']} " : "";
 
 			$columns[] = $str;
@@ -85,7 +85,7 @@ class firebird_manip extends db_manip{
 	 */
 	function delete_table($name)
 	{
-		return "DELETE TABLE {$name}";
+		return "DROP TABLE \"{$name}\"";
 	}
 	
 }

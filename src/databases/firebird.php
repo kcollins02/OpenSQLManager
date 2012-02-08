@@ -32,6 +32,9 @@ class firebird {
 	function __construct($dbpath, $user="sysdba", $pass="masterkey")
 	{
 		$this->conn = ibase_connect($dbpath, $user, $pass);
+		
+		$class = __CLASS__."_manip";
+		$this->manip = new $class;
 	}
 
 	/**
@@ -136,7 +139,7 @@ class firebird {
 		$sql="SELECT rdb\$relation_name FROM rdb\$relations WHERE rdb\$relation_name NOT LIKE 'RDB\$%'";
 		$this->statement = $this->query($sql);
 		
-		return $this->fetch(PDO::FETCH_NUM);
+		return $this->fetch();
 	}
 
 	/**
