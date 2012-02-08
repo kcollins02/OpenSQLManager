@@ -37,7 +37,7 @@ class FirebirdTest extends UnitTestCase {
 		$this->assertIsA($this->db, 'Firebird');
 	}
 	
-	function TestGetTables()
+	/*function TestGetTables()
 	{
 		$tables = $this->db->get_tables();
 		
@@ -48,7 +48,6 @@ class FirebirdTest extends UnitTestCase {
 	{
 		//Attempt to create the table
 		$sql = $this->db->manip->create_table('create_test', array('id' => 'SMALLINT'), array('id' => 'PRIMARY KEY'));
-		//echo '<br />'.$sql.'<br />';
 		$this->db->query($sql);
 	}
 
@@ -56,5 +55,5 @@ class FirebirdTest extends UnitTestCase {
 	{
 		$sql = $this->db->manip->delete_table('create_test');
 		$this->db->query($sql);
-	}
+	}*/
 }

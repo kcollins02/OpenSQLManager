@@ -60,8 +60,8 @@ class SQLite_manip extends db_manip {
 		foreach($column_array as $n => $props)
 		{
 			$str = "{$n} ";
-			$str .= (isset($props['type'])) ? "{$props['type']}" : "";
-			$str .= (isset($props['constraint'])) ? "{$props['constraint']} " : "";
+			$str .= (isset($props['type'])) ? "{$props['type']} " : "";
+			$str .= (isset($props['constraint'])) ? $props['constraint'] : "";
 
 			$columns[] = $str;
 		}

@@ -40,13 +40,13 @@ class SQLiteTest extends UnitTestCase {
 	function TestGetTables()
 	{
 		$tables = $this->db->get_tables();
-		$this->assertTrue(isset($tables['test']));
+		$this->assertTrue( ! empty($tables));
 	}
 
 	function TestCreateTable()
 	{
 		//Attempt to create the table
-		$sql = $this->db->manip->create_table('create_test', array('id' => 'INTEGER PRIMARY KEY'));
+		$sql = $this->db->manip->create_table('create_test', array('id' => 'INTEGER'), array('id' => 'PRIMARY KEY'));
 		$this->db->query($sql);
 
 		//Check
