@@ -57,9 +57,9 @@ class SQLite_manip extends db_manip {
 
 		// Join column definitons together 
 		$columns = array();
-		foreach($coumn_array as $name => $props)
+		foreach($column_array as $n => $props)
 		{
-			$str = "{$name} ";
+			$str = "{$n} ";
 			$str .= (isset($props['type'])) ? "{$props['type']}" : "";
 			$str .= (isset($props['constraint'])) ? "{$props['constraint']} " : "";
 
@@ -82,7 +82,7 @@ class SQLite_manip extends db_manip {
 	 */
 	function delete_table($name)
 	{
-		return "DROP TABLE IF EXISTS {$table}";
+		return "DROP TABLE IF EXISTS \"{$name}\"";
 	}
 
 	/**

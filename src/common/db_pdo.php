@@ -19,7 +19,9 @@
  */
 abstract class DB_PDO extends PDO {
 
-	protected $statement, $manip;
+	public $manip;
+
+	protected $statement;
 
 	function __construct($dsn, $username=NULL, $password=NULL, $driver_options=array())
 	{

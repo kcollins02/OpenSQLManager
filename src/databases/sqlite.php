@@ -28,6 +28,9 @@ class SQLite extends DB_PDO {
 	{
 		// DSN is simply `sqlite:/path/to/db`
 		parent::__construct("sqlite:{$dsn}");
+
+		$class = __CLASS__."_manip";
+		$this->manip = new $class;
 	}
 
 	/**
@@ -50,8 +53,16 @@ class SQLite extends DB_PDO {
 	 */
 	function get_tables()
 	{	
-		$res = $this->query("SELECT name FROM sqlite_master WHERE type='table'");
-		return $res->fetchAll(PDO::FETCH_ASSOC);
+		$tables = array();
+		$res = $this->query("SELECT \"name\", \"sql\" FROM sqlite_master WHERE type='table'");
+		$result = $res->fetchAll(PDO::FETCH_ASSOC);
+		
+		foreach($result as $r)
+		{
+			$tables[$r['name']] = $r['sql'];
+		}
+
+		return $tables;
 	}
 
 	/**
