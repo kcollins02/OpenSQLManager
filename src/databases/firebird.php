@@ -120,7 +120,7 @@ class firebird {
 
 	/**
 	 * Emulate PDO prepare
-	 * 
+	 *
 	 * @return resource
 	 */
 	function prepare()
@@ -136,10 +136,19 @@ class firebird {
 	 */
 	function get_tables()
 	{	
-		$sql="SELECT rdb\$relation_name FROM rdb\$relations WHERE rdb\$relation_name NOT LIKE 'RDB\$%'";
+		$sql='SELECT "RDB$RELATION_NAME" FROM "RDB$RELATIONS" 
+			WHERE "RDB$RELATION_NAME" NOT LIKE \'RDB$%\'
+			AND "RDB$RELATION_NAME" NOT LIKE \'MON$%\'';
 		$this->statement = $this->query($sql);
 		
-		return $this->fetch();
+		$tables = array();
+		
+		while($row = $this->fetch(PDO::FETCH_ASSOC))
+		{
+			$tables[] = $row['RDB$RELATION_NAME'];
+		}
+		
+		return $tables;
 	}
 
 	/**

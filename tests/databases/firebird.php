@@ -37,23 +37,32 @@ class FirebirdTest extends UnitTestCase {
 		$this->assertIsA($this->db, 'Firebird');
 	}
 	
-	/*function TestGetTables()
+	function TestGetTables()
 	{
 		$tables = $this->db->get_tables();
-		
-		print_r($tables);
 	}
 
 	function TestCreateDatabase()
 	{
 		//Attempt to create the table
-		$sql = $this->db->manip->create_table('create_test', array('id' => 'SMALLINT'), array('id' => 'PRIMARY KEY'));
+		$sql = $this->db->manip->create_table('create_test', array('id' => 'SMALLINT'));
 		$this->db->query($sql);
+		
+		//Check
+		$tables = $this->db->get_tables();
+		$table_exists = in_array('create_test', $tables);
+		$this->assertTrue($table_exists);
 	}
 
 	function TestDeleteDatabase()
 	{
+		//Attempt to delete the table
 		$sql = $this->db->manip->delete_table('create_test');
 		$this->db->query($sql);
-	}*/
+		
+		//Check
+		$tables = $this->db->get_tables();
+		$table_exists = in_array('create_test', $tables);
+		$this->assertFalse($table_exists);
+	}
 }
