@@ -108,11 +108,14 @@ class Main extends GtkWindow {
 		// Add the main interface area hbox
 		$main_vbox->pack_start($hpane);
 
+		$scrolled_win = new GtkScrolledWindow();
+    	$scrolled_win->set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_ALWAYS);
+    	$scrolled_win->add(new DataGrid());
 
 
 		// Add the left column to the hpane
 		$hpane->pack1($this->_connection_sidebar(), FALSE);
-		$hpane->pack2(new DataGrid());
+		$hpane->pack2($scrolled_win);
 
 		// Add the Vbox, and show the window
 		$this->add($main_vbox);
