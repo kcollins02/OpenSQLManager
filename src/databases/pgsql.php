@@ -108,10 +108,19 @@ class pgSQL extends DB_PDO {
 	 */
 	function get_schemas($database="")
 	{
-		$sql = 'SELECT ';
+		if($database === "")
+		{
+			$sql = 'SELECT DISTINCT "schemaname" FROM pg_tables 
+				WHERE "schemaname" NOT LIKE \'pg\_%\'';
+		}
+
+		$sql = 'SELECT DISTINCT "schemaname" FROM pg_tables 
+				WHERE "schemaname" NOT LIKE \'pg\_%\'';
 
 		$res = $this->query($sql);
 		$schemas = $res->fetchAll(PDO::FETCH_ASSOC);
+
+		return $schemas;
 	}
 
 	/**
