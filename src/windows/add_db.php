@@ -93,7 +93,8 @@ class Add_DB extends GtkWindow {
 		{
 			$add_button = new GtkButton();
 			$add_button->set_label("Add Connnection");
-			$add_button->set_image(GTKImage::new_from_stock(GTK::STOCK_ADD, Gtk::ICON_SIZE_SMALL_TOOLBAR));	
+			$add_button->set_image(GTKImage::new_from_stock(GTK::STOCK_ADD, 
+				Gtk::ICON_SIZE_SMALL_TOOLBAR));	
 			$table->attach($add_button, 0, 3, ++$y1, ++$y2);
 			$add_button->connect_simple("clicked", array($this, 'db_add'));	
 		}

@@ -38,6 +38,17 @@ class ODBC extends DB_PDO {
 	}
 
 	/**
+	 * List system tables for the current database/connection
+	 * 
+	 * @return  array
+	 */
+	function get_system_tables()
+	{
+		//No way of determining for ODBC
+		return array();
+	}
+
+	/**
 	 * Empty the current database
 	 * 
 	 * @return void

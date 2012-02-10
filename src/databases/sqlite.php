@@ -65,6 +65,11 @@ class SQLite extends DB_PDO {
 		return $tables;
 	}
 
+	function get_system_tables()
+	{
+		
+	}
+
 	/**
 	 * Return the number of rows returned for a SELECT query
 	 * 

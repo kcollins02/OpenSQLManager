@@ -132,7 +132,7 @@ class firebird {
 	/**
 	 * List tables for the current database
 	 * 
-	 * @return mixed
+	 * @return array
 	 */
 	function get_tables()
 	{	
@@ -143,6 +143,29 @@ class firebird {
 		
 		$tables = array();
 		
+		while($row = $this->fetch(PDO::FETCH_ASSOC))
+		{
+			$tables[] = $row['RDB$RELATION_NAME'];
+		}
+		
+		return $tables;
+	}
+
+	/**
+	 * List system tables for the current database
+	 * 
+	 * @return array
+	 */
+	function get_system_tables()
+	{
+		$sql='SELECT RDB$RELATION_NAME as "rn" FROM "RDB$RELATIONS"
+			WHERE "rn" LIKE \'RDB$\'
+			OR "rn" LIKE \'RDB$\'';
+
+		$this->statement = $this->query($sql);
+
+		$tables = array();
+
 		while($row = $this->fetch(PDO::FETCH_ASSOC))
 		{
 			$tables[] = $row['RDB$RELATION_NAME'];

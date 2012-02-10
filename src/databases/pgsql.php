@@ -30,6 +30,10 @@ class pgSQL extends DB_PDO {
 	function __construct($dsn, $username=null, $password=null, $options=array())
 	{
 		parent::__construct("pgsql:$dsn", $username, $password, $options);
+
+		//Get db manip class
+		$class = __CLASS__.'_manip';
+		$this->manip = new $class;
 	}
 
 	/**
@@ -71,9 +75,43 @@ class pgSQL extends DB_PDO {
 
 		$res = $this->query($sql);
 
-		$dbs = $res->fetchAll(PDO::FETCH_ASSOC);
+		$tables = $res->fetchAll(PDO::FETCH_ASSOC);
 
-		return $dbs;
+		return $tables;
+	}
+
+	/**
+	 * Get the list of system tables
+	 * 
+	 * @return array
+	 */
+	function get_system_tables()
+	{
+		$sql = 'SELECT "tablename" FROM "pg_tables"
+			WHERE "tablename" LIKE \'pg\_%\'
+			OR "tablename" LIKE \'sql\%\'';
+		
+		$res = $this->query($sql);
+
+		$tables = $res->fetchAll(PDO::FETCH_ASSOC);
+
+		return $tables;
+		
+	}
+
+	/**
+	 * Get a list of schemas, either for the current connection, or
+	 * for the current datbase, if specified.
+	 * 
+	 * @param string $database=""
+	 * @return array
+	 */
+	function get_schemas($database="")
+	{
+		$sql = 'SELECT ';
+
+		$res = $this->query($sql);
+		$schemas = $res->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	/**

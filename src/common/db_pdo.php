@@ -26,12 +26,6 @@ abstract class DB_PDO extends PDO {
 	function __construct($dsn, $username=NULL, $password=NULL, $driver_options=array())
 	{
 		parent::__construct($dsn, $username, $password, $driver_options);
-
-		if(__CLASS__ !== "DB_PDO")
-		{
-			$class = __CLASS__.'_manip';
-			$this->manip = new $class;
-		}
 	}
 	
 	// -------------------------------------------------------------------------
@@ -142,6 +136,15 @@ abstract class DB_PDO extends PDO {
 	 * @return int
 	 */
 	abstract function num_rows();
+
+	/**
+	 * Retreives an array of non-user-created tables for 
+	 * the connection/database
+	 * 
+	 * @return array
+	 */
+	abstract function get_system_tables();
+
 }
 
 // -------------------------------------------------------------------------

@@ -35,6 +35,9 @@ class MySQL extends DB_PDO {
 		$options);
 
 		parent::__construct("mysql:$dsn", $username, $password, $options);
+
+		$class = __CLASS__.'_manip';
+		$this->manip = new $class;
 	}
 
 	/**
@@ -67,6 +70,17 @@ class MySQL extends DB_PDO {
 	{
 		$res = $this->query("SHOW TABLES");
 		return $res->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	/**
+	 * Returns system tables for the current database
+	 * 
+	 * @return array
+	 */
+	function get_system_tables()
+	{
+		//MySQL doesn't have system tables
+		return array();
 	}
 
 	/**
