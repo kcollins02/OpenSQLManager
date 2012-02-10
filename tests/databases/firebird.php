@@ -28,8 +28,18 @@ class FirebirdTest extends UnitTestCase {
 	function __construct()
 	{
 		parent::__construct();
-		
+	}
+	
+	function setUp()
+	{
 		$this->db = new Firebird(dirname(__FILE__)."/../test_dbs/FB_TEST_DB.FDB");
+		$this->tables = $this->db->get_tables();
+	}
+	
+	function tearDown()
+	{
+		unset($this->db);
+		unset($this->tables);
 	}
 
 	function TestConnection()
@@ -39,7 +49,24 @@ class FirebirdTest extends UnitTestCase {
 	
 	function TestGetTables()
 	{
-		$tables = $this->db->get_tables();
+		$tables = $this->tables;
+		$this->assertTrue(is_array($tables));
+	}
+	
+	function TestGetSystemTables()
+	{	
+		$only_system = TRUE;
+		
+		foreach($this->tables as $t)
+		{
+			if(stripos($t, 'rdb$') !== 0 && stripos($t, 'mon$') !== 0)
+			{
+				$only_system = FALSE;
+				break;
+			}
+		}
+		
+		$this->assertTrue($only_system);
 	}
 
 	function TestCreateDatabase()
@@ -48,9 +75,17 @@ class FirebirdTest extends UnitTestCase {
 		$sql = $this->db->manip->create_table('create_test', array('id' => 'SMALLINT'));
 		$this->db->query($sql);
 		
+		//Reset
+		$this->tearDown();
+		$this->setUp();
+		
+		?><pre><?= print_r($this->tables, TRUE) ?></pre><?php
+		
 		//Check
-		$tables = $this->db->get_tables();
-		$table_exists = in_array('create_test', $tables);
+		$table_exists = (bool)in_array('create_test', $this->tables);
+		
+		echo "create_test exists :".(int)$table_exists.'<br />';
+		
 		$this->assertTrue($table_exists);
 	}
 
@@ -60,9 +95,12 @@ class FirebirdTest extends UnitTestCase {
 		$sql = $this->db->manip->delete_table('create_test');
 		$this->db->query($sql);
 		
+		//Reset
+		$this->tearDown();
+		$this->setUp();
+		
 		//Check
-		$tables = $this->db->get_tables();
-		$table_exists = in_array('create_test', $tables);
+		$table_exists = in_array('create_test', $this->tables);
 		$this->assertFalse($table_exists);
 	}
 }

@@ -158,9 +158,9 @@ class firebird {
 	 */
 	function get_system_tables()
 	{
-		$sql='SELECT RDB$RELATION_NAME as "rn" FROM "RDB$RELATIONS"
-			WHERE "rn" LIKE \'RDB$\'
-			OR "rn" LIKE \'RDB$\'';
+		$sql='SELECT "RDB$RELATION_NAME" FROM "RDB$RELATIONS"
+			WHERE "RDB$RELATION_NAME" LIKE \'RDB$%\'
+			OR "RDB$RELATION_NAME" LIKE \'MON$%\'';
 
 		$this->statement = $this->query($sql);
 
