@@ -42,8 +42,10 @@ class SQLite extends DB_PDO {
 	{
 		// SQLite has a TRUNCATE optimization,
 		// but no support for the actual command.
-		$sql = <<<SQL DELETE FROM "{$table}""
+		$sql = <<<SQL
+			DELETE FROM "{$table}"
 SQL;
+
 		$this->query($sql);
 	}
 
@@ -55,8 +57,10 @@ SQL;
 	function get_tables()
 	{	
 		$tables = array();
-		$sql = <<<SQL SELECT "name", "sql" FROM "sqlite_master" WHERE type='table'
+		$sql = <<<SQL
+			SELECT "name", "sql" FROM "sqlite_master" WHERE "type"='table'
 SQL;
+
 		$res = $this->query($sql);
 		$result = $res->fetchAll(PDO::FETCH_ASSOC);
 		
@@ -75,7 +79,7 @@ SQL;
 	 */
 	function get_system_tables()
 	{
-		$sql= <<< SQL 
+		$sql= <<<SQL
 			SELECT "name", "type"
 			FROM sqlite_master
 			WHERE "type" IN ('table', 'view')
@@ -96,7 +100,7 @@ SQL;
 	 */
 	function load_database($db, $name)
 	{
-		$sql = <<< SQL
+		$sql = <<<SQL
 			ATTACH DATABASE '{$db}' AS "{$name}"
 SQL;
 		$this->query($sql);
@@ -109,7 +113,8 @@ SQL;
 	 */
 	function unload_database($name)
 	{
-		$sql = <<< SQL DETACH DATABASE "{$name}""
+		$sql = <<<SQL
+			DETACH DATABASE "{$name}"
 SQL;
 		$this->query($sql);
 	}

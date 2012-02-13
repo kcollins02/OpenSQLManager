@@ -54,11 +54,12 @@ class pgSQL extends DB_PDO {
 	 */
 	function get_dbs()
 	{
-		$sql = <<< SQL 
+		$sql = <<<SQL
 			SELECT "datname" FROM "pg_database" 
 			WHERE "datname" NOT IN ('template0','template1') 
 			ORDER BY 1
 SQL;
+
 		$res = $this->query($sql);
 
 		$dbs = $res->fetchAll(PDO::FETCH_ASSOC);
@@ -114,13 +115,14 @@ SQL;
 	{
 		if($database === "")
 		{
-			$sql = <<< SQL
+			$sql = <<<SQL
 				SELECT DISTINCT "schemaname" FROM "pg_tables" 
 				WHERE "schemaname" NOT LIKE 'pg\_%'
 SQL;
+
 		}
 
-		$sql = <<< SQL
+		$sql = <<<SQL
 			SELECT "nspname" FROM pg_namespace
 			WHERE "nspname" NOT LIKE 'pg\_%'
 SQL;
