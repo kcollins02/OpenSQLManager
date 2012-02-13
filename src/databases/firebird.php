@@ -136,9 +136,12 @@ class firebird {
 	 */
 	function get_tables()
 	{	
-		$sql='SELECT "RDB$RELATION_NAME" FROM "RDB$RELATIONS" 
-			WHERE "RDB$RELATION_NAME" NOT LIKE \'RDB$%\'
-			AND "RDB$RELATION_NAME" NOT LIKE \'MON$%\'';
+		$sql = <<<SQL
+			SELECT "RDB$RELATION_NAME" FROM "RDB$RELATIONS" 
+			WHERE "RDB$RELATION_NAME" NOT LIKE 'RDB$%'
+			AND "RDB$RELATION_NAME" NOT LIKE 'MON$%'
+SQL;
+
 		$this->statement = $this->query($sql);
 		
 		$tables = array();
@@ -158,9 +161,11 @@ class firebird {
 	 */
 	function get_system_tables()
 	{
-		$sql='SELECT "RDB$RELATION_NAME" FROM "RDB$RELATIONS"
-			WHERE "RDB$RELATION_NAME" LIKE \'RDB$%\'
-			OR "RDB$RELATION_NAME" LIKE \'MON$%\'';
+		$sql = <<<SQL
+			SELECT "RDB$RELATION_NAME" FROM "RDB$RELATIONS"
+			WHERE "RDB$RELATION_NAME" LIKE 'RDB$%'
+			OR "RDB$RELATION_NAME" LIKE 'MON$%';
+SQL;
 
 		$this->statement = $this->query($sql);
 

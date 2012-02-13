@@ -74,9 +74,11 @@ SQL;
 	 */
 	function get_tables()
 	{
-		$sql = 'SELECT "tablename" FROM "pg_tables" 
-			WHERE "tablename" NOT LIKE pg\_%
-			AND "tablename" NOT LIKE sql\%';
+		$sql = <<<SQL
+			SELECT "tablename" FROM "pg_tables" 
+			WHERE "tablename" NOT LIKE 'pg\_%'
+			AND "tablename" NOT LIKE 'sql\%'
+SQL;
 
 		$res = $this->query($sql);
 
@@ -92,9 +94,11 @@ SQL;
 	 */
 	function get_system_tables()
 	{
-		$sql = 'SELECT "tablename" FROM "pg_tables"
-			WHERE "tablename" LIKE \'pg\_%\'
-			OR "tablename" LIKE \'sql\%\'';
+		$sql = <<<SQL
+		 	SELECT "tablename" FROM "pg_tables"
+			WHERE "tablename" LIKE 'pg\_%'
+			OR "tablename" LIKE 'sql\%'
+SQL;
 		
 		$res = $this->query($sql);
 
@@ -140,8 +144,10 @@ SQL;
 	 */
 	function get_views()
 	{
-		$sql = 'SELECT "viewname" FROM "pg_views" 
-			WHERE viewname NOT LIKE pg\_%';
+		$sql = <<<SQL
+		 	SELECT "viewname" FROM "pg_views" 
+			WHERE "viewname" NOT LIKE 'pg\_%';
+SQL;
 
 		$res = $this->query($sql);
 
