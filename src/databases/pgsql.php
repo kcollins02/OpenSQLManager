@@ -114,8 +114,8 @@ class pgSQL extends DB_PDO {
 				WHERE "schemaname" NOT LIKE \'pg\_%\'';
 		}
 
-		$sql = 'SELECT DISTINCT "schemaname" FROM pg_tables 
-				WHERE "schemaname" NOT LIKE \'pg\_%\'';
+		$sql = 'SELECT "nspname" FROM pg_namespace
+				WHERE "nspname" NOT LIKE \'pg\_%\'';
 
 		$res = $this->query($sql);
 		$schemas = $res->fetchAll(PDO::FETCH_ASSOC);
@@ -147,7 +147,7 @@ class pgSQL extends DB_PDO {
 	 */
 	function num_rows()
 	{
-		// TODO: Implement
+		return (isset($this->statement)) ? $this->statement->rowCount : FALSE;
 	}
 }
 //End of pgsql.php

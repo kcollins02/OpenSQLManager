@@ -84,11 +84,13 @@ abstract class DB_PDO extends PDO {
 	 */
 	function get_query_data($statement)
 	{
+		$this->statement = $statement;
+
 		// Execute the query
-		$statement->execute();
+		$this->statement->execute();
 
 		// Return the data array fetched
-		return $statement->fetchAll(PDO::FETCH_ASSOC);
+		return $this->statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	// -------------------------------------------------------------------------
@@ -101,11 +103,13 @@ abstract class DB_PDO extends PDO {
 	 */
 	function affected_rows($statement)
 	{
+		$this->statement = $statement;
+
 		// Execute the query
-		$statement->execute();
+		$this->statement->execute();
 
 		// Return number of rows affected
-		return $statement->rowCount();
+		return $this->statement->rowCount;
 	}
 
 	// -------------------------------------------------------------------------
