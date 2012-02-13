@@ -79,17 +79,9 @@ SQL;
 	 */
 	function get_system_tables()
 	{
-		$sql= <<<SQL
-			SELECT "name", "type"
-			FROM sqlite_master
-			WHERE "type" IN ('table', 'view')
-			AND "name" NOT LIKE 'sqlite?_%' escape '?'
-SQL;
-
-		$res = $this->query($sql);
-		$result = $res->fetchAll(PDO::FETCH_ASSOC);
-
-		return $result;
+		//SQLite only has the sqlite_master table
+		// that is of any importance.
+		return array('sqlite_master');
 	}
 
 	/**

@@ -42,6 +42,13 @@ class SQLiteTest extends UnitTestCase {
 		$tables = $this->db->get_tables();
 		$this->assertTrue( ! empty($tables));
 	}
+	
+	function TestGetSystemTables()
+	{
+		$tables = $this->db->get_system_tables();
+		
+		$this->assertTrue(is_array($tables));
+	}
 
 	function TestCreateTable()
 	{
