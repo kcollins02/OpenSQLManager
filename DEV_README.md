@@ -7,6 +7,7 @@ Follow the CodeIgniter [Style Guide](https://github.com/timw4mail/CodeIgniter/bl
 * Do not use `global`, `eval`
 * Do not use the error suppressor `@`
 * Add a docblock to every method
+* Use [heredoc](http://us2.php.net/manual/en/language.types.string.php#language.types.string.syntax.heredoc) string syntax for SQL statements to minimize PHP escape characters
 
 ## PHP-Gtk Resources
 * [Reference](http://gtk.php.net/manual/en/reference.php)

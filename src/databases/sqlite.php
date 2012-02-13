@@ -42,7 +42,8 @@ class SQLite extends DB_PDO {
 	{
 		// SQLite has a TRUNCATE optimization,
 		// but no support for the actual command.
-		$sql = "DELETE FROM {$table}";
+		$sql = <<<SQL DELETE FROM "{$table}""
+SQL;
 		$this->query($sql);
 	}
 
@@ -54,7 +55,9 @@ class SQLite extends DB_PDO {
 	function get_tables()
 	{	
 		$tables = array();
-		$res = $this->query("SELECT \"name\", \"sql\" FROM sqlite_master WHERE type='table'");
+		$sql = <<<SQL SELECT "name", "sql" FROM "sqlite_master" WHERE type='table'
+SQL;
+		$res = $this->query($sql);
 		$result = $res->fetchAll(PDO::FETCH_ASSOC);
 		
 		foreach($result as $r)
@@ -65,9 +68,50 @@ class SQLite extends DB_PDO {
 		return $tables;
 	}
 
+	/**
+	 * List system tables for the current database
+	 * 
+	 * @return array
+	 */
 	function get_system_tables()
 	{
-		
+		$sql= <<< SQL 
+			SELECT "name", "type"
+			FROM sqlite_master
+			WHERE "type" IN ('table', 'view')
+			AND "name" NOT LIKE 'sqlite?_%' escape '?'
+SQL;
+
+		$res = $this->query($sql);
+		$result = $res->fetchAll(PDO::FETCH_ASSOC);
+
+		return $result;
+	}
+
+	/**
+	 * Load a database for the current connection
+	 * 
+	 * @param string $db
+	 * @param string $name 
+	 */
+	function load_database($db, $name)
+	{
+		$sql = <<< SQL
+			ATTACH DATABASE '{$db}' AS "{$name}"
+SQL;
+		$this->query($sql);
+	}
+
+	/**
+	 * Unload a database from the current connection
+	 * 
+	 * @param string $name
+	 */
+	function unload_database($name)
+	{
+		$sql = <<< SQL DETACH DATABASE "{$name}""
+SQL;
+		$this->query($sql);
 	}
 
 	/**
