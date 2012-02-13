@@ -118,7 +118,7 @@ SQL;
 	 */
 	function num_rows()
 	{
-		// TODO: Implement
+		return (isset($this->statement)) ? $this->statment->rowCount : FALSE;
 	}
 }
 //End of sqlite.php

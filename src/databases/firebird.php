@@ -42,7 +42,8 @@ class firebird {
 	 */
 	function __destruct()
 	{
-		ibase_close($this->conn);
+		@ibase_close($this->conn);
+		@ibase_free_result($this->statement);
 	}
 
 	/**
