@@ -85,7 +85,9 @@ class firebird_manip extends db_manip{
 	 */
 	function delete_table($name)
 	{
-		return "DROP TABLE \"{$name}\"";
+		return <<<SQL
+			DROP TABLE "{$name}"
+SQL;
 	}
 	
 }

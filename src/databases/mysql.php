@@ -30,7 +30,7 @@ class MySQL extends DB_PDO {
 	function __construct($dsn, $username=null, $password=null, $options=array())
 	{
 		$options = array_merge(array(
-
+			PDO::MYSQL_ATTR_FOUND_ROWS => true
 		),
 		$options);
 
@@ -90,7 +90,7 @@ class MySQL extends DB_PDO {
 	 */
 	function num_rows()
 	{
-		// TODO: Implement
+		return isset($this->statement) ? $this->statement->rowCount() : FALSE;
 	}
 }
 //End of mysql.php

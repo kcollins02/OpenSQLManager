@@ -82,7 +82,9 @@ class SQLite_manip extends db_manip {
 	 */
 	function delete_table($name)
 	{
-		return "DROP TABLE IF EXISTS \"{$name}\"";
+		return <<<SQL
+			DROP TABLE IF EXISTS "{$name}";
+SQL;
 	}
 
 	/**

@@ -40,7 +40,9 @@
 	 */
 	function delete_table($name)
 	{
-		return "DROP TABLE `{$name}`";
+		return <<<SQL
+			DROP TABLE `{$name}`
+SQL;
 	}	
 }
 //End of mysql_manip.php
