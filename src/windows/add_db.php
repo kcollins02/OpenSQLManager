@@ -77,7 +77,8 @@ class Add_DB extends GtkWindow {
 		// DB File
 		{
 			$filelbl = new GtkLabel("Database file");
-			$this->dbfile = new GtkFileChooserButton("Select a database file", Gtk::FILE_CHOOSER_ACTION_OPEN);
+			$this->dbfile = new GtkFileChooserButton("Select a database file",
+				Gtk::FILE_CHOOSER_ACTION_OPEN);
 			$filealign = new GtkAlignment(0, 0.5, 0, 0);
 			$filealign->add($filelbl);
 

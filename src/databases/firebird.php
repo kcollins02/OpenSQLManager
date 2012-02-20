@@ -19,7 +19,7 @@
  */
 class firebird {
 
-	protected $conn, $statement;
+	protected $conn, $statement, $trans;
 	private $esc_char = "''";
 	
 	/**
@@ -212,6 +212,41 @@ SQL;
 		}
 
 		return $count;
+	}
+	
+	/**
+	 * Start a database transaction
+	 * 
+	 * @return resource
+	 */
+	function beingTransaction()
+	{
+		if($this->trans = ibase_trans($this->conn) !== null)
+		{
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+	
+	/**
+	 * Commit a database transaction
+	 * 
+	 * @return bool
+	 */
+	function commit()
+	{
+		return ibase_commit($this->trans);
+	}
+	
+	/**
+	 * Rollback a transaction
+	 * 
+	 * @return bool
+	 */
+	function rollBack()
+	{
+		return ibase_rollback($this->trans);
 	}	 
 }
 // End of firebird.php
