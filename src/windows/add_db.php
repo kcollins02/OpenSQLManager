@@ -17,7 +17,7 @@
  */
 class Add_DB extends GtkWindow {
 
-	var $conn, $dbtype, $host, $user, $pass, $database, $settings;
+	var $conn, $dbtype, $host, $user, $pass, $database, $settings, $db_file;
 	
 	function __construct()
 	{
@@ -72,6 +72,17 @@ class Add_DB extends GtkWindow {
 			$table->attach($typealign, 0, 1, ++$y1, ++$y2);
 			$table->attach($this->dbtype, 1, 2, $y1, $y2);
 
+		}
+
+		// DB File
+		{
+			$filelbl = new GtkLabel("Database file");
+			$this->dbfile = new GtkFileChooserButton("Select a database file", Gtk::FILE_CHOOSER_ACTION_OPEN);
+			$filealign = new GtkAlignment(0, 0.5, 0, 0);
+			$filealign->add($filelbl);
+
+			$table->attach($filealign, 0, 1, ++$y1, ++$y2);
+			$table->attach($this->dbfile, 1, 2, $y1, $y2);
 		}
 
 		// Host

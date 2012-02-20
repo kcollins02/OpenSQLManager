@@ -54,7 +54,7 @@ class firebird {
 	function truncate($table)
 	{
 		// Firebird lacka a truncate command
-		$sql = "DELETE FROM {$table}";
+		$sql = 'DELETE FROM '.$table.'"';
 		$this->query($sql);
 	}
 	
