@@ -219,7 +219,7 @@ SQL;
 	 * 
 	 * @return resource
 	 */
-	function beingTransaction()
+	function beginTransaction()
 	{
 		if($this->trans = ibase_trans($this->conn) !== null)
 		{

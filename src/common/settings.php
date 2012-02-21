@@ -99,7 +99,7 @@ class Settings {
 	 */
 	function add_db($name, $params)
 	{
-		if(! isset($this->current->dbs->{$name}))
+		if( ! isset($this->current->dbs->{$name}))
 		{
 			$this->current->dbs->{$name} = array();
 			$this->current->dbs->{$name} = $params;
