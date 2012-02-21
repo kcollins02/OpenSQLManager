@@ -18,7 +18,7 @@
 class SQLite_manip extends db_manip {
 
 	/**
-	 * Convenience function to create a new table
+	 * Convenience public function to create a new table
 	 * 
 	 * @param string $name //Name of the table
 	 * @param array $columns //columns as straight array and/or column => type pairs
@@ -26,7 +26,7 @@ class SQLite_manip extends db_manip {
 	 * @param array $indexes // column => index pairs
 	 * @return  string
 	 */
-	function create_table($name, $columns, $constraints=array(), $indexes=array())
+	public function create_table($name, $columns, $constraints=array(), $indexes=array())
 	{
 		$column_array = array();
 		
@@ -80,11 +80,9 @@ class SQLite_manip extends db_manip {
 	 * @param string $name
 	 * @return string
 	 */
-	function delete_table($name)
+	public function delete_table($name)
 	{
-		return <<<SQL
-			DROP TABLE IF EXISTS "{$name}";
-SQL;
+		return 'DROP TABLE IF EXISTS "'.$name.'"';
 	}
 
 	/**
@@ -92,7 +90,7 @@ SQL;
 	 * 
 	 * @param  $path
 	 */
-	function create_db($path)
+	public function create_db($path)
 	{
 		// Create the file if it doesn't exist
 		if( ! file_exists($path))

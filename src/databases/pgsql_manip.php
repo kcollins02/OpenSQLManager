@@ -19,12 +19,12 @@
  */
 class pgSQL_manip extends db_manip {
 	
-	function create_table($name, $columns, $constraints=array(), $indexes=array())
+	public function create_table($name, $columns, $constraints=array(), $indexes=array())
 	{
 		//TODO: implement
 	}
 
-	function delete_table($name)
+	public function delete_table($name)
 	{
 		return <<<SQL
 			DROP TABLE "{$name}"

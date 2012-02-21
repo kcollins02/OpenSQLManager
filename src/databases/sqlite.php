@@ -24,7 +24,7 @@ class SQLite extends DB_PDO {
 	 * 
 	 * @param string $dsn 
 	 */
-	function __construct($dsn)
+	public function __construct($dsn)
 	{
 		// DSN is simply `sqlite:/path/to/db`
 		parent::__construct("sqlite:{$dsn}");
@@ -38,7 +38,7 @@ class SQLite extends DB_PDO {
 	 *
 	 * @param string $table
 	 */
-	function truncate($table)
+	public function truncate($table)
 	{
 		// SQLite has a TRUNCATE optimization,
 		// but no support for the actual command.
@@ -54,7 +54,7 @@ SQL;
 	 * 
 	 * @return mixed
 	 */
-	function get_tables()
+	public function get_tables()
 	{	
 		$tables = array();
 		$sql = <<<SQL
@@ -77,7 +77,7 @@ SQL;
 	 * 
 	 * @return array
 	 */
-	function get_system_tables()
+	public function get_system_tables()
 	{
 		//SQLite only has the sqlite_master table
 		// that is of any importance.
@@ -90,7 +90,7 @@ SQL;
 	 * @param string $db
 	 * @param string $name 
 	 */
-	function load_database($db, $name)
+	public function load_database($db, $name)
 	{
 		$sql = <<<SQL
 			ATTACH DATABASE '{$db}' AS "{$name}"
@@ -103,7 +103,7 @@ SQL;
 	 * 
 	 * @param string $name
 	 */
-	function unload_database($name)
+	public function unload_database($name)
 	{
 		$sql = <<<SQL
 			DETACH DATABASE "{$name}"
@@ -116,7 +116,7 @@ SQL;
 	 * 
 	 * @return int
 	 */
-	function num_rows()
+	public function num_rows()
 	{
 		return (isset($this->statement)) ? $this->statment->rowCount : FALSE;
 	}

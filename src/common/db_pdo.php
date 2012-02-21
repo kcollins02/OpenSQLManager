@@ -23,7 +23,7 @@ abstract class DB_PDO extends PDO {
 
 	protected $statement;
 
-	function __construct($dsn, $username=NULL, $password=NULL, $driver_options=array())
+	public function __construct($dsn, $username=NULL, $password=NULL, $driver_options=array())
 	{
 		parent::__construct($dsn, $username, $password, $driver_options);
 	}
@@ -37,7 +37,7 @@ abstract class DB_PDO extends PDO {
 	 * @param array $data
 	 * @return mixed PDOStatement / FALSE
 	 */
-	function prepare_query($sql, $data)
+	public function prepare_query($sql, $data)
 	{
 		// Prepare the sql
 		$query = $this->prepare($sql);
@@ -82,7 +82,7 @@ abstract class DB_PDO extends PDO {
 	 * @param PDOStatement $statement
 	 * @return array
 	 */
-	function get_query_data($statement)
+	public function get_query_data($statement)
 	{
 		$this->statement = $statement;
 
@@ -101,7 +101,7 @@ abstract class DB_PDO extends PDO {
 	 * @param PDOStatement $statement
 	 * @return int
 	 */
-	function affected_rows($statement)
+	public function affected_rows($statement)
 	{
 		$this->statement = $statement;
 
@@ -115,7 +115,7 @@ abstract class DB_PDO extends PDO {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Abstract functions to override in child classes
+	 * Abstract public functions to override in child classes
 	 */
 	
 	/**
@@ -123,7 +123,7 @@ abstract class DB_PDO extends PDO {
 	 * 
 	 * @return array
 	 */
-	abstract function get_tables();
+	abstract public function get_tables();
 
 	/**
 	 * Empty the passed table
@@ -132,14 +132,14 @@ abstract class DB_PDO extends PDO {
 	 * 
 	 * @return void
 	 */
-	abstract function truncate($table);
+	abstract public function truncate($table);
 
 	/**
 	 * Return the number of rows for the last SELECT query
 	 * 
 	 * @return int
 	 */
-	abstract function num_rows();
+	abstract public function num_rows();
 
 	/**
 	 * Retreives an array of non-user-created tables for 
@@ -147,7 +147,7 @@ abstract class DB_PDO extends PDO {
 	 * 
 	 * @return array
 	 */
-	abstract function get_system_tables();
+	abstract public function get_system_tables();
 
 }
 
@@ -168,7 +168,7 @@ abstract class db_manip {
 	 * 
 	 * @return string
 	 */
-	abstract function create_table($name, $columns, $constraints=array(), $indexes=array());
+	abstract public function create_table($name, $columns, $constraints=array(), $indexes=array());
 
 	/**
 	 * Get database-specific sql to drop a table
@@ -177,6 +177,6 @@ abstract class db_manip {
 	 * 
 	 * @return string
 	 */
-	abstract function delete_table($name);
+	abstract public function delete_table($name);
 }
 // End of db_pdo.php

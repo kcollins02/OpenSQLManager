@@ -27,7 +27,7 @@ class pgSQL extends DB_PDO {
 	 * @param string $password=null
 	 * @param array  $options=array()
 	 */
-	function __construct($dsn, $username=null, $password=null, $options=array())
+	public function __construct($dsn, $username=null, $password=null, $options=array())
 	{
 		parent::__construct("pgsql:$dsn", $username, $password, $options);
 
@@ -41,7 +41,7 @@ class pgSQL extends DB_PDO {
 	 *
 	 * @param string $table
 	 */
-	function truncate($table)
+	public function truncate($table)
 	{
 		$sql = 'TRUNCATE "' . $table . '"';
 		$this->query($sql); 
@@ -52,7 +52,7 @@ class pgSQL extends DB_PDO {
 	 * 
 	 * @return array
 	 */
-	function get_dbs()
+	public function get_dbs()
 	{
 		$sql = <<<SQL
 			SELECT "datname" FROM "pg_database" 
@@ -72,7 +72,7 @@ SQL;
 	 * 
 	 * @return array
 	 */
-	function get_tables()
+	public function get_tables()
 	{
 		$sql = <<<SQL
 			SELECT "tablename" FROM "pg_tables" 
@@ -92,7 +92,7 @@ SQL;
 	 * 
 	 * @return array
 	 */
-	function get_system_tables()
+	public function get_system_tables()
 	{
 		$sql = <<<SQL
 		 	SELECT "tablename" FROM "pg_tables"
@@ -115,7 +115,7 @@ SQL;
 	 * @param string $database=""
 	 * @return array
 	 */
-	function get_schemas($database="")
+	public function get_schemas($database="")
 	{
 		if($database === "")
 		{
@@ -142,7 +142,7 @@ SQL;
 	 * 
 	 * @return array
 	 */
-	function get_views()
+	public function get_views()
 	{
 		$sql = <<<SQL
 		 	SELECT "viewname" FROM "pg_views" 
@@ -161,7 +161,7 @@ SQL;
 	 * 
 	 * @return int
 	 */
-	function num_rows()
+	public function num_rows()
 	{
 		return (isset($this->statement)) ? $this->statement->rowCount : FALSE;
 	}

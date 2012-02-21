@@ -24,7 +24,7 @@ class Main extends GtkWindow {
 	/**
 	 * Create and display the main window on startup
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 		
@@ -43,7 +43,7 @@ class Main extends GtkWindow {
 	/**
 	 * Display About menu with version information
 	 */
-	function about()
+	public function about()
 	{
 		$dlg = new GtkAboutDialog();
 		$dlg->set_transient_for($this);
@@ -77,7 +77,7 @@ class Main extends GtkWindow {
 	/** 
 	 * Quits the GTK loop
 	 */
-	function quit()
+	public function quit()
 	{
 		Gtk::main_quit();
 	}
@@ -239,7 +239,7 @@ class Main extends GtkWindow {
 	 * @param GtkTreeModel $model
 	 * @param GtkTreeIter $iter
 	 */
-	function set_label($col, $cell, $model, $iter)
+	public function set_label($col, $cell, $model, $iter)
 	{
 		$info = $model->get_value($iter, 0);
 		$cell->set_property('text', $info->name);
@@ -262,7 +262,7 @@ class Main extends GtkWindow {
 	 * 
 	 * @return Add_DB object
 	 */
-	function new_conn()
+	public function new_conn()
 	{
 		return new Add_DB();
 	}

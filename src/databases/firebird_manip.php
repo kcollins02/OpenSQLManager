@@ -15,12 +15,12 @@
 /**
  * Firebird Database Manipulation class
  * 
- * PDO-firebird isn't stable, so this is a wrapper of the ibase_ functions.
+ * PDO-firebird isn't stable, so this is a wrapper of the ibase_ public functions.
  */
 class firebird_manip extends db_manip{
 
 	/**
-	 * Convienience function to generate sql for creating a db table
+	 * Convienience public function to generate sql for creating a db table
 	 * 
 	 * @param string $name 
 	 * @param array $fields
@@ -29,7 +29,7 @@ class firebird_manip extends db_manip{
 	 * 
 	 * @return string
 	 */
-	function create_table($name, $fields, $constraints=array(), $indexes=array())
+	public function create_table($name, $fields, $constraints=array(), $indexes=array())
 	{
 		$column_array = array();
 		
@@ -83,7 +83,7 @@ class firebird_manip extends db_manip{
 	 * @param string $name
 	 * @return string
 	 */
-	function delete_table($name)
+	public function delete_table($name)
 	{
 		return 'DROP TABLE "'.$name.'"';
 	}

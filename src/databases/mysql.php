@@ -27,7 +27,7 @@ class MySQL extends DB_PDO {
 	 * @param string $password=null
 	 * @param array $options=array()
 	 */
-	function __construct($dsn, $username=null, $password=null, $options=array())
+	public function __construct($dsn, $username=null, $password=null, $options=array())
 	{
 		$options = array_merge(array(
 			PDO::MYSQL_ATTR_FOUND_ROWS => true
@@ -45,7 +45,7 @@ class MySQL extends DB_PDO {
 	 *
 	 * @param string $table
 	 */
-	function truncate($table)
+	public function truncate($table)
 	{
 		$this->query("TRUNCATE `{$table}`");
 	}
@@ -55,7 +55,7 @@ class MySQL extends DB_PDO {
 	 * 
 	 * @return array
 	 */
-	function get_dbs()
+	public function get_dbs()
 	{
 		$res = $this->query("SHOW DATABASES");
 		return $this->fetchAll(PDO::FETCH_ASSOC);
@@ -66,7 +66,7 @@ class MySQL extends DB_PDO {
 	 * 
 	 * @return array
 	 */
-	function get_tables()
+	public function get_tables()
 	{
 		$res = $this->query("SHOW TABLES");
 		return $res->fetchAll(PDO::FETCH_ASSOC);
@@ -77,7 +77,7 @@ class MySQL extends DB_PDO {
 	 * 
 	 * @return array
 	 */
-	function get_system_tables()
+	public function get_system_tables()
 	{
 		//MySQL doesn't have system tables
 		return array();
@@ -88,7 +88,7 @@ class MySQL extends DB_PDO {
 	 * 
 	 * @return int
 	 */
-	function num_rows()
+	public function num_rows()
 	{
 		return isset($this->statement) ? $this->statement->rowCount() : FALSE;
 	}

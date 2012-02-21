@@ -19,7 +19,7 @@ class Add_DB extends GtkWindow {
 
 	var $conn, $dbtype, $host, $user, $pass, $database, $settings, $db_file;
 	
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 
@@ -120,7 +120,7 @@ class Add_DB extends GtkWindow {
 	 * 
 	 * @return array
 	 */
-	function get_available_dbs()
+	public function get_available_dbs()
 	{
 		$drivers = array();
 
@@ -182,7 +182,7 @@ class Add_DB extends GtkWindow {
 	/**
 	 * Adds the database to the settings file
 	 */
-	function db_add()
+	public function db_add()
 	{
 		$data = array(
 			'type' => $this->dbtype->get_active_text(),

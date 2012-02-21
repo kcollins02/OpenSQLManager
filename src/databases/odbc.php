@@ -21,7 +21,7 @@
   */
 class ODBC extends DB_PDO {
 
-	function __construct($dsn, $username=null, $password=null, $options=array())
+	public function __construct($dsn, $username=null, $password=null, $options=array())
 	{
 		parent::__construct("odbc:$dsn", $username, $password, $options);
 
@@ -34,7 +34,7 @@ class ODBC extends DB_PDO {
 	 * 
 	 * @return mixed
 	 */
-	function get_tables()
+	public function get_tables()
 	{	
 		//Not possible reliably with this driver
 		return FALSE;
@@ -45,7 +45,7 @@ class ODBC extends DB_PDO {
 	 * 
 	 * @return  array
 	 */
-	function get_system_tables()
+	public function get_system_tables()
 	{
 		//No way of determining for ODBC
 		return array();
@@ -56,7 +56,7 @@ class ODBC extends DB_PDO {
 	 * 
 	 * @return void
 	 */
-	function truncate($table)
+	public function truncate($table)
 	{
 		$sql = "DELETE FROM {$table}";
 		$this->query($sql);
@@ -67,7 +67,7 @@ class ODBC extends DB_PDO {
 	 * 
 	 * @return int
 	 */
-	function num_rows()
+	public function num_rows()
 	{
 		// TODO: Implement
 	}

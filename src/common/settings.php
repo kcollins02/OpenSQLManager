@@ -24,7 +24,7 @@ class Settings {
 	/**
 	 * Load the settings file
 	 */
-	function __construct()
+	public function __construct()
 	{
 		$path = BASE_DIR.'/settings.json'; 
 
@@ -52,7 +52,7 @@ class Settings {
 	/**
 	 * Save the settings file on close, just to be safe
 	 */
-	function __destruct()
+	public function __destruct()
 	{
 		file_put_contents(BASE_DIR.'/settings.json', json_encode($this->current));
 	}
@@ -65,7 +65,7 @@ class Settings {
 	 * @param string $key
 	 * @return $mixed
 	 */
-	function __get($key)
+	public function __get($key)
 	{
 		return (isset($this->current->{$key})) ? $this->current->{$key} : NULL;
 	}
@@ -78,7 +78,7 @@ class Settings {
 	 * @param string $key
 	 * @param mixed $val
 	 */
-	function __set($key, $val)
+	public function __set($key, $val)
 	{
 		//Don't allow direct db config changes
 		if($key == "dbs")
@@ -97,7 +97,7 @@ class Settings {
 	 * @param string $name
 	 * @param array $params
 	 */
-	function add_db($name, $params)
+	public function add_db($name, $params)
 	{
 		if( ! isset($this->current->dbs->{$name}))
 		{
@@ -117,7 +117,7 @@ class Settings {
 	 * 
 	 * @param  string $name
 	 */
-	function remove_db($name)
+	public function remove_db($name)
 	{
 		if( ! isset($this->current->dbs->{$name}))
 		{
@@ -135,7 +135,7 @@ class Settings {
 	 * 
 	 * @return  array 
 	 */
-	 function get_dbs()
+	 public function get_dbs()
 	 {
 	 	return $this->current->dbs;
 	 }

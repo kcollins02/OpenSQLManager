@@ -18,7 +18,7 @@
  class MySQL_manip extends db_manip{
 
  	/**
- 	 * Convienience function for creating a new MySQL table
+ 	 * Convienience public function for creating a new MySQL table
  	 * 
  	 * @param [type] $name [description]
  	 * @param [type] $columns [description]
@@ -27,18 +27,18 @@
  	 * 
  	 * @return [type]
  	 */
-	function create_table($name, $columns, $constraints=array(), $indexes=array())
+	public function create_table($name, $columns, $constraints=array(), $indexes=array())
 	{
 		//TODO: implement
 	}
 	
 	/**
-	 * Convience function for droping a MySQL table
+	 * Convience public function for droping a MySQL table
 	 * 
 	 * @param string $name
 	 * @return  string
 	 */
-	function delete_table($name)
+	public function delete_table($name)
 	{
 		return <<<SQL
 			DROP TABLE `{$name}`

@@ -15,7 +15,7 @@
 /**
  * Firebird Database class
  * 
- * PDO-firebird isn't stable, so this is a wrapper of the ibase_ functions.
+ * PDO-firebird isn't stable, so this is a wrapper of the ibase_ public functions.
  */
 class firebird {
 
@@ -29,7 +29,7 @@ class firebird {
 	 * @param string $user 
 	 * @param string $pass
 	 */
-	function __construct($dbpath, $user="sysdba", $pass="masterkey")
+	public function __construct($dbpath, $user="sysdba", $pass="masterkey")
 	{
 		$this->conn = ibase_connect($dbpath, $user, $pass);
 		
@@ -40,7 +40,7 @@ class firebird {
 	/**
 	 * Close the link to the database
 	 */
-	function __destruct()
+	public function __destruct()
 	{
 		@ibase_close($this->conn);
 		@ibase_free_result($this->statement);
@@ -51,7 +51,7 @@ class firebird {
 	 * 
 	 * @param string $table
 	 */
-	function truncate($table)
+	public function truncate($table)
 	{
 		// Firebird lacka a truncate command
 		$sql = 'DELETE FROM '.$table.'"';
@@ -59,24 +59,24 @@ class firebird {
 	}
 	
 	/**
-	 * Wrapper function to better match PDO
+	 * Wrapper public function to better match PDO
 	 *
 	 * @param string $sql
 	 * @return resource
 	 */
-	function query($sql)
+	public function query($sql)
 	{
 		$this->statement = ibase_query($this->conn, $sql);
 		return $this->statement;
 	}
 
 	/**
-	 * Emulate PDO fetch function
+	 * Emulate PDO fetch public function
 	 * 
 	 * @param  int $fetch_style
 	 * @return mixed
 	 */
-	function fetch($fetch_style=PDO::FETCH_ASSOC)
+	public function fetch($fetch_style=PDO::FETCH_ASSOC)
 	{
 		switch($fetch_style)
 		{
@@ -102,12 +102,12 @@ class firebird {
 	}
 
 	/**
-	 * Emulate PDO fetchAll function
+	 * Emulate PDO fetchAll public function
 	 * 
 	 * @param  int  $fetch_style
 	 * @return mixed
 	 */
-	function fetchAll($fetch_style=PDO::FETCH_ASSOC)
+	public function fetchAll($fetch_style=PDO::FETCH_ASSOC)
 	{
 		$all = array();
 
@@ -124,7 +124,7 @@ class firebird {
 	 *
 	 * @return resource
 	 */
-	function prepare()
+	public function prepare()
 	{
 		$this->statement = ibase_prepare($this->conn, $query);
 		return $this->statement;
@@ -135,7 +135,7 @@ class firebird {
 	 * 
 	 * @return array
 	 */
-	function get_tables()
+	public function get_tables()
 	{	
 		$sql = <<<SQL
 			SELECT "RDB\$RELATION_NAME" FROM "RDB\$RELATIONS" 
@@ -160,7 +160,7 @@ SQL;
 	 * 
 	 * @return array
 	 */
-	function get_system_tables()
+	public function get_system_tables()
 	{
 		$sql = <<<SQL
 			SELECT "RDB\$RELATION_NAME" FROM "RDB\$RELATIONS"
@@ -185,7 +185,7 @@ SQL;
 	 * 
 	 * @return int
 	 */
-	function affected_rows()
+	public function affected_rows()
 	{
 		return ibase_affected_rows($this->conn);
 	}
@@ -195,7 +195,7 @@ SQL;
 	 * 
 	 * @return int
 	 */
-	function num_rows()
+	public function num_rows()
 	{
 		$count = 0;
 
@@ -219,7 +219,7 @@ SQL;
 	 * 
 	 * @return resource
 	 */
-	function beginTransaction()
+	public function beginTransaction()
 	{
 		if($this->trans = ibase_trans($this->conn) !== null)
 		{
@@ -234,7 +234,7 @@ SQL;
 	 * 
 	 * @return bool
 	 */
-	function commit()
+	public function commit()
 	{
 		return ibase_commit($this->trans);
 	}
@@ -244,7 +244,7 @@ SQL;
 	 * 
 	 * @return bool
 	 */
-	function rollBack()
+	public function rollBack()
 	{
 		return ibase_rollback($this->trans);
 	}	 
