@@ -19,7 +19,7 @@
  */
 class firebird extends DB_PDO {
 
-	protected $conn, $statement, $trans;
+	protected $conn, $statement, $trans, $count;
 	private $esc_char = "''";
 	
 	/**
@@ -62,10 +62,12 @@ class firebird extends DB_PDO {
 	 * Wrapper public function to better match PDO
 	 *
 	 * @param string $sql
+	 * @param  array $params
 	 * @return resource
 	 */
 	public function query($sql)
 	{
+		$this->count = 0;
 		$this->statement = ibase_query($this->conn, $sql);
 		return $this->statement;
 	}
@@ -81,22 +83,22 @@ class firebird extends DB_PDO {
 		switch($fetch_style)
 		{
 			case PDO::FETCH_OBJ:
-				return ibase_fetch_object($this->statement);
+				return ibase_fetch_object($this->statement, IBASE_FETCH_BLOBS);
 			break;
 
 			case PDO::FETCH_NUM:
-				return ibase_fetch_row($this->statement);
+				return ibase_fetch_row($this->statement, IBASE_FETCH_BLOBS);
 			break;
 
 			case PDO::FETCH_BOTH:
 				return array_merge(
-					ibase_fetch_row($this->statement),
-					ibase_fetch_assoc($this->statement)
+					ibase_fetch_row($this->statement, IBASE_FETCH_BLOBS),
+					ibase_fetch_assoc($this->statement, IBASE_FETCH_BLOBS)
 				);
 			break;
 
 			default:
-				return ibase_fetch_assoc($this->statement);
+				return ibase_fetch_assoc($this->statement, IBASE_FETCH_BLOBS);
 			break;
 		}
 	}
@@ -197,6 +199,7 @@ SQL;
 	 */
 	public function num_rows()
 	{
+		// @todo: Redo this similar to the codeigniter driver
 		$count = 0;
 
 		if(isset($this->statement))
@@ -247,6 +250,17 @@ SQL;
 	public function rollBack()
 	{
 		return ibase_rollback($this->trans);
+	}
+	
+	/**
+	 * Run a prepared statement query
+	 * @param  array $args
+	 * @return bool
+	 */
+	public function execute($args)
+	{
+		// Is there a better way to do this?
+		return eval("ibase_execute({$this->statement},".explode(',', $args).")");
 	}	 
 }
 // End of firebird.php
