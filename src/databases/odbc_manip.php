@@ -19,13 +19,13 @@
   */
 class ODBC_manip extends db_manip {
 
-	function create_table($name, $columns, $constraints=array(), $indexes=array())
+	public function create_table($name, $columns, $constraints=array(), $indexes=array())
 	{
 		//ODBC can't know how to create a table
 		return FALSE;
 	}
 
-	function delete_table($name)
+	public function delete_table($name)
 	{
 		return "DROP TABLE {$name}";
 	}

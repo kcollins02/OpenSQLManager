@@ -17,7 +17,7 @@
  * 
  * PDO-firebird isn't stable, so this is a wrapper of the ibase_ public functions.
  */
-class firebird {
+class firebird extends DB_PDO {
 
 	protected $conn, $statement, $trans;
 	private $esc_char = "''";
@@ -217,11 +217,11 @@ SQL;
 	/**
 	 * Start a database transaction
 	 * 
-	 * @return resource
+	 * @return bool
 	 */
 	public function beginTransaction()
 	{
-		if($this->trans = ibase_trans($this->conn) !== null)
+		if(($this->trans = ibase_trans($this->conn)) !== NULL)
 		{
 			return TRUE;
 		}
