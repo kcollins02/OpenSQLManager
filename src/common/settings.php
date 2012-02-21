@@ -19,7 +19,7 @@
  */
 class Settings {
 
-	protected $current;
+	private $current;
 	
 	/**
 	 * Load the settings file
@@ -50,16 +50,6 @@ class Settings {
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Save the settings file on close, just to be safe
-	 */
-	public function __destruct()
-	{
-		file_put_contents(BASE_DIR.'/settings.json', json_encode($this->current));
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
 	 * Magic method to simplify isset checking for config options
 	 * 
 	 * @param string $key
@@ -67,7 +57,9 @@ class Settings {
 	 */
 	public function __get($key)
 	{
-		return (isset($this->current->{$key})) ? $this->current->{$key} : NULL;
+		return (isset($this->current->{$key}) && $key != "dbs") 
+			? $this->current->{$key} 
+			: NULL;
 	}
 
 	// --------------------------------------------------------------------------
@@ -87,6 +79,7 @@ class Settings {
 		}
 
 		$this->current->{$key} = $val;
+		$this->write();
 	}
 
 	// --------------------------------------------------------------------------
@@ -103,6 +96,29 @@ class Settings {
 		{
 			$this->current->dbs->{$name} = array();
 			$this->current->dbs->{$name} = $params;
+
+			$this->write();
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Edit a database connection
+	 *
+	 * @param string $name
+	 * @param array $params
+	 */
+	public function edit_db($name, $params)
+	{
+		if(isset($this->current->dbs->{$name}))
+		{
+			$this->current->dbs->{$name} = $params;
+			$this->write();
 		}
 		else
 		{
@@ -126,6 +142,7 @@ class Settings {
 
 		// Remove the db name from the object
 		unset($this->current->dbs->{$name});
+		$this->write();
 	}
 
 	// --------------------------------------------------------------------------
@@ -135,9 +152,19 @@ class Settings {
 	 * 
 	 * @return  array 
 	 */
-	 public function get_dbs()
-	 {
-	 	return $this->current->dbs;
-	 }
+	public function get_dbs()
+	{
+		return $this->current->dbs;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Write the settings to the file
+	 */
+	public function write()
+	{
+		file_put_contents(BASE_DIR . '/settings.json', json_encode($this->current));
+	}
 }
 // End of settings.php

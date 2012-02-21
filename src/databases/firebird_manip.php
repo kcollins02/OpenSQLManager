@@ -17,7 +17,7 @@
  * 
  * PDO-firebird isn't stable, so this is a wrapper of the ibase_ public functions.
  */
-class firebird_manip extends db_manip{
+class firebird_manip extends db_manip {
 
 	/**
 	 * Convienience public function to generate sql for creating a db table

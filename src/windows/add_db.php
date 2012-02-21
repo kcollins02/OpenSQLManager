@@ -77,13 +77,13 @@ class Add_DB extends GtkWindow {
 		// DB File
 		{
 			$filelbl = new GtkLabel("Database file");
-			$this->dbfile = new GtkFileChooserButton("Select a database file",
+			$this->db_file = new GtkFileChooserButton("Select a database file",
 				Gtk::FILE_CHOOSER_ACTION_OPEN);
 			$filealign = new GtkAlignment(0, 0.5, 0, 0);
 			$filealign->add($filelbl);
 
 			$table->attach($filealign, 0, 1, ++$y1, ++$y2);
-			$table->attach($this->dbfile, 1, 2, $y1, $y2);
+			$table->attach($this->db_file, 1, 2, $y1, $y2);
 		}
 
 		// Host
@@ -185,10 +185,11 @@ class Add_DB extends GtkWindow {
 	public function db_add()
 	{
 		$data = array(
-			'type' => $this->dbtype->get_active_text(),
+			'type' => strtolower($this->dbtype->get_active_text()),
 			'host' => $this->host->get_text(),
 			'user' => $this->user->get_text(),
 			'pass' => $this->pass->get_text(),
+			'file' => $this->db_file->get_uri(),
 		);
 
 		$this->settings->add_db($this->conn->get_text(), $data);
