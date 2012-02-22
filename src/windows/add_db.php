@@ -179,7 +179,6 @@ class Add_DB extends GtkWindow {
 	private function _add_row($label, &$vname, &$y1, &$y2)
 	{
 		$lbl = new GtkLabel($label);
-		//$vname =& $this->{$vname};
 		$lblalign = new GtkAlignment(0, 0.5, 0, 0);
 		$lblalign->add($lbl);
 
@@ -209,7 +208,7 @@ class Add_DB extends GtkWindow {
 
 			case "PostgreSQL":
 				$this->user->set_text('postgres');
-				$this->pass->set_text('postgres');
+				$this->pass->set_text('');
 			break;
 
 			case "Firebird":
