@@ -87,6 +87,5 @@ class firebird_manip extends db_manip {
 	{
 		return 'DROP TABLE "'.$name.'"';
 	}
-	
 }
 //End of firebird_manip.php

@@ -20,7 +20,6 @@
 class firebird extends DB_PDO {
 
 	protected $conn, $statement, $trans, $count, $result;
-	private $esc_char = "''";
 	
 	/**
 	 * Open the link to the database
@@ -195,21 +194,15 @@ SQL;
 	public function num_rows()
 	{
 		// @todo: Redo this similar to the codeigniter driver
-		$count = 0;
-
-		if(isset($this->statement))
+		if(isset($this->result))
 		{
-			while($row = $this->fetch())
-			{
-				$count++;
-			}
-		}
-		else
-		{
-			return FALSE;
+			return count($this->result);
 		}
 
-		return $count;
+		//Fetch all the rows for the result
+		$this->result = $this->fetchAll();
+
+		return count($this->result);
 	}
 	
 	/**
@@ -256,7 +249,7 @@ SQL;
 	public function execute($args)
 	{
 		// Is there a better way to do this?
-		return eval("ibase_execute({$this->statement},".explode(',', $args).")");
-	}	 
+		return eval('ibase_execute('.$this->statement.','.explode(',', $args).")");
+	} 
 }
 // End of firebird.php
