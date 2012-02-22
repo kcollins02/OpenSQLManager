@@ -19,7 +19,7 @@
  */
 class firebird extends DB_PDO {
 
-	protected $conn, $statement, $trans, $count;
+	protected $conn, $statement, $trans, $count, $result;
 	private $esc_char = "''";
 	
 	/**
@@ -90,13 +90,6 @@ class firebird extends DB_PDO {
 				return ibase_fetch_row($this->statement, IBASE_FETCH_BLOBS);
 			break;
 
-			case PDO::FETCH_BOTH:
-				return array_merge(
-					ibase_fetch_row($this->statement, IBASE_FETCH_BLOBS),
-					ibase_fetch_assoc($this->statement, IBASE_FETCH_BLOBS)
-				);
-			break;
-
 			default:
 				return ibase_fetch_assoc($this->statement, IBASE_FETCH_BLOBS);
 			break;
@@ -117,6 +110,8 @@ class firebird extends DB_PDO {
 		{
 			$all[] = $row;
 		}
+		
+		$this->result = $all;
 
 		return $all;
 	}

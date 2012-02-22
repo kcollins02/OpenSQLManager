@@ -69,13 +69,13 @@ class FirebirdTest extends UnitTestCase {
 		$this->assertTrue($only_system);
 	}
 
-	function TestCreateDatabase()
+	function TestCreateTable()
 	{
 		//Attempt to create the table
 		$sql = $this->db->manip->create_table('create_test', array('id' => 'SMALLINT'));
 		$this->db->query($sql);
 		
-		//This test fails for an unknown reason, when clearly the database exists
+		//This test fails for an unknown reason, when clearly the table exists
 		//Reset
 		/*$this->tearDown();
 		$this->setUp();
@@ -88,7 +88,7 @@ class FirebirdTest extends UnitTestCase {
 		$this->assertTrue($table_exists);*/
 	}
 
-	function TestDeleteDatabase()
+	function TestDeleteTable()
 	{
 		//Attempt to delete the table
 		$sql = $this->db->manip->delete_table('create_test');
