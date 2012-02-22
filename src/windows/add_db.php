@@ -190,10 +190,9 @@ class Add_DB extends GtkWindow {
 	/**
 	 * Set defaults for new database type
 	 * 
-	 * @param  GtkComboBox $combo 
 	 * @return void
 	 */
-	public function change_db($combo)
+	public function change_db()
 	{
 		$new_db = $this->dbtype->get_active_text();
 

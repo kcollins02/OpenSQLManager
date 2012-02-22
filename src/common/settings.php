@@ -62,7 +62,7 @@ class Settings {
 	/**
 	 * Output the settings on destruct
 	 */
-	protected function __destruct()
+	public function __destruct()
 	{
 		file_put_contents(BASE_DIR . '/settings.json', json_encode($this->current));
 	}
