@@ -17,9 +17,9 @@
  */
 class Add_DB extends GtkWindow {
 
-	var $conn, $dbtype, $host, $user, $pass, $database, $settings, $db_file;
+	var $conn, $dbtype, $host, $user, $pass, $database, $settings, $db_file, $port;
 	
-	public function __construct($conn='', $dbtype='', $host='localhost', $user='', $pass='', $database='', $db_file=NULL)
+	public function __construct($conn='', $dbtype='', $host='localhost', $user='', $pass='', $database='', $db_file=NULL, $port)
 	{
 		parent::__construct();
 
@@ -33,6 +33,7 @@ class Add_DB extends GtkWindow {
 		$this->host = new GtkEntry();
 		$this->user = new GtkEntry();
 		$this->pass = new GtkEntry();
+		$this->port = new GtkEntry();
 		$this->dbtype = GtkComboBox::new_text();
 		$this->db_file = new GtkFileChooserButton("Select a database file",
 				Gtk::FILE_CHOOSER_ACTION_OPEN);
@@ -52,7 +53,7 @@ class Add_DB extends GtkWindow {
 		$this->host->set_text($host);
 		$this->user->set_text($user);
 		$this->pass->set_text($pass);
-		$this->db_file->set_uri($db_file);
+		$this->db_file->set_filename($db_file);
 
 		// Create the layout table
 		$this->table = new GtkTable();
@@ -100,6 +101,11 @@ class Add_DB extends GtkWindow {
 		// Host
 		{
 			$this->_add_row("Host", $this->host, $y1, $y2);
+		}
+
+		// Port
+		{
+			$this->_add_row("Port", $this->port, $y1, $y2);
 		}
 
 		// Username
@@ -195,33 +201,44 @@ class Add_DB extends GtkWindow {
 	{
 		$new_db = $this->dbtype->get_active_text();
 
+		// Reset
+		$this->host->set_text('localhost');
+		$this->db_file->set_filename(NULL);
+		$this->port->show();
+		$this->db_file->hide();
+		$this->user->set_text('');
+		$this->pass->set_text('');
+		$this->port->set_text('');
+
 		switch($new_db)
 		{
 			default:
-				$this->host->set_text('localhost');
-				$this->db_file->set_uri(NULL);
+			break;
 
 			case "MySQL":
 				$this->user->set_text('root');
-				$this->pass->set_text('');
+				$this->port->set_text(3306);
 			break;
 
 			case "PostgreSQL":
 				$this->user->set_text('postgres');
-				$this->pass->set_text('');
+				$this->port->set_text(5432);
 			break;
 
 			case "Firebird":
 				$this->user->set_text('sysdba');
 				$this->pass->set_text('masterkey');
+				$this->db_file->show();
 			break;
 
 			case "ODBC":
-			case "SQLite":
-				$this->user->set_text('');
-				$this->pass->set_text('');
+				$this->db_file->show();
 			break;
 
+			case "SQLite":
+				$this->db_file->show();
+				$this->port->hide();
+			break;
 		}
 	}
 
@@ -235,7 +252,7 @@ class Add_DB extends GtkWindow {
 			'host' => $this->host->get_text(),
 			'user' => $this->user->get_text(),
 			'pass' => $this->pass->get_text(),
-			'file' => $this->db_file->get_uri(),
+			'file' => $this->db_file->get_filename(),
 		);
 
 		$this->settings->add_db($this->conn->get_text(), $data);
