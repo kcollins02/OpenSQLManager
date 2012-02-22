@@ -81,7 +81,7 @@ class Add_DB extends GtkWindow {
 
 		// Connection name
 		{
-			$this->_add_row("Connection name", $this->conn, $y1, $y2);
+			$this->_add_row("Connection name", 'conn', $y1, $y2);
 		}
 
 		// Database type
@@ -95,27 +95,27 @@ class Add_DB extends GtkWindow {
 
 		// DB File
 		{
-			$this->_add_row("Database File", $this->db_file, $y1, $y2);
+			$this->_add_row("Database File", 'db_file', $y1, $y2);
 		}
 
 		// Host
 		{
-			$this->_add_row("Host", $this->host, $y1, $y2);
+			$this->_add_row("Host", 'host', $y1, $y2);
 		}
 
 		// Port
 		{
-			$this->_add_row("Port", $this->port, $y1, $y2);
+			$this->_add_row("Port", 'port', $y1, $y2);
 		}
 
 		// Username
 		{
-			$this->_add_row("User", $this->user, $y1, $y2);
+			$this->_add_row("User", 'user', $y1, $y2);
 		}
 
 		// Password
 		{
-			$this->_add_row("Password", $this->pass, $y1, $y2);
+			$this->_add_row("Password", 'pass', $y1, $y2);
 		}
 
 		// Add connection button
@@ -178,15 +178,19 @@ class Add_DB extends GtkWindow {
 	 * 
 	 * @param GtkTable &$table
 	 * @param string $label
-	 * @param mixed &$vname
+	 * @param string $vname
 	 * @param int &$y1
 	 * @param int &$y2
 	 */
-	private function _add_row($label, &$vname, &$y1, &$y2)
+	private function _add_row($label, $vname, &$y1, &$y2)
 	{
-		$lbl = new GtkLabel($label);
+		$lbl = 'lbl'.$vname;
+
+		$this->$lbl = new GtkLabel($label);
 		$lblalign = new GtkAlignment(0, 0.5, 0, 0);
-		$lblalign->add($lbl);
+		$lblalign->add($this->$lbl);
+
+		$vname =& $this->$vname;
 
 		$this->table->attach($lblalign, 0, 1, ++$y1, ++$y2);
 		$this->table->attach($vname, 1, 2, $y1, $y2);
@@ -205,8 +209,11 @@ class Add_DB extends GtkWindow {
 		$this->host->set_text('localhost');
 		$this->db_file->set_filename(NULL);
 		$this->port->show();
+		$this->lblport->show();
 		$this->db_file->hide();
+		$this->lbldb_file->hide();
 		$this->host->show();
+		$this->lblhost->show();
 		$this->user->set_text('');
 		$this->pass->set_text('');
 		$this->port->set_text('');
@@ -229,17 +236,22 @@ class Add_DB extends GtkWindow {
 			case "Firebird":
 				$this->user->set_text('sysdba');
 				$this->pass->set_text('masterkey');
+				$this->lbldb_file->show();
 				$this->db_file->show();
 			break;
 
 			case "ODBC":
+				$this->lbldb_file->show();
 				$this->db_file->show();
 			break;
 
 			case "SQLite":
+				$this->lbldb_file->show();
 				$this->db_file->show();
 				$this->port->hide();
+				$this->lblport->hide();
 				$this->host->hide();
+				$this->lblhost->hide();
 			break;
 		}
 	}
