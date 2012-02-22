@@ -19,17 +19,47 @@ class Add_DB extends GtkWindow {
 
 	var $conn, $dbtype, $host, $user, $pass, $database, $settings, $db_file;
 	
-	public function __construct()
+	public function __construct($conn='', $dbtype='', $host='localhost', $user='', $pass='', $database='', $db_file=NULL)
 	{
 		parent::__construct();
 
-		$this->settings = new Settings();
+		$this->settings =& Settings::get_instance();
 
 		$this->set_position(Gtk::WIN_POS_CENTER);
 		$this->set_title("Add Database Connection");
 
+		// Set up the form elements, with default values
+		$this->conn = new GtkEntry();
+		$this->host = new GtkEntry();
+		$this->user = new GtkEntry();
+		$this->pass = new GtkEntry();
+		$this->dbtype = GtkComboBox::new_text();
+		$this->db_file = new GtkFileChooserButton("Select a database file",
+				Gtk::FILE_CHOOSER_ACTION_OPEN);
+
+		// Populate the available database types
+		$db_types = $this->get_available_dbs();
+		foreach($db_types as $t)
+		{
+			$this->dbtype->append_text($t);
+		}
+
+		// Reset defaults when changing db types
+		$this->dbtype->connect_simple("changed", array($this, "change_db"));
+
+		// Populate the text fields with default values
+		$this->conn->set_text($conn);
+		$this->host->set_text($host);
+		$this->user->set_text($user);
+		$this->pass->set_text($pass);
+		$this->db_file->set_uri($db_file);
+
+		// Create the layout table
+		$this->table = new GtkTable();
+
 		// Add the Vbox, and show the window
-		$this->add($this->_layout());
+		$this->_layout();
+		$this->add($this->table);
 		$this->show_all();
 	}
 
@@ -40,10 +70,6 @@ class Add_DB extends GtkWindow {
 	 */
 	private function _layout()
 	{
-		$table = new GtkTable();
-
-		$db_types = $this->get_available_dbs();
-
 		//Table attach 
 		//$tbl->attach(left_start, right_stop, top_start, bottom_stop)
 
@@ -54,51 +80,36 @@ class Add_DB extends GtkWindow {
 
 		// Connection name
 		{
-			$this->_add_row($table, "Connection name", $this->conn, $y1, $y2);
+			$this->_add_row("Connection name", $this->conn, $y1, $y2);
 		}
 
 		// Database type
 		{
 			$dbtypelbl = new GtkLabel("Database Type");
-			$this->dbtype = GtkComboBox::new_text();
 			$typealign = new GtkAlignment(0, 0.5, 0, 0);
 			$typealign->add($dbtypelbl);
-
-			foreach($db_types as $t)
-			{
-				$this->dbtype->append_text($t);
-			}
-
-			$table->attach($typealign, 0, 1, ++$y1, ++$y2);
-			$table->attach($this->dbtype, 1, 2, $y1, $y2);
-
+			$this->table->attach($typealign, 0, 1, ++$y1, ++$y2);
+			$this->table->attach($this->dbtype, 1, 2, $y1, $y2);
 		}
 
 		// DB File
 		{
-			$filelbl = new GtkLabel("Database file");
-			$this->db_file = new GtkFileChooserButton("Select a database file",
-				Gtk::FILE_CHOOSER_ACTION_OPEN);
-			$filealign = new GtkAlignment(0, 0.5, 0, 0);
-			$filealign->add($filelbl);
-
-			$table->attach($filealign, 0, 1, ++$y1, ++$y2);
-			$table->attach($this->db_file, 1, 2, $y1, $y2);
+			$this->_add_row("Database File", $this->db_file, $y1, $y2);
 		}
 
 		// Host
 		{
-			$this->_add_row($table, "DB Host", $this->host, $y1, $y2);
+			$this->_add_row("Host", $this->host, $y1, $y2);
 		}
 
 		// Username
 		{
-			$this->_add_row($table, "DB User", $this->user, $y1, $y2);
+			$this->_add_row("User", $this->user, $y1, $y2);
 		}
 
 		// Password
 		{
-			$this->_add_row($table, "DB Password", $this->pass, $y1, $y2);
+			$this->_add_row("Password", $this->pass, $y1, $y2);
 		}
 
 		// Add connection button
@@ -107,12 +118,9 @@ class Add_DB extends GtkWindow {
 			$add_button->set_label("Add Connnection");
 			$add_button->set_image(GTKImage::new_from_stock(GTK::STOCK_ADD, 
 				Gtk::ICON_SIZE_SMALL_TOOLBAR));	
-			$table->attach($add_button, 0, 3, ++$y1, ++$y2);
+			$this->table->attach($add_button, 0, 3, ++$y1, ++$y2);
 			$add_button->connect_simple("clicked", array($this, 'db_add'));	
 		}
-
-
-		return $table;
 	}
 
 	/**
@@ -168,15 +176,55 @@ class Add_DB extends GtkWindow {
 	 * @param int &$y1
 	 * @param int &$y2
 	 */
-	private function _add_row(&$table, $label, &$vname, &$y1, &$y2)
+	private function _add_row($label, &$vname, &$y1, &$y2)
 	{
 		$lbl = new GtkLabel($label);
-		$vname = new GtkEntry();
+		//$vname =& $this->{$vname};
 		$lblalign = new GtkAlignment(0, 0.5, 0, 0);
 		$lblalign->add($lbl);
 
-		$table->attach($lblalign, 0, 1, ++$y1, ++$y2);
-		$table->attach($vname, 1, 2, $y1, $y2);
+		$this->table->attach($lblalign, 0, 1, ++$y1, ++$y2);
+		$this->table->attach($vname, 1, 2, $y1, $y2);
+	}
+
+	/**
+	 * Set defaults for new database type
+	 * 
+	 * @param  GtkComboBox $combo 
+	 * @return void
+	 */
+	public function change_db($combo)
+	{
+		$new_db = $this->dbtype->get_active_text();
+
+		switch($new_db)
+		{
+			default:
+				$this->host->set_text('localhost');
+				$this->db_file->set_uri(NULL);
+
+			case "MySQL":
+				$this->user->set_text('root');
+				$this->pass->set_text('');
+			break;
+
+			case "PostgreSQL":
+				$this->user->set_text('');
+				$this->pass->set_text('');
+			break;
+
+			case "Firebird":
+				$this->user->set_text('sysdba');
+				$this->pass->set_text('masterkey');
+			break;
+
+			case "ODBC":
+			case "SQLite":
+				$this->user->set_text('');
+				$this->pass->set_text('');
+			break;
+
+		}
 	}
 
 	/**

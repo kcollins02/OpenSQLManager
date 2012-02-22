@@ -19,7 +19,7 @@
  */
 class Main extends GtkWindow {
 
-	private $settings;
+	private $settings, $model;
 
 	/**
 	 * Create and display the main window on startup
@@ -32,7 +32,7 @@ class Main extends GtkWindow {
 		$this->resize(640, 480);
 
 		$this->set_position(Gtk::WIN_POS_CENTER);
-		$this->settings = new Settings();
+		$this->settings =& Settings::get_instance();
 
 		//Layout the interface
 		$this->_main_layout();

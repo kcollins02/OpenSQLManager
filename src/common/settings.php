@@ -20,11 +20,23 @@
 class Settings {
 
 	private $current;
+	private static $instance;
+
+	public static function &get_instance()
+	{
+		if( ! isset(self::$instance))
+		{
+			$name = __CLASS__;
+			self::$instance = new $name();
+		}
+
+		return self::$instance;
+	}
 	
 	/**
 	 * Load the settings file
 	 */
-	public function __construct()
+	protected function __construct()
 	{
 		$path = BASE_DIR.'/settings.json'; 
 
@@ -45,6 +57,14 @@ class Settings {
 			$this->current->dbs = new stdClass();
 		}
 
+	}
+
+	/**
+	 * Output the settings on destruct
+	 */
+	protected function __destruct()
+	{
+		file_put_contents(BASE_DIR . '/settings.json', json_encode($this->current));
 	}
 
 	// --------------------------------------------------------------------------
@@ -79,7 +99,6 @@ class Settings {
 		}
 
 		$this->current->{$key} = $val;
-		$this->write();
 	}
 
 	// --------------------------------------------------------------------------
@@ -96,8 +115,6 @@ class Settings {
 		{
 			$this->current->dbs->{$name} = array();
 			$this->current->dbs->{$name} = $params;
-
-			$this->write();
 		}
 		else
 		{
@@ -118,7 +135,6 @@ class Settings {
 		if(isset($this->current->dbs->{$name}))
 		{
 			$this->current->dbs->{$name} = $params;
-			$this->write();
 		}
 		else
 		{
@@ -142,7 +158,6 @@ class Settings {
 
 		// Remove the db name from the object
 		unset($this->current->dbs->{$name});
-		$this->write();
 	}
 
 	// --------------------------------------------------------------------------
@@ -155,16 +170,6 @@ class Settings {
 	public function get_dbs()
 	{
 		return $this->current->dbs;
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Write the settings to the file
-	 */
-	public function write()
-	{
-		file_put_contents(BASE_DIR . '/settings.json', json_encode($this->current));
 	}
 }
 // End of settings.php
