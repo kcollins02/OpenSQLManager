@@ -208,8 +208,8 @@ class Add_DB extends GtkWindow {
 			break;
 
 			case "PostgreSQL":
-				$this->user->set_text('');
-				$this->pass->set_text('');
+				$this->user->set_text('postgres');
+				$this->pass->set_text('postgres');
 			break;
 
 			case "Firebird":
