@@ -19,7 +19,7 @@ class Add_DB extends GtkWindow {
 
 	var $conn, $dbtype, $host, $user, $pass, $database, $settings, $db_file, $port;
 	
-	public function __construct($conn='', $dbtype='', $host='localhost', $user='', $pass='', $database='', $db_file=NULL, $port)
+	public function __construct($conn='', $dbtype='', $host='localhost', $user='', $pass='', $database='', $db_file=NULL, $port='')
 	{
 		parent::__construct();
 
@@ -206,6 +206,7 @@ class Add_DB extends GtkWindow {
 		$this->db_file->set_filename(NULL);
 		$this->port->show();
 		$this->db_file->hide();
+		$this->host->show();
 		$this->user->set_text('');
 		$this->pass->set_text('');
 		$this->port->set_text('');
@@ -238,6 +239,7 @@ class Add_DB extends GtkWindow {
 			case "SQLite":
 				$this->db_file->show();
 				$this->port->hide();
+				$this->host->hide();
 			break;
 		}
 	}
