@@ -118,9 +118,10 @@ class firebird extends DB_PDO {
 	/**
 	 * Emulate PDO prepare
 	 *
+	 * @param string $query
 	 * @return resource
 	 */
-	public function prepare()
+	public function prepare($query)
 	{
 		$this->statement = ibase_prepare($this->conn, $query);
 		return $this->statement;
@@ -248,8 +249,43 @@ SQL;
 	 */
 	public function execute($args)
 	{
-		// Is there a better way to do this?
-		return eval('ibase_execute('.$this->statement.','.explode(',', $args).")");
-	} 
+		//Add the prepared statement as the first parameter
+		array_unshift($args, $this->statement);
+		
+		// Let php do all the hard stuff in converting 
+		// the array of arguments into a list of arguments
+		return call_user_func_array('ibase_execute', $args);
+	}
+	
+	/**
+	 * Prepare and execute a query
+	 *
+	 * @param string $sql
+	 * @param array $args
+	 * @return resource
+	 */
+	public function prepare_execute($sql, $args)
+	{
+		$query = $this->prepare($sql);
+		
+		// Set the statement in the class variable for easy later access
+		$this->statement =& $query;
+		
+		return $this->execute($args);
+	}
+	
+	/**
+	 * Bind a prepared query with arguments for executing
+	 *
+	 * @param string $sql
+	 * @param mixed $args
+	 * @return FALSE
+	 */
+	public function prepare_query($sql, $args)
+	{
+		// You can't bind query statements before execution with
+		// the firebird database
+		return FALSE;
+	}
 }
 // End of firebird.php

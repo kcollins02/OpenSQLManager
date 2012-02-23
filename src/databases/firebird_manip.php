@@ -62,7 +62,7 @@ class firebird_manip extends db_manip {
 		$columns = array();
 		foreach($column_array as $n => $props)
 		{
-			$str = "{$n} ";
+			$str = '"'.$n.'" ';
 			$str .= (isset($props['type'])) ? "{$props['type']} " : "";
 			$str .= (isset($props['constraint'])) ? "{$props['constraint']} " : "";
 
@@ -70,9 +70,9 @@ class firebird_manip extends db_manip {
 		}
 
 		// Generate the sql for the creation of the table
-		$sql = "CREATE TABLE \"{$name}\" (";
-		$sql .= implode(",", $columns);
-		$sql .= ")";
+		$sql = 'CREATE TABLE "'.$name.'" (';
+		$sql .= implode(',', $columns);
+		$sql .= ')';
 
 		return $sql;
 	}

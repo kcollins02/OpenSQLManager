@@ -42,7 +42,7 @@ abstract class DB_PDO extends PDO {
 		// Prepare the sql
 		$query = $this->prepare($sql);
 		
-		if( ! is_like_array($query))
+		if( ! (is_object($query) || is_resource($query)))
 		{
 			$this->get_last_error();
 			return FALSE;
@@ -52,7 +52,7 @@ abstract class DB_PDO extends PDO {
 		$this->statement =& $query;
 		
 		
-		if( ! is_like_array($data))
+		if( ! (is_array($data) || is_object($data)))
 		{
 			trigger_error("Invalid data argument");
 			return FALSE;

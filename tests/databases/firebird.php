@@ -72,7 +72,7 @@ class FirebirdTest extends UnitTestCase {
 	function TestCreateTable()
 	{
 		//Attempt to create the table
-		$sql = $this->db->manip->create_table('create_test', array('id' => 'SMALLINT'));
+		$sql = $this->db->manip->create_table('create_test', array('id' => 'SMALLINT', 'key' => 'VARCHAR(64)', 'val' => 'BLOB SUB_TYPE TEXT'));
 		$this->db->query($sql);
 		
 		//This test fails for an unknown reason, when clearly the table exists
@@ -86,6 +86,34 @@ class FirebirdTest extends UnitTestCase {
 		echo "create_test exists :".(int)$table_exists.'<br />';
 		
 		$this->assertTrue($table_exists);*/
+	}
+	
+	function TestPreparedStatements()
+	{
+		$sql = <<<SQL
+			INSERT INTO "create_test" ("id", "key", "val") 
+			VALUES (?,?,?)
+SQL;
+		$this->db->prepare($sql);
+		$this->db->execute(array(1,"boogers", "Gross"));
+
+	}
+	
+	function TestPrepareExecute()
+	{
+		$sql = <<<SQL
+			INSERT INTO "create_test" ("id", "key", "val") 
+			VALUES (?,?,?)
+SQL;
+		$this->db->prepare_execute($sql, array(
+			2, "works", 'also?'
+		));
+	
+	}
+	
+	function TestPrepareQuery()
+	{
+		$this->assertFalse($this->db->prepare_query('', array()));	
 	}
 
 	function TestDeleteTable()
@@ -103,12 +131,5 @@ class FirebirdTest extends UnitTestCase {
 		$this->assertFalse($table_exists);
 	}
 
-	function TestPreparedStatements()
-	{
-		$sql = 'INSERT INTO "create_test" ("id") VALUES (?),(?),(?)';
-		$this->db->prepare($sql);
-
-		$this->db->execute(array(1,2,3));
-
-	}
+	
 }

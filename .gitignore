@@ -4,3 +4,5 @@ settings.json
 errors.txt
 */simpletest/*
 tests/test_dbs/*
+*.db
+*.FDB
