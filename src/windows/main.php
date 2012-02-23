@@ -217,8 +217,12 @@ class Main extends GtkWindow {
 			// Initialize the treeview with the data
 			$treeview = new GtkTreeView($model);
 
+			$cell_renderer = new GtkCellRendererPixbuf();
+			$treeview->insert_column_with_data_func(0, '', $cell_renderer, array(&$this, 'set_icon'));
+
 			$cell_renderer = new GtkCellRendererText();
-			$treeview->insert_column_with_data_func(-1, 'Database Connections', $cell_renderer, array(&$this, 'set_label'));
+			$treeview->insert_column_with_data_func(1, 'Database Connections', $cell_renderer, array(&$this, 'set_label'));
+
 
 			$selection = $treeview->get_selection();
 			$selection->set_mode(GTK::SELECTION_SINGLE);
@@ -232,6 +236,26 @@ class Main extends GtkWindow {
 	}
 
 	/**
+	 * Sets the icon for the current db type
+	 * 
+	 * @param GtkTreeView Column $col   
+	 * @param GtkCellRenderer $cell
+	 * @param GtkTreeModel $model
+	 * @param GtkTreeIter $iter
+	 */
+	public function set_icon($col, $cell, $model, $iter)
+	{
+		$info = $model->get_value($iter, 0);
+		$db_type = strtolower($info->type);
+		$img_file = BASE_DIR."/images/{$type}-logo-32.png";
+
+		if(is_file($img_file))
+		{
+			$cell->set_property('pixbuf', GdkPixbuf::new_from_file($img_file));
+		}
+	}
+
+	/**
 	 * Sets the label of the current db connection
 	 * 
 	 * @param GtkTreeViewColumn $col
@@ -241,7 +265,7 @@ class Main extends GtkWindow {
 	 */
 	public function set_label($col, $cell, $model, $iter)
 	{
-		$info = $model->get_value($iter, 0);
+		$info = $model->get_value($iter, 1);
 		$cell->set_property('text', $info->name);
 	}
 
