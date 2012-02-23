@@ -249,6 +249,7 @@ class Main extends GtkWindow {
 	 */
 	public function set_icon($col, $cell, $model, $iter)
 	{
+		$col->set_reorderable(TRUE);
 		$info = $model->get_value($iter, 0);
 		$db_type = strtolower($info->type);
 		$img_file = BASE_DIR."/images/{$db_type}-logo-32.png";
@@ -274,6 +275,7 @@ class Main extends GtkWindow {
 	 */
 	public function set_label($col, $cell, $model, $iter)
 	{
+		$col->set_reorderable(TRUE);
 		$info = $model->get_value($iter, 0);
 		$cell->set_property('text', $info->name);
 	}
