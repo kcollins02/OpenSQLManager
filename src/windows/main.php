@@ -195,6 +195,8 @@ class Main extends GtkWindow {
 
 		$conn_vbox = new GtkVBox();
 
+		$conn_vbox->pack_start($dblabel, FALSE, FALSE);
+
 		// Treeview to show database connections
 		{
 			// Create a Storage object for connection list
