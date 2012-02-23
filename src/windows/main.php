@@ -260,6 +260,7 @@ class Main extends GtkWindow {
 		}
 		else
 		{
+			// Load an empty image if the db image doesn't exist
 			$img = new GtkImage();
 			$cell->set_property('pixbuf', $img->get_pixbuf());
 		}
@@ -278,16 +279,6 @@ class Main extends GtkWindow {
 		$col->set_reorderable(TRUE);
 		$info = $model->get_value($iter, 0);
 		$cell->set_property('text', $info->name);
-	}
-
-	/**
-	 * Redraws the data area based on the which connection is selected
-	 * 
-	 * @param $selection
-	 */
-	private function _render_selected($selection)
-	{
-		
 	}
 
 	// --------------------------------------------------------------------------

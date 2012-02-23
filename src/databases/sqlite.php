@@ -19,6 +19,8 @@
  */
 class SQLite extends DB_PDO {
 
+	protected $statement;
+
 	/**
 	 * Open SQLite Database
 	 * 
@@ -42,11 +44,11 @@ class SQLite extends DB_PDO {
 	{
 		// SQLite has a TRUNCATE optimization,
 		// but no support for the actual command.
-		$sql = <<<SQL
-			DELETE FROM "{$table}"
-SQL;
+		$sql = 'DELETE FROM :table';
 
-		$this->query($sql);
+		$this->prepare_query($sql, array(
+			':table' => $table
+		));
 	}
 
 	/**
@@ -58,7 +60,9 @@ SQL;
 	{	
 		$tables = array();
 		$sql = <<<SQL
-			SELECT "name", "sql" FROM "sqlite_master" WHERE "type"='table'
+			SELECT "name", "sql" 
+			FROM "sqlite_master" 
+			WHERE "type"='table'
 SQL;
 
 		$res = $this->query($sql);
@@ -92,9 +96,7 @@ SQL;
 	 */
 	public function load_database($db, $name)
 	{
-		$sql = <<<SQL
-			ATTACH DATABASE '{$db}' AS "{$name}"
-SQL;
+		$sql = "ATTACH DATABASE '{$db}' AS \"{$name}\"";
 		$this->query($sql);
 	}
 
@@ -105,10 +107,11 @@ SQL;
 	 */
 	public function unload_database($name)
 	{
-		$sql = <<<SQL
-			DETACH DATABASE "{$name}"
-SQL;
-		$this->query($sql);
+		$sql = 'DETACH DATABASE ":name"';
+		
+		$this->prepare_query($sql, array(
+			':name' => $name,
+		));
 	}
 
 	/**
@@ -118,7 +121,7 @@ SQL;
 	 */
 	public function num_rows()
 	{
-		return (isset($this->statement)) ? $this->statment->rowCount : FALSE;
+		return (isset($this->statement)) ? $this->statement->rowCount : FALSE;
 	}
 }
 //End of sqlite.php
