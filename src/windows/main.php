@@ -247,11 +247,16 @@ class Main extends GtkWindow {
 	{
 		$info = $model->get_value($iter, 0);
 		$db_type = strtolower($info->type);
-		$img_file = BASE_DIR."/images/{$type}-logo-32.png";
+		$img_file = BASE_DIR."/images/{$db_type}-logo-32.png";
 
 		if(is_file($img_file))
 		{
 			$cell->set_property('pixbuf', GdkPixbuf::new_from_file($img_file));
+		}
+		else
+		{
+			$img = new GtkImage();
+			$cell->set_property('pixbuf', $img->get_pixbuf());
 		}
 	}
 
@@ -265,7 +270,7 @@ class Main extends GtkWindow {
 	 */
 	public function set_label($col, $cell, $model, $iter)
 	{
-		$info = $model->get_value($iter, 1);
+		$info = $model->get_value($iter, 0);
 		$cell->set_property('text', $info->name);
 	}
 
