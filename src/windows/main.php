@@ -217,11 +217,13 @@ class Main extends GtkWindow {
 			// Initialize the treeview with the data
 			$treeview = new GtkTreeView($model);
 
+			// Icon column
 			$cell_renderer = new GtkCellRendererPixbuf();
-			$treeview->insert_column_with_data_func(0, '', $cell_renderer, array(&$this, 'set_icon'));
+			$treeview->insert_column_with_data_func(0, 'Type', $cell_renderer, array(&$this, 'set_icon'));
 
+			// Label column
 			$cell_renderer = new GtkCellRendererText();
-			$treeview->insert_column_with_data_func(1, 'Database Connections', $cell_renderer, array(&$this, 'set_label'));
+			$treeview->insert_column_with_data_func(1, 'Connection name', $cell_renderer, array(&$this, 'set_label'));
 
 
 			$selection = $treeview->get_selection();
