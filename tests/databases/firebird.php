@@ -102,4 +102,13 @@ class FirebirdTest extends UnitTestCase {
 		$table_exists = in_array('create_test', $this->tables);
 		$this->assertFalse($table_exists);
 	}
+
+	function TestPreparedStatements()
+	{
+		$sql = 'INSERT INTO "create_test" ("id") VALUES (?),(?),(?)';
+		$this->db->prepare($sql);
+
+		$this->db->execute(array(1,2,3));
+
+	}
 }
