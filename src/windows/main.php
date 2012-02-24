@@ -19,7 +19,7 @@
  */
 class Main extends GtkWindow {
 
-	private $settings, $model;
+	private $settings, $connection_sidebar;
 
 	/**
 	 * Create and display the main window on startup
@@ -29,7 +29,7 @@ class Main extends GtkWindow {
 		parent::__construct();
 		
 		//Resize to a sane size
-		$this->resize(640, 480);
+		$this->set_size_request(640, 480);
 
 		$this->set_position(Gtk::WIN_POS_CENTER);
 
@@ -108,12 +108,14 @@ class Main extends GtkWindow {
 		$main_vbox->pack_start($hpane);
 
 		$scrolled_win = new GtkScrolledWindow();
-    	$scrolled_win->set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_ALWAYS);
+    	$scrolled_win->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
     	$scrolled_win->add(new DataGrid());
 
+    	// Add the connection sidebar
+    	$this->connection_sidebar = new Connection_Sidebar();
 
 		// Add the left column to the hpane
-		$hpane->pack1(new Connection_Sidebar(), FALSE);
+		$hpane->pack1($this->connection_sidebar, FALSE);
 		$hpane->pack2($scrolled_win);
 
 		// Add the Vbox, and show the window

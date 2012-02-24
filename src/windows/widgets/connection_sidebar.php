@@ -14,6 +14,8 @@
 
 class Connection_Sidebar extends GtkVBox {
 
+	protected $settings;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -129,4 +131,25 @@ class Connection_Sidebar extends GtkVBox {
 		return new Add_DB();
 	}
 
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Remove a connection from the connection manager
+	 */
+	public function remove_connection()
+	{
+
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Add a connection to the connection manager
+	 */
+	public function add_connection()
+	{
+
+	}
+
 }
+// End of connection_sidebar.php
