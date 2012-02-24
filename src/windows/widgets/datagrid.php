@@ -17,10 +17,11 @@
  */
 class DataGrid extends GtkTreeView{
 
-	protected $model, $view;
+	protected $model, $settings;
 	
 	function __construct()
 	{
+		$this->settings =& Settings::get_instance();
 		$this->model = new GtkTreeStore(GObject::TYPE_PHP_VALUE, GObject::TYPE_STRING);
 		parent::__construct($this->model);
 	}
