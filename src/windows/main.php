@@ -97,7 +97,7 @@ class Main extends GtkWindow {
 		$this->connect_simple('destroy', array('gtk', 'main_quit'));
 
 		// Main Vbox that everything is contained in
-		$main_vbox  = new GTKVBox();
+		$main_vbox  = new GTKVBox(FALSE, 5);
 
 		// Main Hpaned for columns
 		$hpane = new GTKHPaned();

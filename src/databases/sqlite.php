@@ -49,6 +49,8 @@ class SQLite extends DB_PDO {
 		$this->prepare_query($sql, array(
 			':table' => $table
 		));
+
+		$this->statement->execute();
 	}
 
 	/**
@@ -112,6 +114,8 @@ SQL;
 		$this->prepare_query($sql, array(
 			':name' => $name,
 		));
+
+		$this->statement->execute();
 	}
 
 	/**
