@@ -130,6 +130,4 @@ SQL;
 		$table_exists = in_array('create_test', $this->tables);
 		$this->assertFalse($table_exists);
 	}
-
-	
 }
