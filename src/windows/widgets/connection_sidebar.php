@@ -14,7 +14,7 @@
 
 class Connection_Sidebar extends GtkVBox {
 
-	protected $settings;
+	protected $settings, $menu;
 
 	public function __construct()
 	{
@@ -62,6 +62,8 @@ class Connection_Sidebar extends GtkVBox {
 			// Label column
 			$cell_renderer = new GtkCellRendererText();
 			$treeview->insert_column_with_data_func(1, 'Connection name', $cell_renderer, array(&$this, 'set_label'));
+
+			$treeview->connect('button-press-event', array(&$this, 'on_button'));
 
 
 			$selection = $treeview->get_selection();
@@ -129,6 +131,50 @@ class Connection_Sidebar extends GtkVBox {
 	public function new_conn()
 	{
 		return new Add_DB();
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Event for mouse clicks on connection sidebar
+	 * 
+	 * @param  GtkTreeView $view
+	 * @param  $event
+	 * @return void
+	 */
+	public function on_button($view, $event)
+	{
+		// Right click
+		if($event->button == 3)
+		{
+			// get the row and column
+			$path_array = $view->get_path_at_pos($event->x, $event->y);
+			$path = $path_array[0][0];
+			$col = $path_array[1];
+			$col_title = $col->get_title();
+		}
+
+		$this->menu = $this->conn_popup_menu($path, $col_title, $event);
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Creates a context menu for the selected connection
+	 * 
+	 * @param  [type] $pos   [description]
+	 * @param  [type] $title [description]
+	 * @param  [type] $event [description]
+	 * @return [type]
+	 */
+	public function conn_popup_menu($pos, $title, $event)
+	{
+		$this->menu = new GtkMenu();
+
+		// Set up menu items
+		
+		$this->menu->show_all();
+		$this->menu->popup();
 	}
 
 	// --------------------------------------------------------------------------
