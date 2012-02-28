@@ -26,10 +26,10 @@ class SQLite extends DB_PDO {
 	 * 
 	 * @param string $dsn 
 	 */
-	public function __construct($dsn)
+	public function __construct($dsn, $user=NULL, $pass=NULL)
 	{
 		// DSN is simply `sqlite:/path/to/db`
-		parent::__construct("sqlite:{$dsn}");
+		parent::__construct("sqlite:{$dsn}", $user, $pass);
 
 		$class = __CLASS__."_manip";
 		$this->manip = new $class;

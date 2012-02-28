@@ -53,14 +53,47 @@ class SQLiteTest extends UnitTestCase {
 	function TestCreateTable()
 	{
 		//Attempt to create the table
-		$sql = $this->db->manip->create_table('create_test', array('id' => 'INTEGER'), array('id' => 'PRIMARY KEY'));
+		$sql = $this->db->manip->create_table('create_test', 
+			array(
+				'id' => 'INTEGER',
+				'key' => 'TEXT',
+				'val' => 'TEXT',
+			), 
+			array(
+				'id' => 'PRIMARY KEY'
+			)
+		);
 		$this->db->query($sql);
 
 		//Check
 		$dbs = $this->db->get_tables();
-		$this->assertEqual($dbs['create_test'], 'CREATE TABLE "create_test" (id INTEGER PRIMARY KEY)');
+		$this->assertEqual($dbs['create_test'], 'CREATE TABLE "create_test" (id INTEGER PRIMARY KEY, key TEXT , val TEXT )');
 	}
+	
+	function TestPreparedStatements()
+	{
+		$sql = <<<SQL
+			INSERT INTO "create_test" ("id", "key", "val") 
+			VALUES (?,?,?)
+SQL;
+		$statement =& $this->db->prepare_query($sql, array(1,"boogers", "Gross"));
+		
+		$statement->execute();
 
+	}
+	
+	function TestPrepareExecute()
+	{
+		$sql = <<<SQL
+			INSERT INTO "create_test" ("id", "key", "val") 
+			VALUES (?,?,?)
+SQL;
+		$this->db->prepare_execute($sql, array(
+			2, "works", 'also?'
+		));
+	
+	}
+	
 	function TestDeleteTable()
 	{
 		//Make sure the table exists to delete
@@ -75,4 +108,5 @@ class SQLiteTest extends UnitTestCase {
 		$dbs = $this->db->get_tables();
 		$this->assertTrue(empty($dbs['create_test']));
 	}
+
 }

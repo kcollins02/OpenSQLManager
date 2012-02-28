@@ -68,7 +68,7 @@ class SQLite_manip extends db_manip {
 
 		// Generate the sql for the creation of the table
 		$sql = "CREATE TABLE \"{$name}\" (";
-		$sql .= implode(",", $columns);
+		$sql .= implode(", ", $columns);
 		$sql .= ")";
 
 		return $sql;

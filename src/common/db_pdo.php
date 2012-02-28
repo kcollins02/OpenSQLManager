@@ -61,6 +61,11 @@ abstract class DB_PDO extends PDO {
 		// Bind the parameters
 		foreach($data as $k => $value)
 		{
+			if(is_numeric($k))
+			{
+				$k++;
+			}
+		
 			$res = $query->bindValue($k, $value);
 			
 			if( ! $res)
@@ -83,7 +88,7 @@ abstract class DB_PDO extends PDO {
 	 */
 	public function prepare_execute($sql, $params)
 	{	
-		$this->prepare_query($sql, $params);
+		$this->statement =& $this->prepare_query($sql, $params);
 		$this->statement->execute();
 
 		return $this->statement;
@@ -125,6 +130,20 @@ abstract class DB_PDO extends PDO {
 
 		// Return number of rows affected
 		return $this->statement->rowCount;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Return the last error for the current database connection
+	 *
+	 * @return string
+	 */
+	public function get_last_error()
+	{
+		$info = $this->errorInfo();
+		
+		echo "Error: <pre>{$info[0]}:{$info[1]}\n{$info[2]}</pre>";
 	}
 
 	// -------------------------------------------------------------------------
