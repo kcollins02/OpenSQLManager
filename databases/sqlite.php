@@ -149,8 +149,21 @@ SQL;
 	 */
 	public function backup_structure()
 	{
-		// @todo Implement Backup function
-		return '';	
+		// Fairly easy for SQLite...just query the master table
+		$sql = 'SELECT "sql" FROM "sqlite_master"';
+		$res = $this->query($sql);
+		$result = $res->fetchAll(PDO::FETCH_ASSOC);
+
+		$sql_array = array();
+
+		foreach($result as $r)
+		{
+			$sql_array[] = $r['sql'];
+		}
+
+		$sql_structure = implode("\n\n", $sql_array);
+		
+		return $sql_structure;	
 	}
 	
 	// --------------------------------------------------------------------------
