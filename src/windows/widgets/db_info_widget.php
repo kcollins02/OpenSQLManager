@@ -215,6 +215,9 @@ class DB_Info_Widget extends GtkTable {
 
 		$this->settings->add_db($this->conn->get_text(), $data);
 
+		// Pass to connection sidebar to update
+		
+
 		// Destroy the parent window
 		$parent_window =& $this->get_parent_window();
 

@@ -14,8 +14,23 @@
 
 class Connection_Sidebar extends GtkVBox {
 
-	protected $settings, $menu;
+	protected $settings, $menu, $treeview, $model;
+	private static $instance;
 
+	public static function &get_instance()
+	{
+		if( ! isset(self::$instance))
+		{
+			$name = __CLASS__;
+			self::$instance = new $name();
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Constructor method
+	 */
 	public function __construct()
 	{
 		parent::__construct();
@@ -36,43 +51,53 @@ class Connection_Sidebar extends GtkVBox {
 		// Treeview to show database connections
 		{
 			// Create a Storage object for connection list
-			$model = new GtkListStore(GObject::TYPE_PHP_VALUE, GObject::TYPE_STRING);
+			$this->model = new GtkListStore(GObject::TYPE_PHP_VALUE, GObject::TYPE_STRING);
 
-			// Add the existing connections to the model
-			$db_conns = $this->settings->get_dbs();
-			if( ! empty($db_conns))
-			{
-				foreach($db_conns as $name => $props)
-				{
-					$db = $props;
-					$db->name = $name;
+			// Render the treeview
+			$this->_render();			
 
-					$iter = $model->append();
-					$model->set($iter, 0, $db);
-				}
-			}
-			
-			// Initialize the treeview with the data
-			$treeview = new GtkTreeView($model);
-
-			// Icon column
-			$cell_renderer = new GtkCellRendererPixbuf();
-			$treeview->insert_column_with_data_func(0, 'Type', $cell_renderer, array(&$this, 'set_icon'));
-
-			// Label column
-			$cell_renderer = new GtkCellRendererText();
-			$treeview->insert_column_with_data_func(1, 'Connection name', $cell_renderer, array(&$this, 'set_label'));
-
-			$treeview->connect('button-press-event', array(&$this, 'on_button'));
+			// Set up context menu event
+			$this->treeview->connect('button-press-event', array(&$this, 'on_button'));
 
 
-			$selection = $treeview->get_selection();
+			$selection = $this->treeview->get_selection();
 			$selection->set_mode(GTK::SELECTION_SINGLE);
 		}
 		
 
-		$this->pack_start($treeview);
+		$this->pack_start($this->treeview);
 		$this->pack_start($add_button, FALSE);
+	}
+
+	/**
+	 * Renders the connection sidebar widget
+	 */
+	protected function _render()
+	{
+		// Add the existing connections to the model
+		$db_conns = $this->settings->get_dbs();
+		if( ! empty($db_conns))
+		{
+			foreach($db_conns as $name => $props)
+			{
+				$db = $props;
+				$db->name = $name;
+
+				$iter = $this->model->append();
+				$this->model->set($iter, 0, $db);
+			}
+		}
+		
+		// Initialize the treeview with the data
+		$this->treeview = new GtkTreeView($this->model);
+
+		// Icon column
+		$cell_renderer = new GtkCellRendererPixbuf();
+		$this->treeview->insert_column_with_data_func(0, 'Type', $cell_renderer, array(&$this, 'set_icon'));
+
+		// Label column
+		$cell_renderer = new GtkCellRendererText();
+		$this->treeview->insert_column_with_data_func(1, 'Connection name', $cell_renderer, array(&$this, 'set_label'));
 	}
 
 	// --------------------------------------------------------------------------
@@ -82,13 +107,13 @@ class Connection_Sidebar extends GtkVBox {
 	 * 
 	 * @param GtkTreeView Column $col   
 	 * @param GtkCellRenderer $cell
-	 * @param GtkTreeModel $model
+	 * @param GtkTreeModel $this->model
 	 * @param GtkTreeIter $iter
 	 */
 	public function set_icon($col, $cell, $model, $iter)
 	{
 		$col->set_reorderable(TRUE);
-		$info = $model->get_value($iter, 0);
+		$info = $this->model->get_value($iter, 0);
 		$db_type = strtolower($info->type);
 		$img_file = BASE_DIR."/images/{$db_type}-logo-32.png";
 
@@ -111,13 +136,13 @@ class Connection_Sidebar extends GtkVBox {
 	 * 
 	 * @param GtkTreeViewColumn $col
 	 * @param GtkCellRenderer $cell
-	 * @param GtkTreeModel $model
+	 * @param GtkTreeModel $this->model
 	 * @param GtkTreeIter $iter
 	 */
 	public function set_label($col, $cell, $model, $iter)
 	{
 		$col->set_reorderable(TRUE);
-		$info = $model->get_value($iter, 0);
+		$info = $this->model->get_value($iter, 0);
 		$cell->set_property('text', $info->name);
 	}
 
@@ -148,9 +173,9 @@ class Connection_Sidebar extends GtkVBox {
 		if($event->button == 3)
 		{
 			// get the row and column
-			$path_array = $view->get_path_at_pos($event->x, $event->y);
-			$path = $path_array[0][0];
-			$col = $path_array[1];
+			list($path_array, $col, $x, $y)= $view->get_path_at_pos($event->x, $event->y);
+			$path = $path_array[0];
+			//$col = $path_array[1];
 			$col_title = $col->get_title();
 		}
 
@@ -160,12 +185,12 @@ class Connection_Sidebar extends GtkVBox {
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Creates a context menu for the selected connection
+	 * Creates and displays a context menu for the selected connection
 	 * 
-	 * @param  [type] $pos   [description]
-	 * @param  [type] $title [description]
-	 * @param  [type] $event [description]
-	 * @return [type]
+	 * @param  aray $pos 
+	 * @param  string $title
+	 * @param  object $event
+	 * @return void
 	 */
 	public function conn_popup_menu($pos, $title, $event)
 	{
@@ -181,19 +206,28 @@ class Connection_Sidebar extends GtkVBox {
 
 	/**
 	 * Remove a connection from the connection manager
+	 * 
+	 * @param string $key
+	 * @return  void
 	 */
-	public function remove_connection()
+	public function remove_connection($key)
 	{
-
+		$model = $this->treeview->get_model();
 	}
 
 	// --------------------------------------------------------------------------
 
 	/**
 	 * Add a connection to the connection manager
+	 * 
+	 * @param  string $key
+	 * @param  array $vals
+	 * @return  void
 	 */
-	public function add_connection()
+	public function add_connection($key, $vals)
 	{
+		$model = $this->treeview->get_model();
+
 
 	}
 

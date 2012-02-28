@@ -112,7 +112,7 @@ class Main extends GtkWindow {
     	$scrolled_win->add(new DataGrid());
 
     	// Add the connection sidebar
-    	$this->connection_sidebar = new Connection_Sidebar();
+    	$this->connection_sidebar =& Connection_Sidebar::get_instance();
 
 		// Add the left column to the hpane
 		$hpane->pack1($this->connection_sidebar, FALSE);
