@@ -31,11 +31,11 @@ function do_include($path)
 
 // Include core tests
 require_once("core.php");
-require_once("../src/common/db_pdo.php");
+require_once("../common/db_pdo.php");
 
 // Include db tests
 // Load db classes based on capability
-$src_path = "../src/databases/";
+$src_path = "../databases/";
 $test_path = "./databases/";
 
 foreach(pdo_drivers() as $d)
