@@ -175,8 +175,53 @@ SQL;
 	 */
 	public function backup_data()
 	{
-		// @todo Implement Backup function
-		return '';
+		// Get a list of all the objects
+		$sql = 'SELECT "name" FROM "sqlite_master"';
+		$res = $this->query($sql);
+		$result = $res->fetchAll(PDO::FETCH_ASSOC);
+		
+		unset($res);
+		
+		$output_sql = '';
+		
+		// Get the data for each object
+		foreach($result as $r)
+		{
+			$sql = 'SELECT * FROM "'.$r['name'].'"';
+			$res = $this->query($sql);
+			$obj_res = $res->fetchAll(PDO::FETCH_ASSOC);
+			
+			unset($res);
+			
+			// Nab the column names by getting the keys of the first row
+			$columns = array_keys($obj_res[0]);
+			
+			$insert_rows = array();
+			
+			// Create the insert statements
+			foreach($obj_res as $row)
+			{
+				$row = array_values($row);
+			
+				// Quote values as needed by type
+				for($i=0, $icount=count($row); $i<$icount; $i++)
+				{
+					$row[$i] = (is_numeric($row[$i])) ? $row[$i] : $this->quote($row[$i]);
+				}
+				
+				$row_string = 'INSERT INTO "'.$r['name'].'" ("'.implode('","', $columns).'") VALUES ('.implode(',', $row).');';
+				
+				unset($row);
+				
+				$insert_rows[] = $row_string;
+			}
+			
+			unset($obj_res);
+			
+			$output_sql = implode("\n", $insert_rows);
+		}
+		
+		return $output_sql;
 	}
 }
 //End of sqlite.php
