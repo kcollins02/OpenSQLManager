@@ -35,6 +35,8 @@ class pgSQL extends DB_PDO {
 		$class = __CLASS__.'_manip';
 		$this->manip = new $class;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Empty a table
@@ -46,6 +48,8 @@ class pgSQL extends DB_PDO {
 		$sql = 'TRUNCATE "' . $table . '"';
 		$this->query($sql); 
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Get list of databases for the current connection
@@ -66,6 +70,8 @@ SQL;
 
 		return $dbs;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Get the list of tables for the current db
@@ -86,6 +92,8 @@ SQL;
 
 		return $tables;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Get the list of system tables
@@ -107,6 +115,8 @@ SQL;
 		return $tables;
 		
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Get a list of schemas, either for the current connection, or
@@ -136,6 +146,8 @@ SQL;
 
 		return $schemas;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Get a list of views for the current db
@@ -155,6 +167,8 @@ SQL;
 
 		return $views;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Return the number of rows returned for a SELECT query
@@ -164,6 +178,32 @@ SQL;
 	public function num_rows()
 	{
 		return (isset($this->statement)) ? $this->statement->rowCount : FALSE;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Create an SQL backup file for the current database's structure
+	 *
+	 * @return string
+	 */
+	public function backup_structure()
+	{
+		// @todo Implement Backup function
+		return '';	
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Create an SQL backup file for the current database's data
+	 *
+	 * @return string
+	 */
+	public function backup_data()
+	{
+		// @todo Implement Backup function
+		return '';
 	}
 }
 //End of pgsql.php

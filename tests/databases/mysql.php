@@ -29,8 +29,7 @@ class MySQLTest extends UnitTestCase {
 	function __construct()
 	{
 		parent::__construct();
-		
-		//$this->db = new MySQL();
+
 	}
 }
  

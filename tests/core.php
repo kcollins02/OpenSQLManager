@@ -38,7 +38,6 @@ class CoreTest extends UnitTestCase {
 	function TestPHPVersion()
 	{
 		$this->assertTrue(version_compare(PHP_VERSION, "5.2", "ge"));
-		$this->assertTrue(version_compare(PHP_VERSION, "5.4", "<"));
 	}
 	
 	/**

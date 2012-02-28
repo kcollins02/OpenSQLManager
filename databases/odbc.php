@@ -28,6 +28,8 @@ class ODBC extends DB_PDO {
 		$class = __CLASS__.'_manip';
 		$this->manip = new $class;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * List tables for the current database
@@ -39,6 +41,8 @@ class ODBC extends DB_PDO {
 		//Not possible reliably with this driver
 		return FALSE;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * List system tables for the current database/connection
@@ -50,6 +54,8 @@ class ODBC extends DB_PDO {
 		//No way of determining for ODBC
 		return array();
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Empty the current database
@@ -61,6 +67,8 @@ class ODBC extends DB_PDO {
 		$sql = "DELETE FROM {$table}";
 		$this->query($sql);
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Return the number of rows returned for a SELECT query
@@ -70,6 +78,32 @@ class ODBC extends DB_PDO {
 	public function num_rows()
 	{
 		// TODO: Implement
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Create an SQL backup file for the current database's structure
+	 *
+	 * @return string
+	 */
+	public function backup_structure()
+	{
+		// Not applicable to ODBC
+		return '';	
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Create an SQL backup file for the current database's data
+	 *
+	 * @return string
+	 */
+	public function backup_data()
+	{
+		// Not applicable to ODBC
+		return '';
 	}
 }
 // End of odbc.php

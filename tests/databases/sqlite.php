@@ -19,12 +19,6 @@
  */
 class SQLiteTest extends UnitTestCase {
 	
-	/**
-	 * __construct function.
-	 * 
-	 * @access public
-	 * @return void
-	 */
 	function __construct()
 	{
 		parent::__construct();
@@ -36,11 +30,11 @@ class SQLiteTest extends UnitTestCase {
 	{
 		$this->assertIsA($this->db, 'SQLite');
 	}
-
+	
 	function TestGetTables()
 	{
 		$tables = $this->db->get_tables();
-		$this->assertTrue( ! empty($tables));
+		$this->assertTrue(is_array($tables));
 	}
 	
 	function TestGetSystemTables()

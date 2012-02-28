@@ -39,6 +39,8 @@ class MySQL extends DB_PDO {
 		$class = __CLASS__.'_manip';
 		$this->manip = new $class;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Empty a table
@@ -50,6 +52,8 @@ class MySQL extends DB_PDO {
 		$this->query("TRUNCATE `{$table}`");
 	}
 
+	// --------------------------------------------------------------------------
+
 	/**
 	 * Get databases for the current connection
 	 * 
@@ -60,6 +64,8 @@ class MySQL extends DB_PDO {
 		$res = $this->query("SHOW DATABASES");
 		return $this->fetchAll(PDO::FETCH_ASSOC);
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Returns the tables available in the current database
@@ -71,6 +77,8 @@ class MySQL extends DB_PDO {
 		$res = $this->query("SHOW TABLES");
 		return $res->fetchAll(PDO::FETCH_ASSOC);
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Returns system tables for the current database
@@ -82,6 +90,8 @@ class MySQL extends DB_PDO {
 		//MySQL doesn't have system tables
 		return array();
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Return the number of rows returned for a SELECT query
@@ -91,6 +101,32 @@ class MySQL extends DB_PDO {
 	public function num_rows()
 	{
 		return isset($this->statement) ? $this->statement->rowCount() : FALSE;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Create an SQL backup file for the current database's structure
+	 *
+	 * @return string
+	 */
+	public function backup_structure()
+	{
+		// @todo Implement Backup function
+		return '';	
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Create an SQL backup file for the current database's data
+	 *
+	 * @return string
+	 */
+	public function backup_data()
+	{
+		// @todo Implement Backup function
+		return '';
 	}
 }
 //End of mysql.php

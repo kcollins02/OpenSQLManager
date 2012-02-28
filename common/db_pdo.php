@@ -183,7 +183,20 @@ abstract class DB_PDO extends PDO {
 	 * @return array
 	 */
 	abstract public function get_system_tables();
-
+	
+	/**
+	 * Return an SQL file with the database table structure
+	 *
+	 * @return string
+	 */
+	abstract public function backup_structure();
+	 
+	/**
+	 * Return an SQL file with the database data as insert statements
+	 *
+	 * @return string
+	 */
+	abstract public function backup_data();	 
 }
 
 // -------------------------------------------------------------------------

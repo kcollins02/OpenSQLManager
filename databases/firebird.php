@@ -35,6 +35,8 @@ class firebird extends DB_PDO {
 		$class = __CLASS__."_manip";
 		$this->manip = new $class;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Close the link to the database
@@ -44,6 +46,8 @@ class firebird extends DB_PDO {
 		@ibase_close($this->conn);
 		@ibase_free_result($this->statement);
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Empty a database table
@@ -56,6 +60,8 @@ class firebird extends DB_PDO {
 		$sql = 'DELETE FROM '.$table.'"';
 		$this->query($sql);
 	}
+	
+	// --------------------------------------------------------------------------
 	
 	/**
 	 * Wrapper public function to better match PDO
@@ -70,6 +76,8 @@ class firebird extends DB_PDO {
 		$this->statement = ibase_query($this->conn, $sql);
 		return $this->statement;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Emulate PDO fetch public function
@@ -94,6 +102,8 @@ class firebird extends DB_PDO {
 			break;
 		}
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Emulate PDO fetchAll public function
@@ -114,6 +124,8 @@ class firebird extends DB_PDO {
 
 		return $all;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Emulate PDO prepare
@@ -126,6 +138,8 @@ class firebird extends DB_PDO {
 		$this->statement = ibase_prepare($this->conn, $query);
 		return $this->statement;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * List tables for the current database
@@ -151,6 +165,8 @@ SQL;
 		
 		return $tables;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * List system tables for the current database
@@ -176,6 +192,8 @@ SQL;
 		
 		return $tables;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Return the number of rows affected by the previous query
@@ -186,6 +204,8 @@ SQL;
 	{
 		return ibase_affected_rows($this->conn);
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Return the number of rows returned for a SELECT query
@@ -206,6 +226,8 @@ SQL;
 		return count($this->result);
 	}
 	
+	// --------------------------------------------------------------------------
+	
 	/**
 	 * Start a database transaction
 	 * 
@@ -221,6 +243,8 @@ SQL;
 		return FALSE;
 	}
 	
+	// --------------------------------------------------------------------------
+	
 	/**
 	 * Commit a database transaction
 	 * 
@@ -231,6 +255,8 @@ SQL;
 		return ibase_commit($this->trans);
 	}
 	
+	// --------------------------------------------------------------------------
+	
 	/**
 	 * Rollback a transaction
 	 * 
@@ -240,6 +266,8 @@ SQL;
 	{
 		return ibase_rollback($this->trans);
 	}
+	
+	// --------------------------------------------------------------------------
 	
 	/**
 	 * Run a prepared statement query
@@ -256,6 +284,8 @@ SQL;
 		// the array of arguments into a list of arguments
 		return call_user_func_array('ibase_execute', $args);
 	}
+	
+	// --------------------------------------------------------------------------
 	
 	/**
 	 * Prepare and execute a query
@@ -274,6 +304,8 @@ SQL;
 		return $this->execute($args);
 	}
 	
+	// --------------------------------------------------------------------------
+	
 	/**
 	 * Bind a prepared query with arguments for executing
 	 *
@@ -286,6 +318,32 @@ SQL;
 		// You can't bind query statements before execution with
 		// the firebird database
 		return FALSE;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Create an SQL backup file for the current database's structure
+	 *
+	 * @return string
+	 */
+	public function backup_structure()
+	{
+		// @todo Implement Backup function
+		return '';	
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Create an SQL backup file for the current database's data
+	 *
+	 * @return string
+	 */
+	public function backup_data()
+	{
+		// @todo Implement Backup function
+		return '';
 	}
 }
 // End of firebird.php

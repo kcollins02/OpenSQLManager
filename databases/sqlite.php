@@ -34,6 +34,8 @@ class SQLite extends DB_PDO {
 		$class = __CLASS__."_manip";
 		$this->manip = new $class;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Empty a table
@@ -52,6 +54,8 @@ class SQLite extends DB_PDO {
 
 		$this->statement->execute();
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * List tables for the current database
@@ -77,6 +81,8 @@ SQL;
 
 		return $tables;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * List system tables for the current database
@@ -89,6 +95,8 @@ SQL;
 		// that is of any importance.
 		return array('sqlite_master');
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Load a database for the current connection
@@ -101,6 +109,8 @@ SQL;
 		$sql = "ATTACH DATABASE '{$db}' AS \"{$name}\"";
 		$this->query($sql);
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Unload a database from the current connection
@@ -117,6 +127,8 @@ SQL;
 
 		$this->statement->execute();
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Return the number of rows returned for a SELECT query
@@ -126,6 +138,32 @@ SQL;
 	public function num_rows()
 	{
 		return (isset($this->statement)) ? $this->statement->rowCount : FALSE;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Create an SQL backup file for the current database's structure
+	 *
+	 * @return string
+	 */
+	public function backup_structure()
+	{
+		// @todo Implement Backup function
+		return '';	
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Create an SQL backup file for the current database's data
+	 *
+	 * @return string
+	 */
+	public function backup_data()
+	{
+		// @todo Implement Backup function
+		return '';
 	}
 }
 //End of sqlite.php
