@@ -58,7 +58,7 @@ class SQLiteTest extends UnitTestCase {
 
 		//Check
 		$dbs = $this->db->get_tables();
-		$this->assertEqual($dbs['create_test'], 'CREATE TABLE create_test (id INTEGER PRIMARY KEY)');
+		$this->assertEqual($dbs['create_test'], 'CREATE TABLE "create_test" (id INTEGER PRIMARY KEY)');
 	}
 
 	function TestDeleteTable()
