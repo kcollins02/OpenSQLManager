@@ -41,6 +41,24 @@
 	public function delete_table($name)
 	{
 		return "DROP TABLE `{$name}`";
+	}
+
+	/**
+	 * Limit clause
+	 *
+	 * @param string $sql
+	 * @param int $limit
+	 * @param int $offset
+	 * @return string
+	 */
+	public function limit($sql, $limit, $offset=FALSE)
+	{
+		if ( ! is_numeric($offset))
+		{
+			return $sql." LIMIT {$limit}";
+		}
+
+		return $sql." LIMIT {$offset}, {$limit}";
 	}	
 }
 //End of mysql_sql.php

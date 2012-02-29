@@ -85,5 +85,30 @@ class Firebird_SQL extends DB_SQL {
 	{
 		return 'DROP TABLE "'.$name.'"';
 	}
+
+	/**
+	 * Limit clause
+	 *
+	 * @param string $sql
+	 * @param int $limit
+	 * @param int $offset
+	 * @return string
+	 */
+	public function limit($sql, $limit, $offset=FALSE)
+	{
+		// Keep the current sql string safe for a moment
+		$orig_sql = $sql;
+	
+		$sql = 'FIRST '. (int) $limit;
+		
+		if ($offset > 0)
+		{
+			$sql .= ' SKIP'. (int) $offset;
+		}
+		
+		$sql = preg_replace("`SELECT`i", "SELECT {$sql}", $orig_sql);
+		
+		return $sql;
+	} 
 }
 //End of firebird_sql.php

@@ -213,7 +213,6 @@ abstract class DB_SQL {
 	 * @param array $columns 
 	 * @param array $constraints 
 	 * @param array $indexes 
-	 * 
 	 * @return string
 	 */
 	abstract public function create_table($name, $columns, $constraints=array(), $indexes=array());
@@ -222,10 +221,19 @@ abstract class DB_SQL {
 	 * Get database-specific sql to drop a table
 	 * 
 	 * @param string $name
-	 * 
 	 * @return string
 	 */
 	abstract public function delete_table($name);
+
+	/**
+	 * Get database specific sql for limit clause
+	 *
+	 * @param string $sql
+	 * @param int $limiit
+	 * @param int $offset
+	 * @return string
+	 */
+	abstract public function limit($sql, $limit, $offset);
 
 	
 }

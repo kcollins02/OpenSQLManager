@@ -27,5 +27,18 @@ class ODBC_SQL extends DB_SQL {
 	{
 		return "DROP TABLE {$name}";
 	}
+
+	/**
+	 * Limit clause
+	 *
+	 * @param string $sql
+	 * @param int $limit
+	 * @param int $offset
+	 * @return string
+	 */
+	public function limit($sql, $limit, $offset=FALSE)
+	{
+		
+	}
 }
 // End of odbc_sql.php

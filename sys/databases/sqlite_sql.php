@@ -86,17 +86,21 @@ class SQLite_SQL extends DB_SQL {
 	}
 
 	/**
-	 * Create an sqlite database file
-	 * 
-	 * @param  $path
+	 * Limit clause
+	 *
+	 * @param string $sql
+	 * @param int $limit
+	 * @param int $offset
+	 * @return string
 	 */
-	public function create_db($path)
+	public function limit($sql, $limit, $offset=FALSE)
 	{
-		// Create the file if it doesn't exist
-		if( ! file_exists($path))
+		if ( ! is_numeric($offset))
 		{
-			touch($path);
+			return $sql." LIMIT {$limit}";
 		}
+
+		return $sql." LIMIT {$offset}, {$limit}";
 	}
 }
 //End of sqlite_sql.php

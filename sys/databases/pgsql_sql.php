@@ -27,5 +27,25 @@ class pgSQL_SQL extends DB_SQL {
 		return 'DROP TABLE "'.$name.'"';
 	}
 
+	/**
+	 * Limit clause
+	 *
+	 * @param string $sql
+	 * @param int $limit
+	 * @param int $offset
+	 * @return string
+	 */
+	public function limit($sql, $limit, $offset=FALSE)
+	{
+		$sql .= " LIMIT {$limit}";
+
+		if(is_numeric($offset))
+		{
+			$sql .= " OFFSET {$offset}";
+		}
+
+		return $sql;
+	}
+
 }
 //End of pgsql_manip.php
