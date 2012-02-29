@@ -94,7 +94,7 @@ foreach(pdo_drivers() as $d)
 	if(is_file($file))
 	{
 		require_once("{$path}{$d}.php");
-		require_once("{$path}{$d}_manip.php");
+		require_once("{$path}{$d}_sql.php");
 	}
 }
 
@@ -102,7 +102,7 @@ foreach(pdo_drivers() as $d)
 if(function_exists('ibase_connect'))
 {
 	require_once("{$path}firebird.php");
-	require_once("{$path}firebird_manip.php");
+	require_once("{$path}firebird_sql.php");
 }
 
 // --------------------------------------------------------------------------

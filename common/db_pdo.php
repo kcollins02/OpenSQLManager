@@ -204,7 +204,7 @@ abstract class DB_PDO extends PDO {
 /**
  * Abstract parent for database manipulation subclasses
  */
-abstract class db_manip {
+abstract class DB_SQL {
 	
 	/**
 	 * Get database-specific sql to create a new table
@@ -226,5 +226,7 @@ abstract class db_manip {
 	 * @return string
 	 */
 	abstract public function delete_table($name);
+
+	
 }
 // End of db_pdo.php

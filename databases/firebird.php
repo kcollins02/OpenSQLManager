@@ -28,12 +28,12 @@ class firebird extends DB_PDO {
 	 * @param string $user 
 	 * @param string $pass
 	 */
-	public function __construct($dbpath, $user="sysdba", $pass="masterkey")
+	public function __construct($dbpath, $user='sysdba', $pass='masterkey')
 	{
-		$this->conn =& ibase_connect($dbpath, $user, $pass);
+		$this->conn =& ibase_connect($dbpath, $user, $pass, 'utf-8');
 		
-		$class = __CLASS__."_manip";
-		$this->manip = new $class;
+		$class = __CLASS__."_sql";
+		$this->sql = new $class;
 	}
 	
 	// --------------------------------------------------------------------------

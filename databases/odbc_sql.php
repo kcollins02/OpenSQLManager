@@ -10,26 +10,22 @@
  * @license 	http://philsturgeon.co.uk/code/dbad-license 
  */
 
-// --------------------------------------------------------------------------
+ // --------------------------------------------------------------------------
 
-/**
- * PostgreSQL DB Structure manipulation class
- *
- * @extends PgSQL
- */
-class pgSQL_manip extends db_manip {
-	
+ /**
+  * ODBC SQL Class
+  */
+class ODBC_SQL extends DB_SQL {
+
 	public function create_table($name, $columns, $constraints=array(), $indexes=array())
 	{
-		//TODO: implement
+		//ODBC can't know how to create a table
+		return FALSE;
 	}
 
 	public function delete_table($name)
 	{
-		return <<<SQL
-			DROP TABLE "{$name}"
-SQL;
+		return "DROP TABLE {$name}";
 	}
-
 }
-//End of pgsql_manip.php
+// End of odbc_sql.php

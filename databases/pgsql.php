@@ -32,8 +32,8 @@ class pgSQL extends DB_PDO {
 		parent::__construct("pgsql:$dsn", $username, $password, $options);
 
 		//Get db manip class
-		$class = __CLASS__.'_manip';
-		$this->manip = new $class;
+		$class = __CLASS__.'_sql';
+		$this->sql = new $class;
 	}
 	
 	// --------------------------------------------------------------------------

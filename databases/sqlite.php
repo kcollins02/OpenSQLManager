@@ -31,8 +31,8 @@ class SQLite extends DB_PDO {
 		// DSN is simply `sqlite:/path/to/db`
 		parent::__construct("sqlite:{$dsn}", $user, $pass);
 
-		$class = __CLASS__."_manip";
-		$this->manip = new $class;
+		$class = __CLASS__."_sql";
+		$this->sql = new $class;
 	}
 	
 	// --------------------------------------------------------------------------

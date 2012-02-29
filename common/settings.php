@@ -171,5 +171,19 @@ class Settings {
 	{
 		return $this->current->dbs;
 	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Retreive a specific database connection
+	 *
+	 * @param string $name
+	 * @return object
+	 */
+	public function get_db($name)
+	{
+		return (isset($this->current->dbs->{$name})) ? $this->current->dbs->{$name} : FALSE;
+	}
+
 }
 // End of settings.php

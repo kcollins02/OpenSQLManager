@@ -13,9 +13,9 @@
 // --------------------------------------------------------------------------
 
 /**
- * SQLite Database manipulation class
+ * SQLite Specific SQL
  */
-class SQLite_manip extends db_manip {
+class SQLite_SQL extends DB_SQL {
 
 	/**
 	 * Convenience public function to create a new table
@@ -99,4 +99,4 @@ class SQLite_manip extends db_manip {
 		}
 	}
 }
-//End of sqlite_manip.php
+//End of sqlite_sql.php

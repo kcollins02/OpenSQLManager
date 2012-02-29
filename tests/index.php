@@ -45,7 +45,7 @@ foreach(pdo_drivers() as $d)
 	if(is_file($src_file))
 	{
 		require_once("{$src_path}{$d}.php");
-		require_once("{$src_path}{$d}_manip.php");
+		require_once("{$src_path}{$d}_sql.php");
 		require_once("{$test_path}{$d}.php");
 	}
 }
@@ -54,6 +54,6 @@ foreach(pdo_drivers() as $d)
 if(function_exists('ibase_connect'))
 {
 	require_once("{$src_path}firebird.php");
-	require_once("{$src_path}firebird_manip.php");
+	require_once("{$src_path}firebird_sql.php");
 	require_once("{$test_path}firebird.php");
 }

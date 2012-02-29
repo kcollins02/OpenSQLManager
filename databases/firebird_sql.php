@@ -13,11 +13,9 @@
 // --------------------------------------------------------------------------
 
 /**
- * Firebird Database Manipulation class
- * 
- * PDO-firebird isn't stable, so this is a wrapper of the ibase_ public functions.
+ * Firebird Specific SQL
  */
-class firebird_manip extends db_manip {
+class Firebird_SQL extends DB_SQL {
 
 	/**
 	 * Convienience public function to generate sql for creating a db table
@@ -88,4 +86,4 @@ class firebird_manip extends db_manip {
 		return 'DROP TABLE "'.$name.'"';
 	}
 }
-//End of firebird_manip.php
+//End of firebird_sql.php

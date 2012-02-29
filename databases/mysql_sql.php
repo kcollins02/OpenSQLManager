@@ -13,9 +13,9 @@
  // --------------------------------------------------------------------------
  
  /**
-  * MySQL Database manipulation class 
+  * MySQL specifc SQL
   */
- class MySQL_manip extends db_manip{
+ class MySQL_SQL extends DB_SQL{
 
  	/**
  	 * Convienience public function for creating a new MySQL table
@@ -40,9 +40,7 @@
 	 */
 	public function delete_table($name)
 	{
-		return <<<SQL
-			DROP TABLE `{$name}`
-SQL;
+		return "DROP TABLE `{$name}`";
 	}	
 }
-//End of mysql_manip.php
+//End of mysql_sql.php

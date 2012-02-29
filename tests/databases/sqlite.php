@@ -47,7 +47,7 @@ class SQLiteTest extends UnitTestCase {
 	function TestCreateTable()
 	{
 		//Attempt to create the table
-		$sql = $this->db->manip->create_table('create_test', 
+		$sql = $this->db->sql->create_table('create_test', 
 			array(
 				'id' => 'INTEGER',
 				'key' => 'TEXT',
@@ -95,7 +95,7 @@ SQL;
 		$this->assertTrue(isset($dbs['create_test']));
 
 		//Attempt to delete the table
-		$sql = $this->db->manip->delete_table('create_test');
+		$sql = $this->db->sql->delete_table('create_test');
 		$this->db->query($sql);
 
 		//Check

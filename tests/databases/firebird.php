@@ -72,7 +72,7 @@ class FirebirdTest extends UnitTestCase {
 	function TestCreateTable()
 	{
 		//Attempt to create the table
-		$sql = $this->db->manip->create_table('create_test', array(
+		$sql = $this->db->sql->create_table('create_test', array(
 			'id' => 'SMALLINT', 
 			'key' => 'VARCHAR(64)', 
 			'val' => 'BLOB SUB_TYPE TEXT'
@@ -123,7 +123,7 @@ SQL;
 	function TestDeleteTable()
 	{
 		//Attempt to delete the table
-		$sql = $this->db->manip->delete_table('create_test');
+		$sql = $this->db->sql->delete_table('create_test');
 		$this->db->query($sql);
 		
 		//Reset
