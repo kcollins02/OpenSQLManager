@@ -68,13 +68,13 @@ class firebird extends DB_PDO {
 	 *
 	 * @param string $sql
 	 * @param  array $params
-	 * @return resource
+	 * @return $this
 	 */
 	public function query($sql)
 	{
 		$this->count = 0;
 		$this->statement = ibase_query($this->conn, $sql);
-		return $this->statement;
+		return $this;
 	}
 	
 	// --------------------------------------------------------------------------
@@ -131,12 +131,12 @@ class firebird extends DB_PDO {
 	 * Emulate PDO prepare
 	 *
 	 * @param string $query
-	 * @return resource
+	 * @return $this
 	 */
 	public function prepare($query)
 	{
 		$this->statement = ibase_prepare($this->conn, $query);
-		return $this->statement;
+		return $this;
 	}
 	
 	// --------------------------------------------------------------------------
