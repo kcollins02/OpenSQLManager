@@ -17,6 +17,7 @@ Because php-gtk is such a pain to compile on Windows, I've put together this pac
 		* php5-mysql
 		* php5-postgresql
 		* php5-sqlite
+		* php5-ssh2
 	* Run via terminal in the OpenSQLManager folder using `php index.php`
 
 ## PHP Requirements
