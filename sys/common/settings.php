@@ -38,7 +38,7 @@ class Settings {
 	 */
 	protected function __construct()
 	{
-		$path = BASE_DIR.'/settings.json'; 
+		$path = SETTINGS_DIR.'/settings.json'; 
 
 		if( ! is_file($path))
 		{
@@ -64,7 +64,7 @@ class Settings {
 	 */
 	public function __destruct()
 	{
-		file_put_contents(BASE_DIR . '/settings.json', json_encode($this->current));
+		file_put_contents(SETTINGS_DIR . '/settings.json', json_encode($this->current));
 	}
 
 	// --------------------------------------------------------------------------

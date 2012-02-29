@@ -27,7 +27,8 @@ error_reporting(-1 & ~(E_STRICT));
 date_default_timezone_set('GMT');
 
 // Set the current directory as the base for included files
-define('BASE_DIR', dirname(__FILE__));
+define('BASE_DIR', dirname(__FILE__).'/sys');
+define('SETTINGS_DIR', dirname(__FILE__));
 
 // --------------------------------------------------------------------------
 
