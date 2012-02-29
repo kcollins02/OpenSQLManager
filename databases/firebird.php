@@ -365,11 +365,11 @@ SQL;
 		$output_sql = '';
 		
 		// Get the data for each object
-		foreach($table as $r)
+		foreach($tables as $t)
 		{
-			$sql = 'SELECT * FROM "'.$r['name'].'"';
+			$sql = 'SELECT * FROM "'.trim($t).'"';
 			$res = $this->query($sql);
-			$obj_res = $res->fetchAll(PDO::FETCH_ASSOC);
+			$obj_res = $this->fetchAll(PDO::FETCH_ASSOC);
 			
 			unset($res);
 			
@@ -389,7 +389,7 @@ SQL;
 					$row[$i] = (is_numeric($row[$i])) ? $row[$i] : $this->quote($row[$i]);
 				}
 				
-				$row_string = 'INSERT INTO "'.$r['name'].'" ("'.implode('","', $columns).'") VALUES ('.implode(',', $row).');';
+				$row_string = 'INSERT INTO "'.trim($t).'" ("'.implode('","', $columns).'") VALUES ('.implode(',', $row).');';
 				
 				unset($row);
 				

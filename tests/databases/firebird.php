@@ -118,8 +118,6 @@ SQL;
 
 	function TestDeleteTable()
 	{
-		?><pre><?= $this->db->backup_data(); ?></pre><?php
-
 		//Attempt to delete the table
 		$sql = $this->db->manip->delete_table('create_test');
 		$this->db->query($sql);
