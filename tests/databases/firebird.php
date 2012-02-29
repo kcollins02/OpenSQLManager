@@ -99,7 +99,7 @@ class FirebirdTest extends UnitTestCase {
 			VALUES (?,?,?)
 SQL;
 		$this->db->prepare($sql);
-		$this->db->execute(array(1,"boogers", "Gross"));
+		$this->db->execute(array(1,"booger's", "Gross"));
 
 	}
 	
