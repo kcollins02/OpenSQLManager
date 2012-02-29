@@ -9,7 +9,6 @@ Because php-gtk is such a pain to compile on Windows, I've put together this pac
 * Version 5.2 - 5.3.*
 * PHP-Cairo PECL extension
 * [PHP-GTK](http://gtk.php.net) PHP Extension
-* Curl
 * OpenSSL
 * JSON
 * PDO
