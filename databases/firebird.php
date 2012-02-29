@@ -30,7 +30,7 @@ class firebird extends DB_PDO {
 	 */
 	public function __construct($dbpath, $user="sysdba", $pass="masterkey")
 	{
-		$this->conn = ibase_connect($dbpath, $user, $pass);
+		$this->conn =& ibase_connect($dbpath, $user, $pass);
 		
 		$class = __CLASS__."_manip";
 		$this->manip = new $class;
@@ -73,8 +73,8 @@ class firebird extends DB_PDO {
 	public function query($sql)
 	{
 		$this->count = 0;
-		$this->statement = ibase_query($this->conn, $sql);
-		return $this;
+		$this->statement =& ibase_query($this->conn, $sql);
+		return $this->statement;
 	}
 	
 	// --------------------------------------------------------------------------
@@ -98,7 +98,7 @@ class firebird extends DB_PDO {
 			break;
 
 			default:
-				return ibase_fetch_assoc($this->statement, IBASE_FETCH_BLOBS);
+				return ibase_fetch_assoc(&$this->statement, IBASE_FETCH_BLOBS);
 			break;
 		}
 	}
@@ -135,8 +135,8 @@ class firebird extends DB_PDO {
 	 */
 	public function prepare($query)
 	{
-		$this->statement = ibase_prepare($this->conn, $query);
-		return $this;
+		$this->statement =& ibase_prepare($this->conn, $query);
+		return $this->statement;
 	}
 	
 	// --------------------------------------------------------------------------
@@ -154,7 +154,7 @@ class firebird extends DB_PDO {
 			AND "RDB\$RELATION_NAME" NOT LIKE 'MON$%'
 SQL;
 
-		$this->statement = $this->query($sql);
+		$this->statement =& $this->query($sql);
 		
 		$tables = array();
 		
@@ -181,7 +181,7 @@ SQL;
 			OR "RDB\$RELATION_NAME" LIKE 'MON$%';
 SQL;
 
-		$this->statement = $this->query($sql);
+		$this->statement =& $this->query($sql);
 
 		$tables = array();
 
@@ -221,7 +221,7 @@ SQL;
 		}
 
 		//Fetch all the rows for the result
-		$this->result = $this->fetchAll();
+		$this->result =& $this->fetchAll();
 
 		return count($this->result);
 	}
@@ -235,7 +235,7 @@ SQL;
 	 */
 	public function beginTransaction()
 	{
-		if(($this->trans = ibase_trans($this->conn)) !== NULL)
+		if(($this->trans =& ibase_trans($this->conn)) !== NULL)
 		{
 			return TRUE;
 		}
