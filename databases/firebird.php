@@ -356,11 +356,28 @@ SQL;
 	/**
 	 * Create an SQL backup file for the current database's data
 	 *
+	 * @param array $exclude
+	 * @param bool $system_tables
 	 * @return string
 	 */
-	public function backup_data()
+	public function backup_data($exclude=array(), $system_tables=FALSE)
 	{
-		$tables = $this->get_tables();
+		// Determine which tables to use
+		if($system_tables == TRUE)
+		{
+			$tables = array_merge($this->get_system_tables(), $this->get_tables());
+		}
+		else
+		{
+			$tables = $this->get_tables();
+		}
+		
+		// Filter out the tables you don't want
+		if( ! empty($exclude))
+		{
+			$tables = array_diff($tables, $exclude);
+		}
+		
 
 		$output_sql = '';
 		
@@ -374,7 +391,7 @@ SQL;
 			unset($res);
 			
 			// Nab the column names by getting the keys of the first row
-			$columns = array_keys($obj_res[0]);
+			$columns = @array_keys($obj_res[0]);
 			
 			$insert_rows = array();
 			
@@ -384,7 +401,11 @@ SQL;
 				$row = array_values($row);
 			
 				// Quote values as needed by type
-				$row = array_map(array(&$this, 'quote'), $row);
+				if(stripos($t, 'RDB$') === FALSE)
+				{
+					$row = array_map(array(&$this, 'quote'), $row);
+					$row = array_map('trim', $row);
+				}
 				
 				$row_string = 'INSERT INTO "'.trim($t).'" ("'.implode('","', $columns).'") VALUES ('.implode(',', $row).');';
 				
@@ -395,7 +416,7 @@ SQL;
 			
 			unset($obj_res);
 			
-			$output_sql .= "\n\n".implode("\n", $insert_rows);
+			$output_sql .= "\n\nSET TRANSACTION;\n".implode("\n", $insert_rows)."\nCOMMIT;";
 		}
 		
 		return $output_sql;
