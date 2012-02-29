@@ -22,8 +22,9 @@ class SQLiteTest extends UnitTestCase {
 	function __construct()
 	{
 		parent::__construct();
-		
-		$this->db = new SQLite(dirname(__FILE__)."/../test_dbs/test_sqlite.db");
+
+		$path = dirname(__FILE__)."/../test_dbs/test_sqlite.db";
+		$this->db = new SQLite($path);
 	}
 
 	function TestConnection()
