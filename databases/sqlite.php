@@ -106,7 +106,7 @@ SQL;
 	 */
 	public function load_database($db, $name)
 	{
-		$sql = "ATTACH DATABASE '{$db}' AS \"{$name}\"";
+		$sql = 'ATTACH DATABASE "'.$db.'" AS "'.$name.'"';
 		$this->query($sql);
 	}
 	

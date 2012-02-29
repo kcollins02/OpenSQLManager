@@ -190,7 +190,7 @@ abstract class DB_PDO extends PDO {
 	 * @return string
 	 */
 	abstract public function backup_structure();
-	 
+	
 	/**
 	 * Return an SQL file with the database data as insert statements
 	 *

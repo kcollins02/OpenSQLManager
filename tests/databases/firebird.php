@@ -72,7 +72,11 @@ class FirebirdTest extends UnitTestCase {
 	function TestCreateTable()
 	{
 		//Attempt to create the table
-		$sql = $this->db->manip->create_table('create_test', array('id' => 'SMALLINT', 'key' => 'VARCHAR(64)', 'val' => 'BLOB SUB_TYPE TEXT'));
+		$sql = $this->db->manip->create_table('create_test', array(
+			'id' => 'SMALLINT', 
+			'key' => 'VARCHAR(64)', 
+			'val' => 'BLOB SUB_TYPE TEXT'
+		));
 		$this->db->query($sql);
 		
 		//This test fails for an unknown reason, when clearly the table exists
