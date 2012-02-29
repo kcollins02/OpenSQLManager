@@ -384,10 +384,7 @@ SQL;
 				$row = array_values($row);
 			
 				// Quote values as needed by type
-				for($i=0, $icount=count($row); $i<$icount; $i++)
-				{
-					$row[$i] = (is_numeric($row[$i])) ? $row[$i] : $this->quote($row[$i]);
-				}
+				$row = array_map(array(&$this, 'quote'), $row);
 				
 				$row_string = 'INSERT INTO "'.trim($t).'" ("'.implode('","', $columns).'") VALUES ('.implode(',', $row).');';
 				
