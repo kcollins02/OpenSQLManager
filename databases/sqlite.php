@@ -171,12 +171,19 @@ SQL;
 	/**
 	 * Create an SQL backup file for the current database's data
 	 *
+	 * @param array $excluded
 	 * @return string
 	 */
-	public function backup_data()
+	public function backup_data($excluded=array())
 	{
 		// Get a list of all the objects
 		$sql = 'SELECT "name" FROM "sqlite_master"';
+
+		if( ! empty($excluded))
+		{
+			$sql .= ' WHERE NOT IN("'.implode('","', $excluded).'")';
+		}
+
 		$res = $this->query($sql);
 		$result = $res->fetchAll(PDO::FETCH_ASSOC);
 		
@@ -218,7 +225,7 @@ SQL;
 			
 			unset($obj_res);
 			
-			$output_sql = implode("\n", $insert_rows);
+			$output_sql .= "\n\n".implode("\n", $insert_rows);
 		}
 		
 		return $output_sql;
