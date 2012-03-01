@@ -128,5 +128,21 @@ class MySQL extends DB_PDO {
 		// @todo Implement Backup function
 		return '';
 	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Surrounds the string with the databases identifier escape characters
+	 *
+	 * @param string $ident
+	 * @return string
+	 */
+	public function quote_ident($ident)
+	{
+		// Split each identifier by the period
+		$hiers = explode('.', $ident);
+
+		return '`'.implode('`.`', $hiers).'`';
+	}
 }
 //End of mysql.php

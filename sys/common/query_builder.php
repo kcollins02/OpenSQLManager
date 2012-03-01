@@ -18,6 +18,8 @@
  */
 class Query_Builder {
 
+	private $table, 
+
 	/**
 	 * Constructor
 	 * 
@@ -70,4 +72,22 @@ class Query_Builder {
 		}
 	}
 
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Select and retrieve all records from the current table, and/or
+	 * execute current compiled query
+	 *
+	 * @param $table
+	 * @param int $limit
+	 * @param int $offset
+	 * @return object
+	 */
+	public function get($table='', $limit=FALSE, $offset=FALSE)
+	{
+		if ( ! empty($table) && $limit === FALSE && $offset === FALSE)
+		{
+			return $this->query('SELECT * FROM ' . $this->quote_ident($table));
+		}
+	}
 }

@@ -147,6 +147,22 @@ abstract class DB_PDO extends PDO {
 		echo "Error: <pre>{$info[0]}:{$info[1]}\n{$info[2]}</pre>";
 	}
 
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Surrounds the string with the databases identifier escape characters
+	 *
+	 * @param string $ident
+	 * @return string
+	 */
+	public function quote_ident($ident)
+	{
+		// Split each identifier by the period
+		$hiers = explode('.', $ident);
+
+		return '"'.implode('"."', $hiers).'"';
+	}
+
 	// -------------------------------------------------------------------------
 
 	/**
@@ -196,7 +212,7 @@ abstract class DB_PDO extends PDO {
 	 *
 	 * @return string
 	 */
-	abstract public function backup_data();	 
+	abstract public function backup_data();
 }
 
 // -------------------------------------------------------------------------
@@ -234,7 +250,5 @@ abstract class DB_SQL {
 	 * @return string
 	 */
 	abstract public function limit($sql, $limit, $offset);
-
-	
 }
 // End of db_pdo.php
