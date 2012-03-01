@@ -23,13 +23,24 @@ class Query_Builder {
 	/**
 	 * Constructor
 	 * 
-	 * @param string $conn_name - the name of the connection
+	 * @param mixed $conn_name - the name of the connection/parameters
 	 */
 	function __construct($conn_name)
 	{
-		$this->settings =& Settings::get_instance();
 
-		$params = $this->settings->get_db($conn_name);
+		// Add some flexibility for testing
+		if(class_exists('settings'))
+		{
+			$this->settings =& Settings::get_instance();
+
+			$params = (is_scalar($conn_name)) 
+			? $this->settings->get_db($conn_name)
+			: $conn_name;
+		}
+		else
+		{
+			$params = $conn_name;
+		}
 
 		$params->type = strtolower($params->type);
 		$dbtype = ($params->type !== 'postgresql') ? $params->type : 'pgsql';
@@ -42,13 +53,32 @@ class Query_Builder {
 			break;
 
 			case "sqlite":
-				$this->db = new $dbtype($params->file, $params->user, $params->pass);
+				if ( ! empty($params->user) &&  ! empty($params->pass))
+				{
+					$this->db = new $dbtype($params->file, $params->user, $params->pass);
+				}
+				else
+				{
+					$this->db = new $dbtype($params->file);
+				}
 			break;
 
 			case "firebird":
 				$this->db = new $dbtype("{$params->host}:{$params->file}", $params->user, $params->pass);
 			break;
 		}
+	}
+
+	// --------------------------------------------------------------------------
+
+	public function __get($key)
+	{
+		if (isset($this->db->$key))
+		{
+			return $this->db->$key;
+		}
+
+		return NULL;
 	}
 
 	// --------------------------------------------------------------------------
@@ -62,14 +92,15 @@ class Query_Builder {
 	 */
 	public function __call($name, $params)
 	{
-		if (is_callable($this->$db->$name))
+		if (isset($this->db->$name))
 		{
-			return call_user_func_array(array(&$this->db, $name), $params);
+			if (is_callable($this->db->$name))
+			{
+				return call_user_func_array($this->db->$name, $params);
+			}
 		}
-		else
-		{
-			return NULL;
-		}
+
+		return NULL;
 	}
 
 	// --------------------------------------------------------------------------
