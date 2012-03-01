@@ -169,11 +169,25 @@ class Connection_Sidebar extends GtkVBox {
 	 */
 	public function on_button($view, $event)
 	{
+		if ($event->button !== 3 || empty($view))
+		{
+			return;
+		}
+
 		// Right click
-		if($event->button == 3)
+		if ($event->button == 3)
 		{
 			// get the row and column
 			list($path_array, $col, $x, $y)= $view->get_path_at_pos($event->x, $event->y);
+
+			// Don't try to get values for an item that doesn't exist. Instead, return,
+			// so that the program doesn't crash because someone thought it funny
+			// to click on the empty area of the treeview.
+			if(empty($col))
+			{
+				return;
+			}
+
 			$path = $path_array[0];
 			//$col = $path_array[1];
 			$col_title = $col->get_title();
@@ -197,7 +211,14 @@ class Connection_Sidebar extends GtkVBox {
 		$this->menu = new GtkMenu();
 
 		// Set up menu items
+		{
+			$remove = new GtkImageMenuItem('Delete Connection');
+			$remove->set_image(GtkImage::new_from_stock(GTK::STOCK_CANCEL, Gtk::ICON_SIZE_MENU));
+
+			$this->menu->append($remove);
+		}
 		
+		// Popup the menu
 		$this->menu->show_all();
 		$this->menu->popup();
 	}
@@ -212,6 +233,7 @@ class Connection_Sidebar extends GtkVBox {
 	 */
 	public function remove_connection($key)
 	{
+		//@todo implement
 		$model = $this->treeview->get_model();
 	}
 
@@ -226,6 +248,7 @@ class Connection_Sidebar extends GtkVBox {
 	 */
 	public function add_connection($key, $vals)
 	{
+		//@todo implement
 		$model = $this->treeview->get_model();
 	}
 

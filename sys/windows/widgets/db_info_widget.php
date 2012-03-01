@@ -112,8 +112,16 @@ class DB_Info_Widget extends GtkTable {
 			$add_button->set_label("Add Connnection");
 			$add_button->set_image(GTKImage::new_from_stock(GTK::STOCK_ADD, 
 				Gtk::ICON_SIZE_SMALL_TOOLBAR));	
-			$this->attach($add_button, 0, 3, ++$y1, ++$y2);
+			$this->attach($add_button, 0, 1, ++$y1, ++$y2);
 			$add_button->connect_simple("clicked", array($this, 'db_add'));	
+		}
+
+		// Test connection button
+		{
+			$test_button = new GtkButton();
+			$test_button->set_label("Test Connection");
+			$this->attach($test_button, 1, 2, $y1, $y2);
+			$test_button->connect_simple("clicked", array($this, 'test_conn'));
 		}
 	}
 
@@ -210,6 +218,7 @@ class DB_Info_Widget extends GtkTable {
 			'host' => $this->host->get_text(),
 			'user' => $this->user->get_text(),
 			'pass' => $this->pass->get_text(),
+			'port' => $this->port->get_text(),
 			'file' => $this->db_file->get_filename(),
 		);
 
@@ -222,6 +231,53 @@ class DB_Info_Widget extends GtkTable {
 		$parent_window =& $this->get_parent_window();
 
 		$parent_window->destroy();
+	}
+
+	/**
+	 * Test a db connection, and display a popup with the result of the test
+	 */
+	public function test_conn()
+	{
+		$params = new stdClass();
+
+		$params->type = strtolower($this->dbtype->get_active_text());
+		$params->host = $this->host->get_text();
+		$params->user = $this->user->get_text();
+		$params->pass = $this->pass->get_text();
+		$params->port = $this->port->get_text();
+		$params->file = $this->db_file->get_filename();
+
+		try
+		{
+			$db = new Query_Builder($params);
+		}
+		catch (PDOException $e)
+		{
+			$dialog = new GTKMessageDialog(
+				NULL,
+				Gtk::DIALOG_MODAL,
+				Gtk::MESSAGE_ERROR,
+				Gtk::BUTTONS_OK,
+				"Error connecting to database: \n\n" . $e->getMessage()
+			);
+			$dialog->run();
+			$dialog->destroy();
+
+			return;
+		}
+
+		$dialog = new GTKMessageDialog(
+			NULL,
+			Gtk::DIALOG_MODAL,
+			Gtk::MESSAGE_INFO,
+			Gtk::BUTTONS_OK,
+			"Successfully connected"
+		);
+
+		$dialog->run();
+		$dialog->destroy();
+
+		return;
 	}
 
 	/**

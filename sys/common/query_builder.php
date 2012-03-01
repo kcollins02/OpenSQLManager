@@ -31,7 +31,7 @@ class Query_Builder {
 		// Add some flexibility for testing
 		if(class_exists('settings'))
 		{
-			$this->settings =& Settings::get_instance();
+			$this->settings = Settings::get_instance();
 
 			$params = (is_scalar($conn_name)) 
 			? $this->settings->get_db($conn_name)
