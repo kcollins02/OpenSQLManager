@@ -187,7 +187,7 @@ class Connection_Sidebar extends GtkVBox {
 	/**
 	 * Creates and displays a context menu for the selected connection
 	 * 
-	 * @param  aray $pos 
+	 * @param  array $pos 
 	 * @param  string $title
 	 * @param  object $event
 	 * @return void
@@ -227,8 +227,6 @@ class Connection_Sidebar extends GtkVBox {
 	public function add_connection($key, $vals)
 	{
 		$model = $this->treeview->get_model();
-
-
 	}
 
 }
