@@ -18,7 +18,7 @@
  */
 class Query_Builder {
 
-	private $table, 
+	private $table;
 
 	/**
 	 * Constructor

@@ -50,10 +50,10 @@ class SSH {
 	{
 		if($auth_type === 'password')
 		{
-			ssh2_auth_password(&$this->session, $auth_params['user'], $auth_params['pass']);
+			ssh2_auth_password($this->session, $auth_params['user'], $auth_params['pass']);
 		}
 
-		$this->stream =& ssh2_tunnel(&$this->session, $host, $port);
+		$this->stream =& ssh2_tunnel($this->session, $host, $port);
 
 		return $this->stream;
 	}

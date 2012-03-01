@@ -378,7 +378,6 @@ SQL;
 			$tables = array_diff($tables, $exclude);
 		}
 		
-
 		$output_sql = '';
 		
 		// Get the data for each object
