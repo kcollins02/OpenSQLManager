@@ -90,6 +90,13 @@ $path = BASE_DIR . "/databases/";
 
 foreach(pdo_drivers() as $d)
 {
+
+	// Use the ibase_functions over PDO::Firebird, at least for now
+	if($d == 'firebird')
+	{
+		continue;
+	}
+
 	$file = "{$path}{$d}.php";
 	
 	if(is_file($file))

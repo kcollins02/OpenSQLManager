@@ -29,11 +29,6 @@ class MySQL extends DB_PDO {
 	 */
 	public function __construct($dsn, $username=null, $password=null, $options=array())
 	{
-		$options = array_merge(array(
-			PDO::MYSQL_ATTR_FOUND_ROWS => true
-		),
-		$options);
-
 		parent::__construct("mysql:$dsn", $username, $password, $options);
 
 		$class = __CLASS__.'_sql';

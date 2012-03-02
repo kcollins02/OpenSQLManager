@@ -158,7 +158,7 @@ class DB_Info_Widget extends GtkTable {
 		$new_db = $this->dbtype->get_active_text();
 
 		// Reset
-		$this->host->set_text('localhost');
+		$this->host->set_text('127.0.0.1');
 		$this->db_file->set_filename(NULL);
 		$this->port->show();
 		$this->lblport->show();
@@ -295,11 +295,19 @@ class DB_Info_Widget extends GtkTable {
 			return FALSE;
 		}
 
+		$pdo_drivers = pdo_drivers();
+
 		// Add PDO drivers
-		foreach(pdo_drivers() as $d)
+		foreach($pdo_drivers as $d)
 		{
 			// Skip sqlite2 as opposed to sqlite3
-			if($d === 'sqlite2')
+			if($d === 'sqlite2' && in_array('sqlite', $pdo_drivers))
+			{
+				continue;
+			}
+
+			// Use the ibase_functions over PDO::Firebird, at least for now
+			if($d === 'firebird')
 			{
 				continue;
 			}
