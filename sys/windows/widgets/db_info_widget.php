@@ -247,6 +247,14 @@ class DB_Info_Widget extends GtkTable {
 		$params->port = $this->port->get_text();
 		$params->file = $this->db_file->get_filename();
 
+		// Return early if a db type isn't selected.
+		// Better to bail out then crash because of
+		// silly user input.
+		if( empty($this->dbtype->get_active_text()))
+		{
+			return;
+		}
+
 		try
 		{
 			$db = new Query_Builder($params);
@@ -266,13 +274,39 @@ class DB_Info_Widget extends GtkTable {
 			return;
 		}
 
-		$dialog = new GTKMessageDialog(
-			NULL,
-			Gtk::DIALOG_MODAL,
-			Gtk::MESSAGE_INFO,
-			Gtk::BUTTONS_OK,
-			"Successfully connected"
-		);
+		// Sometimes there's not an exception, 
+		// check for an error so as not to 
+		// give false positive connections
+		if(empty($db->errorInfo()))
+		{
+			$dialog = new GTKMessageDialog(
+				NULL,
+				Gtk::DIALOG_MODAL,
+				Gtk::MESSAGE_INFO,
+				Gtk::BUTTONS_OK,
+				"Successfully connected"
+			);
+		}
+		else
+		{
+			$err = $db->errorInfo();
+
+			$msg = $err[count($err) - 1];
+			$code = $err[1];
+
+			$dialog = new GTKMessageDialog(
+				NULL,
+				Gtk::DIALOG_MODAL,
+				Gtk::MESSAGE_ERROR,
+				Gtk::BUTTONS_OK,
+				"Error connecting to database: \n\n" . 
+				"Error # {$code}\n".
+				$msg
+			);
+
+		}
+
+		
 
 		$dialog->run();
 		$dialog->destroy();
@@ -301,7 +335,7 @@ class DB_Info_Widget extends GtkTable {
 		foreach($pdo_drivers as $d)
 		{
 			// Skip sqlite2 as opposed to sqlite3
-			if($d === 'sqlite2' && in_array('sqlite', $pdo_drivers))
+			if($d === 'sqlite2' && (in_array('sqlite', $pdo_drivers) || in_array('sqlite3', $pdo_drivers)))
 			{
 				continue;
 			}

@@ -321,6 +321,21 @@ SQL;
 
 		return "'".str_replace("'", "''", $str)."'";
 	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Method to emulate PDO->errorInfo / PDOStatement->errorInfo
+	 *
+	 * @return array
+	 */
+	public function errorInfo()
+	{
+		$code = ibase_errcode();
+		$msg = ibase_errmsg();
+
+		return array(0, $code, $msg);
+	}
 	
 	// --------------------------------------------------------------------------
 	
