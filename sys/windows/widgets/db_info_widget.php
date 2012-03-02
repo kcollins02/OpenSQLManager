@@ -12,6 +12,9 @@
 
 // --------------------------------------------------------------------------
 
+/**
+ * Widget for adding / editing database connections
+ */
 class DB_Info_Widget extends GtkTable {
 
 	protected $conn, $dbtype, $host, $user, $pass, $database, $settings, $db_file, $port;
@@ -250,7 +253,7 @@ class DB_Info_Widget extends GtkTable {
 		// Return early if a db type isn't selected.
 		// Better to bail out then crash because of
 		// silly user input.
-		if( empty($this->dbtype->get_active_text()))
+		if( empty($params->type))
 		{
 			return;
 		}
@@ -277,7 +280,8 @@ class DB_Info_Widget extends GtkTable {
 		// Sometimes there's not an exception, 
 		// check for an error so as not to 
 		// give false positive connections
-		if(empty($db->errorInfo()))
+		$errorInfo = $db->errorInfo();
+		if(empty($errorInfo))
 		{
 			$dialog = new GTKMessageDialog(
 				NULL,
