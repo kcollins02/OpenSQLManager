@@ -249,6 +249,6 @@ abstract class DB_SQL {
 	 * @param int $offset
 	 * @return string
 	 */
-	abstract public function limit($sql, $limit, $offset);
+	abstract public function limit($sql, $limit, $offset=FALSE);
 }
 // End of db_pdo.php
