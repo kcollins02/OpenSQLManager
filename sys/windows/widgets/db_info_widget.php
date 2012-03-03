@@ -20,7 +20,7 @@ class DB_Info_Widget extends GtkTable {
 	protected $conn, $dbtype, $host, $user, $pass, $database, $settings, $db_file, $port;
 
 	public function __construct($conn='', $dbtype='', $host='localhost', 
-		$user='', $pass='', $database='', $db_file=NULL, $port='')
+		$user='', $pass='', $database='', $db_file=NULL, $port='', $conn_db='')
 	{
 		parent::__construct();
 
@@ -32,6 +32,7 @@ class DB_Info_Widget extends GtkTable {
 		$this->user = new GtkEntry();
 		$this->pass = new GtkEntry();
 		$this->port = new GtkEntry();
+		$this->conn_db = new GtkEntry();
 		$this->dbtype = GtkComboBox::new_text();
 		$this->db_file = new GtkFileChooserButton("Select a database file",
 				Gtk::FILE_CHOOSER_ACTION_OPEN);
@@ -48,6 +49,7 @@ class DB_Info_Widget extends GtkTable {
 		$this->host->set_text($host);
 		$this->user->set_text($user);
 		$this->pass->set_text($pass);
+		$this->conn_db->set_text($conn_db);
 		$this->db_file->set_filename($db_file);
 
 		// Layout the table
@@ -87,6 +89,11 @@ class DB_Info_Widget extends GtkTable {
 		// DB File
 		{
 			$this->_add_row("Database File", 'db_file', $y1, $y2);
+		}
+
+		// First Db
+		{
+			$this->_add_row("Database Name", 'conn_db', $y1, $y2);
 		}
 
 		// Host
@@ -129,29 +136,6 @@ class DB_Info_Widget extends GtkTable {
 	}
 
 	/**
-	 * Simple helper function for adding a row to the GtkTable
-	 * 
-	 * @param GtkTable &$table
-	 * @param string $label
-	 * @param string $vname
-	 * @param int &$y1
-	 * @param int &$y2
-	 */
-	private function _add_row($label, $vname, &$y1, &$y2)
-	{
-		$lbl = 'lbl'.$vname;
-
-		$this->$lbl = new GtkLabel($label);
-		$lblalign = new GtkAlignment(0, 0.5, 0, 0);
-		$lblalign->add($this->$lbl);
-
-		$vname =& $this->$vname;
-
-		$this->attach($lblalign, 0, 1, ++$y1, ++$y2);
-		$this->attach($vname, 1, 2, $y1, $y2);
-	}
-
-	/**
 	 * Set defaults for new database type
 	 * 
 	 * @return void
@@ -172,6 +156,9 @@ class DB_Info_Widget extends GtkTable {
 		$this->user->set_text('');
 		$this->pass->set_text('');
 		$this->port->set_text('');
+		$this->conn_db->set_text('');
+		$this->conn_db->show();
+		$this->lblconn_db->show();
 
 		switch($new_db)
 		{
@@ -193,6 +180,8 @@ class DB_Info_Widget extends GtkTable {
 				$this->pass->set_text('masterkey');
 				$this->lbldb_file->show();
 				$this->db_file->show();
+				$this->conn_db->hide();
+				$this->lblconn_db->hide();
 			break;
 
 			case "ODBC":
@@ -207,6 +196,8 @@ class DB_Info_Widget extends GtkTable {
 				$this->lblport->hide();
 				$this->host->hide();
 				$this->lblhost->hide();
+				$this->conn_db->hide();
+				$this->lblconn_db->hide();
 			break;
 		}
 	}
@@ -368,5 +359,38 @@ class DB_Info_Widget extends GtkTable {
 		sort($drivers);
 
 		return $drivers;
+	}
+
+	/**
+	 * Simple helper function for adding a row to the GtkTable
+	 * 
+	 * @param GtkTable &$table
+	 * @param string $label
+	 * @param string $vname
+	 * @param int &$y1
+	 * @param int &$y2
+	 */
+	private function _add_row($label, $vname, &$y1, &$y2)
+	{
+		$lbl = 'lbl'.$vname;
+
+		$this->$lbl = new GtkLabel($label);
+		$lblalign = new GtkAlignment(0, 0.5, 0, 0);
+		$lblalign->add($this->$lbl);
+
+		$vname =& $this->$vname;
+
+		$this->attach($lblalign, 0, 1, ++$y1, ++$y2);
+		$this->attach($vname, 1, 2, $y1, $y2);
+	}
+
+	/**
+	 * Filter input based on the requirements of the specified database
+	 * 
+	 * @return bool
+	 */
+	private function _validate()
+	{
+
 	}
 }

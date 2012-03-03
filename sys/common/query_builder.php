@@ -25,7 +25,7 @@ class Query_Builder {
 	 * 
 	 * @param mixed $conn_name - the name of the connection/parameters
 	 */
-	function __construct($conn_name)
+	public function __construct($conn_name)
 	{
 
 		// Add some flexibility for testing
@@ -71,6 +71,12 @@ class Query_Builder {
 
 	// --------------------------------------------------------------------------
 
+	/**
+	 * Shortcut to directly access database class properties
+	 *
+	 * @param string $key
+	 * @return mixed
+	 */
 	public function __get($key)
 	{
 		if (isset($this->db->$key))
