@@ -89,7 +89,7 @@ abstract class DB_PDO extends PDO {
 	 */
 	public function prepare_execute($sql, $params)
 	{	
-		$this->statement =& $this->prepare_query($sql, $params);
+		$this->statement = $this->prepare_query($sql, $params);
 		$this->statement->execute();
 
 		return $this->statement;

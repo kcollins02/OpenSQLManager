@@ -30,7 +30,7 @@ class firebird extends DB_PDO {
 	 */
 	public function __construct($dbpath, $user='sysdba', $pass='masterkey')
 	{
-		$this->conn =& ibase_connect($dbpath, $user, $pass, 'utf-8');
+		$this->conn = ibase_connect($dbpath, $user, $pass, 'utf-8');
 		
 		$class = __CLASS__."_sql";
 		$this->sql = new $class;
@@ -73,7 +73,7 @@ class firebird extends DB_PDO {
 	public function query($sql)
 	{
 		$this->count = 0;
-		$this->statement =& ibase_query($this->conn, $sql);
+		$this->statement = ibase_query($this->conn, $sql);
 		return $this->statement;
 	}
 	
@@ -98,7 +98,7 @@ class firebird extends DB_PDO {
 			break;
 
 			default:
-				return ibase_fetch_assoc(&$this->statement, IBASE_FETCH_BLOBS);
+				return ibase_fetch_assoc($this->statement, IBASE_FETCH_BLOBS);
 			break;
 		}
 	}
@@ -133,9 +133,9 @@ class firebird extends DB_PDO {
 	 * @param string $query
 	 * @return $this
 	 */
-	public function prepare($query)
+	public function prepare($query, $options=NULL)
 	{
-		$this->statement =& ibase_prepare($this->conn, $query);
+		$this->statement = ibase_prepare($this->conn, $query);
 		return $this->statement;
 	}
 	
@@ -154,7 +154,7 @@ class firebird extends DB_PDO {
 			AND "RDB\$RELATION_NAME" NOT LIKE 'MON$%'
 SQL;
 
-		$this->statement =& $this->query($sql);
+		$this->statement = $this->query($sql);
 		
 		$tables = array();
 		
@@ -181,7 +181,7 @@ SQL;
 			OR "RDB\$RELATION_NAME" LIKE 'MON$%';
 SQL;
 
-		$this->statement =& $this->query($sql);
+		$this->statement = $this->query($sql);
 
 		$tables = array();
 
@@ -200,7 +200,7 @@ SQL;
 	 * 
 	 * @return int
 	 */
-	public function affected_rows()
+	public function affected_rows($statement="")
 	{
 		return ibase_affected_rows($this->conn);
 	}
@@ -221,7 +221,7 @@ SQL;
 		}
 
 		//Fetch all the rows for the result
-		$this->result =& $this->fetchAll();
+		$this->result = $this->fetchAll();
 
 		return count($this->result);
 	}
@@ -312,7 +312,7 @@ SQL;
 	 * @param string $str
 	 * @return string
 	 */
-	public function quote($str)
+	public function quote($str, $param_type=NULL)
 	{
 		if(is_numeric($str))
 		{

@@ -71,7 +71,7 @@ class SQLiteTest extends UnitTestCase {
 			INSERT INTO "create_test" ("id", "key", "val") 
 			VALUES (?,?,?)
 SQL;
-		$statement =& $this->db->prepare_query($sql, array(1,"boogers", "Gross"));
+		$statement = $this->db->prepare_query($sql, array(1,"boogers", "Gross"));
 		
 		$statement->execute();
 
