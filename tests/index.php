@@ -15,7 +15,6 @@
 /**
  * Unit test bootstrap - Using php simpletest
  */
-
 define('BASE_DIR', '../src');
 
 // Include simpletest

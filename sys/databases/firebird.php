@@ -19,9 +19,12 @@ class Firebird extends DB_PDO {
 	/**
 	 * Constructor
 	 */
-	public function __construct($dbpath, $user, $pass)
+	public function __construct($dbpath, $user='sysdba', $pass='masterkey')
 	{
 		parent::__construct("firebird:{$dbpath}", $user, $pass);
+
+		$class = __CLASS__."_sql";
+		$this->sql = new $class;
 	}
 
 	// --------------------------------------------------------------------------
