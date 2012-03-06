@@ -64,7 +64,14 @@ class Query_Builder {
 			break;
 
 			case "firebird":
-				$this->db = new $dbtype("{$params->host}:{$params->file}", $params->user, $params->pass);
+				if(in_array('firebird', pdo_drivers()))
+				{
+					$this->db = new $dbtype("host={$params->host};dbname={$params->file}", $params->user, $params->pass);
+				}
+				else
+				{
+					$this->db = new $dbtype("{$params->host}:{$params->file}", $params->user, $params->pass);
+				}
 			break;
 		}
 	}

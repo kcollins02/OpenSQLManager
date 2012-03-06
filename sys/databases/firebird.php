@@ -21,7 +21,7 @@ class Firebird extends DB_PDO {
 	 */
 	public function __construct($dbpath, $user='sysdba', $pass='masterkey')
 	{
-		parent::__construct("firebird:{$dbpath}", $user, $pass);
+		parent::__construct("firebird:dbname={$dbpath}", $user, $pass);
 
 		$class = __CLASS__."_sql";
 		$this->sql = new $class;
@@ -60,7 +60,7 @@ SQL;
 		
 		$tables = array();
 		
-		while($row = $this->fetch(PDO::FETCH_ASSOC))
+		while($row = $this->statement->fetch(PDO::FETCH_ASSOC))
 		{
 			$tables[] = $row['RDB$RELATION_NAME'];
 		}
@@ -87,7 +87,7 @@ SQL;
 
 		$tables = array();
 
-		while($row = $this->fetch(PDO::FETCH_ASSOC))
+		while($row = $this->statement->fetch(PDO::FETCH_ASSOC))
 		{
 			$tables[] = $row['RDB$RELATION_NAME'];
 		}
@@ -111,7 +111,7 @@ SQL;
 		}
 
 		//Fetch all the rows for the result
-		$this->result = $this->fetchAll();
+		$this->result = $this->statement->fetchAll();
 
 		return count($this->result);
 	}
@@ -163,7 +163,7 @@ SQL;
 		{
 			$sql = 'SELECT * FROM "'.trim($t).'"';
 			$res = $this->query($sql);
-			$obj_res = $this->fetchAll(PDO::FETCH_ASSOC);
+			$obj_res = $res->fetchAll(PDO::FETCH_ASSOC);
 			
 			unset($res);
 			
