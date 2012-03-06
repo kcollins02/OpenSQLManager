@@ -22,9 +22,17 @@ class SQLiteTest extends UnitTestCase {
 	function __construct()
 	{
 		parent::__construct();
-
+	}
+	
+	function setUp()
+	{
 		$path = dirname(__FILE__)."/../test_dbs/test_sqlite.db";
 		$this->db = new SQLite($path);
+	}
+	
+	function tearDown()
+	{
+		unset($this->db);
 	}
 
 	function TestConnection()
@@ -43,6 +51,12 @@ class SQLiteTest extends UnitTestCase {
 		$tables = $this->db->get_system_tables();
 		
 		$this->assertTrue(is_array($tables));
+	}
+	
+	function TestCreateTransaction()
+	{
+		$res = $this->db->beginTransaction();
+		$this->assertTrue($res);
 	}
 
 	function TestCreateTable()
@@ -87,6 +101,28 @@ SQL;
 			2, "works", 'also?'
 		));
 	
+	}
+	
+	function TestCommitTransaction()
+	{
+		$this->TestCreateTransaction();
+		
+		$sql = 'INSERT INTO "create_test" ("id", "key", "val") VALUES (10, 12, 14)';
+		$this->db->query($sql);
+	
+		$res = $this->db->commit();
+		$this->assertTrue($res);
+	}
+	
+	function TestRollbackTransaction()
+	{
+		$this->TestCreateTransaction();
+		
+		$sql = 'INSERT INTO "create_test" ("id", "key", "val") VALUES (182, 96, 43)';
+		$this->db->query($sql);
+	
+		$res = $this->db->rollback();
+		$this->assertTrue($res);
 	}
 	
 	function TestDeleteTable()
