@@ -17,7 +17,7 @@
   */
 class ODBC_SQL extends DB_SQL {
 
-	public function create_table($name, $columns, $constraints=array(), $indexes=array())
+	public function create_table($name, $columns, array $constraints=array(), array $indexes=array())
 	{
 		//ODBC can't know how to create a table
 		return FALSE;
