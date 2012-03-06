@@ -105,7 +105,7 @@ abstract class DB_PDO extends PDO {
 	 */
 	public function get_query_data($statement)
 	{
-		$this->statement =& $statement;
+		$this->statement = $statement;
 
 		// Execute the query
 		$this->statement->execute();

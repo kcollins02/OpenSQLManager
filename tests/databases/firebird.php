@@ -38,7 +38,7 @@ class FirebirdTest extends UnitTestCase {
 	
 	function tearDown()
 	{
-		//unset($this->db);
+		unset($this->db);
 		unset($this->tables);
 	}
 
@@ -98,8 +98,8 @@ class FirebirdTest extends UnitTestCase {
 			INSERT INTO "create_test" ("id", "key", "val") 
 			VALUES (?,?,?)
 SQL;
-		$query = $this->db->prepare($sql);
-		$query->execute(array(1,"booger's", "Gross"));
+		$this->db->prepare($sql);
+		$this->db->execute(array(1,"booger's", "Gross"));
 
 	}
 	
