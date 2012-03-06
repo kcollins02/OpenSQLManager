@@ -19,7 +19,7 @@
  */
 class firebird extends DB_PDO {
 
-	protected $conn, $statement, $trans, $count, $result;
+	protected $statement, $trans, $count, $result;
 	
 	/**
 	 * Open the link to the database
@@ -30,7 +30,11 @@ class firebird extends DB_PDO {
 	 */
 	public function __construct($dbpath, $user='sysdba', $pass='masterkey')
 	{
-		$this->conn = ibase_connect($dbpath, $user, $pass, 'utf-8');
+		// More a pain than it is worth to actually
+		// pass around the resource that this provides.
+		// Since the resource is not required by the 
+		// functions that would use it, I'm dumping it.
+		ibase_connect($dbpath, $user, $pass, 'utf-8');
 		
 		$class = __CLASS__."_sql";
 		$this->sql = new $class;
@@ -43,7 +47,7 @@ class firebird extends DB_PDO {
 	 */
 	public function __destruct()
 	{
-		@ibase_close($this->conn);
+		@ibase_close();
 		@ibase_free_result($this->statement);
 	}
 	
@@ -73,7 +77,16 @@ class firebird extends DB_PDO {
 	public function query($sql)
 	{
 		$this->count = 0;
-		$this->statement = ibase_query($this->conn, $sql);
+		
+		if (isset($this->trans))
+		{
+			$this->statement = ibase_query($this->trans, $sql);
+		}
+		else
+		{
+			$this->statement = ibase_query($sql);
+		}
+		
 		return $this->statement;
 	}
 	
@@ -135,7 +148,7 @@ class firebird extends DB_PDO {
 	 */
 	public function prepare($query, $options=NULL)
 	{
-		$this->statement = ibase_prepare($this->conn, $query);
+		$this->statement = ibase_prepare($query);
 		return $this->statement;
 	}
 	
@@ -202,7 +215,7 @@ SQL;
 	 */
 	public function affected_rows($statement="")
 	{
-		return ibase_affected_rows($this->conn);
+		return ibase_affected_rows();
 	}
 	
 	// --------------------------------------------------------------------------
@@ -235,7 +248,7 @@ SQL;
 	 */
 	public function beginTransaction()
 	{
-		if(($this->trans =& ibase_trans($this->conn)) !== NULL)
+		if(($this->trans = ibase_trans()) !== NULL)
 		{
 			return TRUE;
 		}

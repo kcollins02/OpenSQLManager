@@ -68,6 +68,12 @@ class FirebirdTest extends UnitTestCase {
 		
 		$this->assertTrue($only_system);
 	}
+	
+	function TestCreateTransaction()
+	{
+		$res = $this->db->beginTransaction();
+		$this->assertTrue($res);
+	}
 
 	function TestCreateTable()
 	{
@@ -90,6 +96,28 @@ class FirebirdTest extends UnitTestCase {
 		echo "create_test exists :".(int)$table_exists.'<br />';
 		
 		$this->assertTrue($table_exists);*/
+	}
+	
+	function TestCommitTransaction()
+	{
+		$this->TestCreateTransaction();
+		
+		$sql = 'INSERT INTO "create_test" ("id", "key", "val") VALUES (10, 12, 14)';
+		$this->db->query($sql);
+	
+		$res = $this->db->commit();
+		$this->assertTrue($res);
+	}
+	
+	function TestRollbackTransaction()
+	{
+		$this->TestCreateTransaction();
+		
+		$sql = 'INSERT INTO "create_test" ("id", "key", "val") VALUES (182, 96, 43)';
+		$this->db->query($sql);
+	
+		$res = $this->db->rollback();
+		$this->assertTrue($res);
 	}
 	
 	function TestPreparedStatements()
