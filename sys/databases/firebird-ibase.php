@@ -19,8 +19,7 @@
  */
 class firebird extends DB_PDO {
 
-	protected $statement, $trans, $count, $result;
-	public static $conn;
+	protected $conn, $statement, $trans, $count, $result;
 	
 	/**
 	 * Open the link to the database
@@ -31,13 +30,7 @@ class firebird extends DB_PDO {
 	 */
 	public function __construct($dbpath, $user='sysdba', $pass='masterkey')
 	{
-		self::$conn = ibase_connect($dbpath, $user, $pass, 'utf-8');
-
-		if ( ! self::$conn)
-		{
-			throw new PDOException(ibase_errmsg());
-		}
-		
+		$this->conn = ibase_connect($dbpath, $user, $pass, 'utf-8');
 		
 		$class = __CLASS__."_sql";
 		$this->sql = new $class;
@@ -50,7 +43,7 @@ class firebird extends DB_PDO {
 	 */
 	public function __destruct()
 	{
-		@ibase_close(self::$conn);
+		@ibase_close($this->conn);
 		@ibase_free_result($this->statement);
 	}
 	
@@ -80,7 +73,7 @@ class firebird extends DB_PDO {
 	public function query($sql)
 	{
 		$this->count = 0;
-		$this->statement = ibase_query(self::$conn, $sql);
+		$this->statement = ibase_query($this->conn, $sql);
 		return $this->statement;
 	}
 	
@@ -142,7 +135,7 @@ class firebird extends DB_PDO {
 	 */
 	public function prepare($query, $options=NULL)
 	{
-		$this->statement = ibase_prepare(self::$conn, $query);
+		$this->statement = ibase_prepare($this->conn, $query);
 		return $this->statement;
 	}
 	
@@ -209,7 +202,7 @@ SQL;
 	 */
 	public function affected_rows($statement="")
 	{
-		return ibase_affected_rows(self::$conn);
+		return ibase_affected_rows($this->conn);
 	}
 	
 	// --------------------------------------------------------------------------
@@ -242,7 +235,7 @@ SQL;
 	 */
 	public function beginTransaction()
 	{
-		if(($this->trans =& ibase_trans(self::$conn)) !== NULL)
+		if(($this->trans =& ibase_trans($this->conn)) !== NULL)
 		{
 			return TRUE;
 		}
