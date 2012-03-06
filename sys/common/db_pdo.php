@@ -231,7 +231,7 @@ abstract class DB_SQL {
 	 * @param array $indexes 
 	 * @return string
 	 */
-	abstract public function create_table($name, $columns, $constraints=array(), $indexes=array());
+	abstract public function create_table($name, $columns, array $constraints=array(), array $indexes=array());
 
 	/**
 	 * Get database-specific sql to drop a table

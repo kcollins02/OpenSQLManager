@@ -26,7 +26,7 @@ class SQLite_SQL extends DB_SQL {
 	 * @param array $indexes // column => index pairs
 	 * @return  string
 	 */
-	public function create_table($name, $columns, $constraints=array(), $indexes=array())
+	public function create_table($name, $columns, array $constraints=array(), array $indexes=array())
 	{
 		$column_array = array();
 		

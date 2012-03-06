@@ -27,7 +27,7 @@ class Firebird_SQL extends DB_SQL {
 	 * 
 	 * @return string
 	 */
-	public function create_table($name, $fields, $constraints=array(), $indexes=array())
+	public function create_table($name, $fields, array $constraints=array(), array $indexes=array())
 	{
 		$column_array = array();
 		

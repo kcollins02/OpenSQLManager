@@ -27,7 +27,7 @@
  	 * 
  	 * @return [type]
  	 */
-	public function create_table($name, $columns, $constraints=array(), $indexes=array())
+	public function create_table($name, $columns, array $constraints=array(), array $indexes=array())
 	{
 		//TODO: implement
 	}
