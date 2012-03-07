@@ -23,29 +23,14 @@ class Query_Builder {
 	/**
 	 * Constructor
 	 * 
-	 * @param mixed $conn_name - the name of the connection/parameters
+	 * @param object $conn_name - the name of the connection/parameters
 	 */
-	public function __construct($conn_name)
+	public function __construct($params)
 	{
-
-		// Add some flexibility for testing
-		if(class_exists('settings'))
-		{
-			$this->settings = Settings::get_instance();
-
-			$params = (is_scalar($conn_name)) 
-			? $this->settings->get_db($conn_name)
-			: $conn_name;
-		}
-		else
-		{
-			$params = $conn_name;
-		}
-
 		$params->type = strtolower($params->type);
 		$dbtype = ($params->type !== 'postgresql') ? $params->type : 'pgsql';
 
-		// Initiate the constructor for the 
+		// Initiate the constructor for the selected database
 		switch($dbtype)
 		{
 			default:
