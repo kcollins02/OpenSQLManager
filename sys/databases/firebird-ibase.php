@@ -34,7 +34,13 @@ class firebird extends DB_PDO {
 		// pass around the resource that this provides.
 		// Since the resource is not required by the 
 		// functions that would use it, I'm dumping it.
-		ibase_connect($dbpath, $user, $pass, 'utf-8');
+		$conn = @ibase_connect($dbpath, $user, $pass, 'utf-8');
+
+		if ( ! is_resource($conn))
+		{
+			throw new PDOException(ibase_errmsg());
+			die();
+		}
 		
 		$class = __CLASS__."_sql";
 		$this->sql = new $class;

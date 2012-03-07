@@ -16,6 +16,8 @@
  * Unit test bootstrap - Using php simpletest
  */
 define('BASE_DIR', '../src');
+define('TEST_DIR', dirname(__FILE__));
+define('DS', DIRECTORY_SEPARATOR);
 
 // Include simpletest
 // it has to be set in your php path, or put in the tests folder
