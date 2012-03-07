@@ -19,7 +19,7 @@
  */
 class firebird extends DB_PDO {
 
-	protected $statement, $trans, $count, $result, $conn;
+	protected $statement, $trans, $count, $result;
 	
 	/**
 	 * Open the link to the database
@@ -34,12 +34,13 @@ class firebird extends DB_PDO {
 		// pass around the resource that this provides.
 		// Since the resource is not required by the 
 		// functions that would use it, I'm dumping it.
-		$this->conn = ibase_connect($dbpath, $user, $pass, 'utf-8');
+		$conn = @ibase_connect($dbpath, $user, $pass, 'utf-8');
 
 		// Throw an exception to make this match other pdo classes
-		if ( ! is_resource($this->conn))
+		if ( ! is_resource($conn))
 		{
-			throw new PDOException(ibase_errcode() . "\n" . ibase_errmsg());
+			throw new PDOException(ibase_errmsg());
+			die();
 		}
 		
 		$class = __CLASS__."_sql";
@@ -95,9 +96,10 @@ class firebird extends DB_PDO {
 
 		// Throw the error as a exception
 		// if there is one
-		if (ibase_errmsg() !== FALSE)
+		if ($this->statement === FALSE)
 		{
-			throw new PDOException(ibase_errcode() . "\n" . ibase_errmsg());
+			throw new PDOException(ibase_errmsg());
+			die();
 		}
 		
 		return $this->statement;
@@ -116,24 +118,17 @@ class firebird extends DB_PDO {
 		switch($fetch_style)
 		{
 			case PDO::FETCH_OBJ:
-				$row = @ibase_fetch_object($this->statement, IBASE_FETCH_BLOBS);
+				return ibase_fetch_object($this->statement, IBASE_FETCH_BLOBS);
 			break;
 
 			case PDO::FETCH_NUM:
-				$row = @ibase_fetch_row($this->statement, IBASE_FETCH_BLOBS);
+				return ibase_fetch_row($this->statement, IBASE_FETCH_BLOBS);
 			break;
 
 			default:
-				$row = @ibase_fetch_assoc($this->statement, IBASE_FETCH_BLOBS);
+				return ibase_fetch_assoc($this->statement, IBASE_FETCH_BLOBS);
 			break;
 		}
-
-		if (ibase_errmsg() !== FALSE)
-		{
-			throw new PDOException(ibase_errcode() . "\n" . ibase_errmsg());
-		}
-
-		return $row;
 	}
 	
 	// --------------------------------------------------------------------------
@@ -173,7 +168,8 @@ class firebird extends DB_PDO {
 		// Throw the error as an exception
 		if ($this->statement === FALSE)
 		{
-			throw new PDOException(ibase_errcode() . "\n" . ibase_errmsg());
+			throw new PDOException(ibase_errmsg());
+			die();
 		}
 
 		return $this->statement;
@@ -275,7 +271,7 @@ SQL;
 	 */
 	public function beginTransaction()
 	{
-		if(($this->trans = ibase_trans($this->conn, IBASE_DEFAULT)) !== FALSE)
+		if(($this->trans = ibase_trans()) !== NULL)
 		{
 			return TRUE;
 		}
