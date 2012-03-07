@@ -79,6 +79,7 @@ function do_include($path)
 // Load everything so that we don't have to do requires later
 {
 	array_map('do_include', glob(BASE_DIR . "/common/*.php"));
+	array_map('do_include', glob(BASE_DIR . "/db/*.php"));
 	array_map('do_include',  glob(BASE_DIR . "/windows/widgets/*.php"));
 	array_map('do_include',  glob(BASE_DIR . "/windows/*.php"));
 }
@@ -86,7 +87,7 @@ function do_include($path)
 // --------------------------------------------------------------------------
 
 // Load db classes based on capability
-$path = BASE_DIR . "/databases/";
+$path = BASE_DIR . "/db/drivers/";
 
 foreach(pdo_drivers() as $d)
 {

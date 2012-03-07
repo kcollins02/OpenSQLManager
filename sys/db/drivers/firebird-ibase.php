@@ -95,11 +95,9 @@ class firebird extends DB_PDO {
 		}
 
 		// Throw the error as a exception
-		// if there is one
 		if ($this->statement === FALSE)
 		{
 			throw new PDOException(ibase_errmsg());
-			die();
 		}
 		
 		return $this->statement;
@@ -169,7 +167,6 @@ class firebird extends DB_PDO {
 		if ($this->statement === FALSE)
 		{
 			throw new PDOException(ibase_errmsg());
-			die();
 		}
 
 		return $this->statement;

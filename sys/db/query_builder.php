@@ -127,4 +127,65 @@ class Query_Builder {
 			return $this->query('SELECT * FROM ' . $this->quote_ident($table));
 		}
 	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Specifies rows to select in a query
+	 *
+	 * @param string $fields
+	 * @return $this
+	 */
+	public function select($fields)
+	{
+		// @todo Implement select method
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Specify condition(s) in the where clause of a query
+	 * Note: this function works with key / value, or a 
+	 * passed array with key / value pairs
+	 * 
+	 * @param mixed $key 
+	 * @param mixed $val
+	 * @return $this
+	 */
+	public function where($key, $val=array())
+	{
+		// @todo Implement where method
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Creates a join phrase in a compiled query
+	 *
+	 * @param string $table
+	 * @param string $condition
+	 * @param string $type
+	 * @return $this
+	 */
+	public function join($table, $condition, $type='inner')
+	{
+		// @todo Implement join method
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Specify the database table to select from
+	 *
+	 * @param string $dbname
+	 * @return $this
+	 */
+	public function from($dbname)
+	{
+		// @todo Implement from method
+		return $this;
+	}
 }
