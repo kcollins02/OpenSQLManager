@@ -268,7 +268,22 @@ class DB_Info_Widget extends GtkTable {
 			);
 			$dialog->run();
 			$dialog->destroy();
+			
+			return;
 		}
+		
+		// Successful Connection?
+		// Tell the user!
+		$dialog = new GTKMessageDialog(
+			NULL,
+			Gtk::DIALOG_MODAL,
+			Gtk::MESSAGE_INFO,
+			Gtk::BUTTONS_OK,
+			"Successfully connected"
+		);
+		
+		$dialog->run();
+		$dialog->destroy();
 	}
 
 	/**
