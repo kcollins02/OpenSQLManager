@@ -90,6 +90,12 @@ $path = BASE_DIR . "/databases/";
 
 foreach(pdo_drivers() as $d)
 {
+	//Favor ibase over PDO firebird
+	if ($d === 'firebird')
+	{
+		continue;
+	}
+
 	$file = "{$path}{$d}.php";
 	
 	if(is_file($file))
@@ -100,7 +106,7 @@ foreach(pdo_drivers() as $d)
 }
 
 // Load Firebird if there is support
-if(function_exists('ibase_connect') && ! in_array('firebird', pdo_drivers()))
+if(function_exists('ibase_connect'))
 {
 	require_once("{$path}firebird-ibase.php");
 	require_once("{$path}firebird_sql.php");

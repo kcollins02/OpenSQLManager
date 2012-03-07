@@ -41,6 +41,13 @@ $test_path = "./databases/";
 
 foreach(pdo_drivers() as $d)
 {
+	// PDO firebird isn't stable enough to 
+	// bother, so skip it.
+	if ($d === 'firebird')
+	{
+		continue;
+	}
+
 	$src_file = "{$src_path}{$d}.php";
 	
 	if(is_file($src_file))
@@ -52,7 +59,7 @@ foreach(pdo_drivers() as $d)
 }
 
 // Load Firebird if there is support
-if(function_exists('ibase_connect') && ! in_array('firebird', pdo_drivers()))
+if(function_exists('ibase_connect'))
 {
 	require_once("{$src_path}firebird-ibase.php");
 	require_once("{$src_path}firebird_sql.php");
