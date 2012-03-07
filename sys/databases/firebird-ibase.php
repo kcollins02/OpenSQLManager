@@ -36,6 +36,7 @@ class firebird extends DB_PDO {
 		// functions that would use it, I'm dumping it.
 		$conn = @ibase_connect($dbpath, $user, $pass, 'utf-8');
 
+		// Throw an exception to make this match other pdo classes
 		if ( ! is_resource($conn))
 		{
 			throw new PDOException(ibase_errmsg());
@@ -86,11 +87,19 @@ class firebird extends DB_PDO {
 		
 		if (isset($this->trans))
 		{
-			$this->statement = ibase_query($this->trans, $sql);
+			$this->statement = @ibase_query($this->trans, $sql);
 		}
 		else
 		{
-			$this->statement = ibase_query($sql);
+			$this->statement = @ibase_query($sql);
+		}
+
+		// Throw the error as a exception
+		// if there is one
+		if ( ! is_resource($this->statement))
+		{
+			throw new PDOException(ibase_errmsg());
+			die();
 		}
 		
 		return $this->statement;
@@ -154,7 +163,15 @@ class firebird extends DB_PDO {
 	 */
 	public function prepare($query, $options=NULL)
 	{
-		$this->statement = ibase_prepare($query);
+		$this->statement = @ibase_prepare($query);
+
+		// Throw the error as an exception
+		if ( ! is_resource($this->statement))
+		{
+			throw new PDOException(ibase_errmsg());
+			die();
+		}
+
 		return $this->statement;
 	}
 	

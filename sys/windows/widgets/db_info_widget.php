@@ -249,6 +249,10 @@ class DB_Info_Widget extends GtkTable {
 			return;
 		}
 
+		// Catch connection exceptions, and 
+		// display the error message to the
+		// user so they can edit the db 
+		// parameters
 		try
 		{
 			$db = new Query_Builder($params);
@@ -264,49 +268,7 @@ class DB_Info_Widget extends GtkTable {
 			);
 			$dialog->run();
 			$dialog->destroy();
-
-			return;
 		}
-
-		// Sometimes there's not an exception, 
-		// check for an error so as not to 
-		// give false positive connections
-		$errorInfo = $db->errorInfo();
-		if(empty($errorInfo))
-		{
-			$dialog = new GTKMessageDialog(
-				NULL,
-				Gtk::DIALOG_MODAL,
-				Gtk::MESSAGE_INFO,
-				Gtk::BUTTONS_OK,
-				"Successfully connected"
-			);
-		}
-		else
-		{
-			$err = $db->errorInfo();
-
-			$msg = $err[count($err) - 1];
-			$code = $err[1];
-
-			$dialog = new GTKMessageDialog(
-				NULL,
-				Gtk::DIALOG_MODAL,
-				Gtk::MESSAGE_ERROR,
-				Gtk::BUTTONS_OK,
-				"Error connecting to database: \n\n" . 
-				"Error # {$code}\n".
-				$msg
-			);
-
-		}
-
-		
-
-		$dialog->run();
-		$dialog->destroy();
-
-		return;
 	}
 
 	/**
