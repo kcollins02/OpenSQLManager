@@ -96,7 +96,7 @@ class firebird extends DB_PDO {
 
 		// Throw the error as a exception
 		// if there is one
-		if ( ! is_resource($this->statement))
+		if ($this->statement === FALSE)
 		{
 			throw new PDOException(ibase_errmsg());
 			die();
@@ -166,7 +166,7 @@ class firebird extends DB_PDO {
 		$this->statement = @ibase_prepare($query);
 
 		// Throw the error as an exception
-		if ( ! is_resource($this->statement))
+		if ($this->statement === FALSE)
 		{
 			throw new PDOException(ibase_errmsg());
 			die();
