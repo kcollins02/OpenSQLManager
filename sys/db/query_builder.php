@@ -60,28 +60,6 @@ class Query_Builder {
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Shortcut to directly call database methods
-	 *
-	 * @param string $name
-	 * @param array $params
-	 * @return mixed
-	 */
-	public function __call($name, $params)
-	{
-		if (method_exists($this->db, $name))
-		{
-			if (is_callable($this->db->$name))
-			{
-				return call_user_func_array($this->db->$name, $params);
-			}
-		}
-
-		return NULL;
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
 	 * Select and retrieve all records from the current table, and/or
 	 * execute current compiled query
 	 *
@@ -93,7 +71,7 @@ class Query_Builder {
 	public function get($table='', $limit=FALSE, $offset=FALSE)
 	{
 		// @todo Only add in the table name when using the select method
-		// @tood Only execute combined query when using other query methods and empty parameters
+		// @todo Only execute combined query when using other query methods and empty parameters
 	
 		$sql = 'SELECT * FROM ' . $this->db->quote_ident($table);
 
@@ -171,5 +149,17 @@ class Query_Builder {
 	{
 		// @todo Implement from method
 		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * String together the sql statements for sending to the db
+	 *
+	 * @return $string
+	 */
+	private function _compile()
+	{
+		// @todo Implement _compile method
 	}
 }

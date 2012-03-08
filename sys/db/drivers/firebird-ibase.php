@@ -83,18 +83,18 @@ class firebird extends DB_PDO {
 		
 		if (isset($this->trans))
 		{
-			$this->statement = ibase_query($this->trans, $sql);
+			$this->statement = @ibase_query($this->trans, $sql);
 		}
 		else
 		{
-			$this->statement = ibase_query($this->conn, $sql);
+			$this->statement = @ibase_query($this->conn, $sql);
 		}
 
 		// Throw the error as a exception
-		/*if ($this->statement === FALSE)
+		if ($this->statement === FALSE)
 		{
 			throw new PDOException(ibase_errmsg());
-		}*/
+		}
 		
 		return $this->statement;
 	}
@@ -157,13 +157,13 @@ class firebird extends DB_PDO {
 	 */
 	public function prepare($query, $options=NULL)
 	{
-		$this->statement = ibase_prepare($this->conn, $query);
+		$this->statement = @ibase_prepare($this->conn, $query);
 
 		// Throw the error as an exception
-		/*if ($this->statement === FALSE)
+		if ($this->statement === FALSE)
 		{
 			throw new PDOException(ibase_errmsg());
-		}*/
+		}
 
 		return $this->statement;
 	}
