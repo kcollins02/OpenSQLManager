@@ -103,7 +103,7 @@ class Firebird_SQL extends DB_SQL {
 		
 		if ($offset > 0)
 		{
-			$sql .= ' SKIP'. (int) $offset;
+			$sql .= ' SKIP '. (int) $offset;
 		}
 		
 		$sql = preg_replace("`SELECT`i", "SELECT {$sql}", $orig_sql);

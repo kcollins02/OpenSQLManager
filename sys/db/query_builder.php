@@ -18,7 +18,7 @@
  */
 class Query_Builder {
 
-	private $table, $where_array;
+	private $table, $where_array, $sql;
 
 	/**
 	 * Constructor
@@ -52,24 +52,9 @@ class Query_Builder {
 				$this->db = new $dbtype("{$params->host}:{$params->file}", $params->user, $params->pass);
 			break;
 		}
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Shortcut to directly access database class properties
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function __get($key)
-	{
-		if (isset($this->db->$key))
-		{
-			return $this->db->$key;
-		}
-
-		return NULL;
+		
+		// Make things just slightly shorter
+		$this->sql =& $this->db->sql;
 	}
 
 	// --------------------------------------------------------------------------
@@ -83,7 +68,7 @@ class Query_Builder {
 	 */
 	public function __call($name, $params)
 	{
-		if (isset($this->db->$name))
+		if (method_exists($this->db, $name))
 		{
 			if (is_callable($this->db->$name))
 			{
@@ -107,19 +92,24 @@ class Query_Builder {
 	 */
 	public function get($table='', $limit=FALSE, $offset=FALSE)
 	{
-		$sql = 'SELECT * FROM ' . $this->quote_ident($table);
+		// @todo Only add in the table name when using the select method
+		// @tood Only execute combined query when using other query methods and empty parameters
+	
+		$sql = 'SELECT * FROM ' . $this->db->quote_ident($table);
 
 		if ( ! empty($table) && $limit === FALSE && $offset === FALSE)
 		{
-			$result = $this->query($sql);
+			$result = $this->db->query($sql);
 		}
 		else
 		{
-			$result = $this->query($this->sql->limit($sql, $limit, $offset));
+			$sql = $this->sql->limit($sql, $limit, $offset);
+			$result = $this->db->query($sql);
 		}
+		
+		//echo $sql."<br />";
 
-		// For the firebird class, return $this so you can act on the result
-		return (is_resource($result)) ? $this : $result;
+		return $result;
 	}
 	
 	// --------------------------------------------------------------------------

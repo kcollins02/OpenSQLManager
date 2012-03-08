@@ -100,11 +100,11 @@ class FirebirdTest extends UnitTestCase {
 		
 		//This test fails for an unknown reason, when clearly the table exists
 		//Reset
-		/*$this->tearDown();
+		$this->tearDown();
 		$this->setUp();
 		
 		//Check
-		$table_exists = (bool)in_array('create_test', $this->tables);
+		/*$table_exists = (bool)in_array('create_test', $this->tables);
 		
 		echo "create_test exists :".(int)$table_exists.'<br />';
 		
@@ -131,6 +131,27 @@ class FirebirdTest extends UnitTestCase {
 	
 		$res = $this->db->rollback();
 		$this->assertTrue($res);
+	}
+	
+	function TestQBGet()
+	{
+		$query = $this->qb->get('create_test');
+		
+		$this->assertTrue(is_resource($query));
+	}
+	
+	function TestQBGetLimit()
+	{
+		$query = $this->qb->get('create_test', 2);
+		
+		$this->assertTrue(is_resource($query));
+	}
+	
+	function TestQBGetLimitSkip()
+	{
+		$query = $this->qb->get('create_test', 2, 1);
+		
+		$this->assertTrue(is_resource($query));
 	}
 	
 	function TestPreparedStatements()

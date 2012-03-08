@@ -28,6 +28,12 @@ class SQLiteTest extends UnitTestCase {
 	{
 		$path = dirname(__FILE__)."/../test_dbs/test_sqlite.db";
 		$this->db = new SQLite($path);
+		
+		$params = new Stdclass();
+		$params->type = 'sqlite';
+		$params->file = $path;
+		$params->host = 'localhost';
+		$this->qb = new Query_Builder($params);
 	}
 	
 	function tearDown()
@@ -123,6 +129,27 @@ SQL;
 	
 		$res = $this->db->rollback();
 		$this->assertTrue($res);
+	}
+	
+	function TestQBGet()
+	{
+		$query = $this->qb->get('create_test');
+		
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
+	function TestQBGetLimit()
+	{
+		$query = $this->qb->get('create_test', 2);
+		
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
+	function TestQBGetLimitSkip()
+	{
+		$query = $this->qb->get('create_test', 2, 1);
+		
+		$this->assertIsA($query, 'PDOStatement');
 	}
 	
 	function TestDeleteTable()

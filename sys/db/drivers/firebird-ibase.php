@@ -19,7 +19,7 @@
  */
 class firebird extends DB_PDO {
 
-	protected $statement, $trans, $count, $result;
+	protected $statement, $trans, $count, $result, $conn;
 	
 	/**
 	 * Open the link to the database
@@ -30,14 +30,10 @@ class firebird extends DB_PDO {
 	 */
 	public function __construct($dbpath, $user='sysdba', $pass='masterkey')
 	{
-		// More a pain than it is worth to actually
-		// pass around the resource that this provides.
-		// Since the resource is not required by the 
-		// functions that would use it, I'm dumping it.
-		$conn = @ibase_connect($dbpath, $user, $pass, 'utf-8');
+		$this->conn = @ibase_connect($dbpath, $user, $pass, 'utf-8');
 
 		// Throw an exception to make this match other pdo classes
-		if ( ! is_resource($conn))
+		if ( ! is_resource($this->conn))
 		{
 			throw new PDOException(ibase_errmsg());
 			die();
@@ -87,18 +83,18 @@ class firebird extends DB_PDO {
 		
 		if (isset($this->trans))
 		{
-			$this->statement = @ibase_query($this->trans, $sql);
+			$this->statement = ibase_query($this->trans, $sql);
 		}
 		else
 		{
-			$this->statement = @ibase_query($sql);
+			$this->statement = ibase_query($this->conn, $sql);
 		}
 
 		// Throw the error as a exception
-		if ($this->statement === FALSE)
+		/*if ($this->statement === FALSE)
 		{
 			throw new PDOException(ibase_errmsg());
-		}
+		}*/
 		
 		return $this->statement;
 	}
@@ -161,13 +157,13 @@ class firebird extends DB_PDO {
 	 */
 	public function prepare($query, $options=NULL)
 	{
-		$this->statement = @ibase_prepare($query);
+		$this->statement = ibase_prepare($this->conn, $query);
 
 		// Throw the error as an exception
-		if ($this->statement === FALSE)
+		/*if ($this->statement === FALSE)
 		{
 			throw new PDOException(ibase_errmsg());
-		}
+		}*/
 
 		return $this->statement;
 	}
@@ -268,7 +264,7 @@ SQL;
 	 */
 	public function beginTransaction()
 	{
-		if(($this->trans = ibase_trans()) !== NULL)
+		if(($this->trans = ibase_trans($this->conn)) !== NULL)
 		{
 			return TRUE;
 		}
