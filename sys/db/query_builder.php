@@ -18,7 +18,7 @@
  */
 class Query_Builder {
 
-	private $table;
+	private $table, $where_array;
 
 	/**
 	 * Constructor
@@ -107,10 +107,19 @@ class Query_Builder {
 	 */
 	public function get($table='', $limit=FALSE, $offset=FALSE)
 	{
+		$sql = 'SELECT * FROM ' . $this->quote_ident($table);
+
 		if ( ! empty($table) && $limit === FALSE && $offset === FALSE)
 		{
-			return $this->query('SELECT * FROM ' . $this->quote_ident($table));
+			$result = $this->query($sql);
 		}
+		else
+		{
+			$result = $this->query($this->sql->limit($sql, $limit, $offset));
+		}
+
+		// For the firebird class, return $this so you can act on the result
+		return (is_resource($result)) ? $this : $result;
 	}
 	
 	// --------------------------------------------------------------------------
