@@ -33,7 +33,7 @@ class FirebirdTest extends UnitTestCase {
 	function setUp()
 	{
 		$dbpath = TEST_DIR.DS.'test_dbs'.DS.'FB_TEST_DB.FDB';
-		$this->db = new Firebird($dbpath);
+		$this->db = new Firebird('localhost:'.$dbpath);
 		$this->tables = $this->db->get_tables();
 	}
 	
