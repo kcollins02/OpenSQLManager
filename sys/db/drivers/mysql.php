@@ -136,10 +136,7 @@ class MySQL extends DB_PDO {
 	{
 		if (is_array($ident))
 		{
-			for($i = 0, $count = count($ident); $i < $count; $i++)
-			{
-				$ident[$i] = $this->quote_ident($ident[$i]);
-			}
+			return array_map(array($this, 'quote_ident'), $ident);
 		}
 		
 		// Split each identifier by the period

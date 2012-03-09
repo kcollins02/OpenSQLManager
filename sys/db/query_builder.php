@@ -79,7 +79,9 @@ class Query_Builder {
 		{
 			$result = $this->db->query($sql);
 		}
-		elseif ( ! empty($this->select_string))
+		
+		// Set the select string
+		if ( ! empty($this->select_string))
 		{
 			// Replace the star with the selected fields
 			$sql = str_replace('*', $this->select_string, $sql);
@@ -90,6 +92,8 @@ class Query_Builder {
 		{
 			$sql = $this->sql->limit($sql, $limit, $offset);
 		}
+		
+		//echo $sql."<br />";
 
 		return $this->db->query($sql);
 	}
@@ -114,6 +118,7 @@ class Query_Builder {
 			if (stripos($field, 'as') !== FALSE)
 			{
 				$fields_array[$key] = preg_split('`as`i', $field);
+				$fields_array[$key] = array_map('trim', $fields_array[$key]);
 			}
 		}
 
@@ -121,7 +126,7 @@ class Query_Builder {
 		$safe_array = array_map(array($this->db, 'quote_ident'), $fields_array);
 
 		// Join the strings back together
-		for($i = 0, $c = count($safe_array); $i < $count; $i++)
+		for($i = 0, $c = count($safe_array); $i < $c; $i++)
 		{
 			if (is_array($safe_array[$i]))
 			{
@@ -130,6 +135,8 @@ class Query_Builder {
 		}
 
 		$this->select_string = implode(', ', $safe_array);
+		
+		//echo $this->select_string."<br />";
 
 		return $this;
 	}

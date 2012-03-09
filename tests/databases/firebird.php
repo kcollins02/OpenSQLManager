@@ -154,6 +154,14 @@ class FirebirdTest extends UnitTestCase {
 		$this->assertTrue(is_resource($query));
 	}
 	
+	function TestQBSelectGet()
+	{
+		$query = $this->qb->select('id, key as k, val')->get('create_test', 2, 1);
+
+		$this->assertTrue(is_resource($query));
+
+	}
+	
 	function TestPreparedStatements()
 	{
 		$sql = <<<SQL
