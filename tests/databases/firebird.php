@@ -36,16 +36,6 @@ class FirebirdTest extends UnitTestCase {
 		
 		// Test the db driver directly
 		$this->db = new Firebird('localhost:'.$dbpath);
-
-		// Test the query builder
-		$params = new Stdclass();
-		$params->type = 'firebird';
-		$params->file = $dbpath;
-		$params->host = 'localhost';
-		$params->user = 'sysdba';
-		$params->pass = 'masterkey';
-		$this->qb = new Query_Builder($params);
-
 		$this->tables = $this->db->get_tables();
 	}
 	
@@ -265,6 +255,17 @@ class FirebirdQBTest extends UnitTestCase {
 		$query = $this->qb->select('id, key as k, val')
 			->from('create_test ct')
 			->where('id >', 1)
+			->get();
+			
+		$this->assertTrue(is_resource($query));
+	}
+	
+	function TestSelectFromLimitGet()
+	{
+		$query = $this->qb->select('id, key as k, val')
+			->from('create_test ct')
+			->where('id >', 1)
+			->limit(3)
 			->get();
 			
 		$this->assertTrue(is_resource($query));

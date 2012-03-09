@@ -23,7 +23,9 @@ class Query_Builder {
 		$select_string, 
 		$from_string,
 		$where_array, 
-		$where_string;
+		$where_string,
+		$limit,
+		$offset;
 
 	/**
 	 * Constructor
@@ -75,34 +77,19 @@ class Query_Builder {
 	 */
 	public function get($table='', $limit=FALSE, $offset=FALSE)
 	{
-		// The simplest case, just get the data from the table
-		if ( ! empty($table) && empty($this->from_string))
+		// Set the table
+		if ( ! empty($table))
 		{
-			$sql = 'SELECT * FROM ' . $this->db->quote_ident($table);
-		}
-		elseif(empty($table) && ! empty($this->from_string))
-		{
-			$sql = 'SELECT * FROM ' . $this->from_string;
-		}
-		
-		// Set the select string
-		if ( ! empty($this->select_string))
-		{
-			// Replace the star with the selected fields
-			$sql = str_replace('*', $this->select_string, $sql);
+			$this->from_string = $this->db->quote_ident($table);
 		}
 
-		// Set the where string
-		if ( ! empty($this->where_string))
-		{
-			$sql .= $this->where_string;
-		}
-		
 		// Set the limit, if it exists
 		if ($limit !== FALSE)
 		{
-			$sql = $this->sql->limit($sql, $limit, $offset);
+			$this->limit($limit, $offset);
 		}
+		
+		$sql = $this->_compile('select');
 		
 		echo $sql."<br />";
 
@@ -270,6 +257,23 @@ class Query_Builder {
 	// --------------------------------------------------------------------------
 	
 	/**
+	 * Set a limit on the current sql statement
+	 *
+	 * @param int $limit
+	 * @param int $offset
+	 * @return string
+	 */
+	public function limit($limit, $offset=FALSE)
+	{
+		$this->limit = $limit;
+		$this->offset = $offset;
+		
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
 	 * Clear out the class variables, so the next query can be run
 	 */
 	private function _reset()
@@ -279,6 +283,8 @@ class Query_Builder {
 		unset($this->where_string);
 		unset($this->select_string);
 		unset($this->from_string);
+		unset($this->limit);
+		unset($this->offset);
 	}
 	
 	// --------------------------------------------------------------------------
@@ -289,8 +295,50 @@ class Query_Builder {
 	 * @param $type
 	 * @return $string
 	 */
-	private function _compile($type)
+	private function _compile($type="select")
 	{
-		// @todo Implement _compile method
+		$sql = '';
+	
+		switch($type)
+		{
+			default:
+			case "select":
+				$sql = 'SELECT * FROM '.$this->from_string;
+				
+				// Set the select string
+				if ( ! empty($this->select_string))
+				{
+					// Replace the star with the selected fields
+					$sql = str_replace('*', $this->select_string, $sql);
+				}
+				
+				// Set the where string
+				if ( ! empty($this->where_string))
+				{
+					$sql .= $this->where_string;
+				}
+				
+				// Set the limit via the class variables
+				if (is_numeric($this->limit))
+				{
+					$sql = $this->sql->limit($sql, $this->limit, $this->offset);
+				}
+			break;
+			
+			case "insert":
+				// @todo Implement insert statements
+			break;
+			
+			case "update":
+				// @todo Implement update statements
+			break;
+			
+			case "delete":
+				// @todo Implement delete statements
+			break;
+		}
+		
+		return $sql;
 	}
 }
+// End of query_builder.php

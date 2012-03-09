@@ -28,5 +28,18 @@ class ODBCTest extends UnitTestCase {
 	function __construct()
 	{
 		parent::__construct();
+		
+		// Connection Test with SQLite
+		$path = dirname(__FILE__)."/../test_dbs/test_sqlite.db";
+		
+		try 
+		{
+			$this->db = new ODBC("Driver=/usr/lib/libsqlite3odbc.so;Database={$path}");
+		}
+		catch(PDOException $e)
+		{
+		
+		}
+		
 	}
 }

@@ -26,14 +26,8 @@ class SQLiteTest extends UnitTestCase {
 	
 	function setUp()
 	{
-		$path = dirname(__FILE__)."/../test_dbs/test_sqlite.db";
+		$path = TEST_DIR.DS.'test_dbs'.DS.'test_sqlite.db';
 		$this->db = new SQLite($path);
-		
-		$params = new Stdclass();
-		$params->type = 'sqlite';
-		$params->file = $path;
-		$params->host = 'localhost';
-		$this->qb = new Query_Builder($params);
 	}
 	
 	function tearDown()
@@ -149,6 +143,8 @@ SQL;
 
 }
 
+// --------------------------------------------------------------------------
+
 /**
  * Class for testing Query Builder with SQLite 
  */
@@ -156,9 +152,7 @@ SQL;
  
  	function setUp()
 	{
-		$path = dirname(__FILE__)."/../test_dbs/test_sqlite.db";
-		$this->db = new SQLite($path);
-		
+		$path = TEST_DIR.DS.'test_dbs'.DS.'test_sqlite.db';
 		$params = new Stdclass();
 		$params->type = 'sqlite';
 		$params->file = $path;
@@ -168,7 +162,7 @@ SQL;
 	
 	function tearDown()
 	{
-		unset($this->db);
+		unset($this->qb);
 	}
 	
 	function TestGet()
@@ -224,6 +218,17 @@ SQL;
 		$query = $this->qb->select('id, key as k, val')
 			->from('create_test ct')
 			->where('id >', 1)
+			->get();
+			
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
+	function TestSelectFromLimitGet()
+	{
+		$query = $this->qb->select('id, key as k, val')
+			->from('create_test ct')
+			->where('id >', 1)
+			->limit(3)
 			->get();
 			
 		$this->assertIsA($query, 'PDOStatement');
