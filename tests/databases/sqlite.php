@@ -194,22 +194,38 @@ SQL;
 
 	function TestSelectWhereGet()
 	{
-		$query = $this->qb->select('id, key as k, val')->where('id >', 1)->get('create_test', 2, 1);
+		$query = $this->qb->select('id, key as k, val')
+			->where('id >', 1)
+			->where('id <', 900)
+			->get('create_test', 2, 1);
 
 		$this->assertIsA($query, 'PDOStatement');
 	}
 	
 	function TestSelectWhereGet2()
 	{
-		$query = $this->qb->select('id, key as k, val')->where('id', 1)->get('create_test', 2, 1);
+		$query = $this->qb->select('id, key as k, val')
+			->where('id !=', 1)
+			->get('create_test', 2, 1);
 
 		$this->assertIsA($query, 'PDOStatement');
 	}
 
 	function TestSelectGet()
 	{
-		$query = $this->qb->select('id, key as k, val')->get('create_test', 2, 1);
+		$query = $this->qb->select('id, key as k, val')
+			->get('create_test', 2, 1);
 
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
+	function TestSelectFromGet()
+	{
+		$query = $this->qb->select('id, key as k, val')
+			->from('create_test ct')
+			->where('id >', 1)
+			->get();
+			
 		$this->assertIsA($query, 'PDOStatement');
 	}
 }

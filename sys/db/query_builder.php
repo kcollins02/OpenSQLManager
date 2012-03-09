@@ -18,7 +18,12 @@
  */
 class Query_Builder {
 
-	private $table, $where_array, $sql, $select_string, $where_string;
+	private $table, 
+		$sql, 
+		$select_string, 
+		$from_string,
+		$where_array, 
+		$where_string;
 
 	/**
 	 * Constructor
@@ -70,14 +75,14 @@ class Query_Builder {
 	 */
 	public function get($table='', $limit=FALSE, $offset=FALSE)
 	{
-		// @todo Only add in the table name when using the select method
-		// @todo Only execute combined query when using other query methods and empty parameters
-	
-		$sql = 'SELECT * FROM ' . $this->db->quote_ident($table);
-
-		if ( ! empty($table) && $limit === FALSE && $offset === FALSE)
+		// The simplest case, just get the data from the table
+		if ( ! empty($table) && empty($this->from_string))
 		{
-			$result = $this->db->query($sql);
+			$sql = 'SELECT * FROM ' . $this->db->quote_ident($table);
+		}
+		elseif(empty($table) && ! empty($this->from_string))
+		{
+			$sql = 'SELECT * FROM ' . $this->from_string;
 		}
 		
 		// Set the select string
@@ -99,7 +104,7 @@ class Query_Builder {
 			$sql = $this->sql->limit($sql, $limit, $offset);
 		}
 		
-		// echo $sql."<br />";
+		echo $sql."<br />";
 
 		// Do prepared statements for anything involving a "where" clause
 		if ( ! empty($this->where_string))
@@ -215,7 +220,7 @@ class Query_Builder {
 		}
 
 		// Create the where portion of the string
-		$this->where_string = ' WHERE '.implode(', ', $kv_array);
+		$this->where_string = ' WHERE '.implode(' AND ', $kv_array);
 		
 		unset($kv_array);
 		unset($fields);
@@ -249,7 +254,16 @@ class Query_Builder {
 	 */
 	public function from($dbname)
 	{
-		// @todo Implement from method
+		// Split identifiers on spaces
+		$ident_array = explode(' ', trim($dbname));
+		$ident_array = array_map('trim', $ident_array);
+		
+		// Quote the identifiers 
+		$ident_array = array_map(array($this->db, 'quote_ident'), $ident_array);
+		
+		// Paste it back together
+		$this->from_string = implode(' ', $ident_array);		
+		
 		return $this;
 	}
 	
@@ -264,6 +278,7 @@ class Query_Builder {
 		unset($this->where_array);
 		unset($this->where_string);
 		unset($this->select_string);
+		unset($this->from_string);
 	}
 	
 	// --------------------------------------------------------------------------
@@ -271,9 +286,10 @@ class Query_Builder {
 	/**
 	 * String together the sql statements for sending to the db
 	 *
+	 * @param $type
 	 * @return $string
 	 */
-	private function _compile()
+	private function _compile($type)
 	{
 		// @todo Implement _compile method
 	}
