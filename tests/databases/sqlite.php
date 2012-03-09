@@ -151,6 +151,14 @@ SQL;
 		
 		$this->assertIsA($query, 'PDOStatement');
 	}
+
+	function TestQBSelectGet()
+	{
+		$query = $this->qb->select('id, key as k, val')->get('create_test');
+
+		$this->assertIsA($query, 'PDOStatement');
+
+	}
 	
 	function TestDeleteTable()
 	{

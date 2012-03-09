@@ -123,7 +123,7 @@ class Query_Builder {
 		// Join the strings back together
 		for($i = 0, $c = count($safe_array); $i < $count; $i++)
 		{
-			if (is_array($safe_array[$i])
+			if (is_array($safe_array[$i]))
 			{
 				$safe_array[$i] = implode(' AS ', $safe_array[$i]);
 			}
