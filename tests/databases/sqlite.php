@@ -111,7 +111,7 @@ SQL;
 	
 	function TestCommitTransaction()
 	{
-		$this->TestCreateTransaction();
+		$res = $this->db->beginTransaction();
 		
 		$sql = 'INSERT INTO "create_test" ("id", "key", "val") VALUES (10, 12, 14)';
 		$this->db->query($sql);
@@ -122,7 +122,7 @@ SQL;
 	
 	function TestRollbackTransaction()
 	{
-		$this->TestCreateTransaction();
+		$res = $this->db->beginTransaction();
 		
 		$sql = 'INSERT INTO "create_test" ("id", "key", "val") VALUES (182, 96, 43)';
 		$this->db->query($sql);
@@ -174,7 +174,8 @@ SQL;
 
 	}
 	
-	function TestDeleteTable()
+	// This is really time intensive ! Run only when needed
+	/*function TestDeleteTable()
 	{
 		//Make sure the table exists to delete
 		$dbs = $this->db->get_tables();
@@ -187,6 +188,6 @@ SQL;
 		//Check
 		$dbs = $this->db->get_tables();
 		$this->assertFalse(in_array('create_test', $dbs));	
-	}
+	}*/
 
 }
