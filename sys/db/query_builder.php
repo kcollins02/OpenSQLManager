@@ -18,7 +18,7 @@
  */
 class Query_Builder {
 
-	private $table, $where_array, $sql, $select_string;
+	private $table, $where_array, $sql, $select_string, $where_string;
 
 	/**
 	 * Constructor
@@ -86,6 +86,12 @@ class Query_Builder {
 			// Replace the star with the selected fields
 			$sql = str_replace('*', $this->select_string, $sql);
 		}
+
+		// Set the where string
+		if ( ! empty($this->where_string))
+		{
+			$sql .= $this->where_string;
+		}
 		
 		// Set the limit, if it exists
 		if ($limit !== FALSE)
@@ -93,8 +99,15 @@ class Query_Builder {
 			$sql = $this->sql->limit($sql, $limit, $offset);
 		}
 		
-		//echo $sql."<br />";
+		echo $sql."<br />";
 
+		// Do prepared statements for anything involving a "where" clause
+		if ( ! empty($this->where_string))
+		{
+			return $this->db->prepare_execute($sql, array_values($this->where_array));
+		}
+
+		// Otherwise, a simple query will do.
 		return $this->db->query($sql);
 	}
 	
@@ -154,6 +167,47 @@ class Query_Builder {
 	 */
 	public function where($key, $val=array())
 	{
+		// Key and value passed? Add them to the where array
+		if (is_scalar($key) && is_scalar($val))
+		{
+			$this->where_array[$key] = $val;
+		}
+		// Array or object, loop through and add to the where array
+		elseif ( ! is_scalar($key))
+		{
+			foreach($key as $k => $v)
+			{
+				$this->where_array[$k] = $v;
+			}
+		}
+
+		// The values are irrelevant until the query is actually run
+		$fields = array_keys($this->where_array);
+		
+		// Array of conditions
+		$kv_array = array();
+
+		// Create key/value placeholders
+		foreach($fields as $f)
+		{
+			// Split each key by spaces, incase there
+			// is an operator such as >, <, !=, etc.
+			$f_array = explode(' ', trim($f));
+
+			// Simple key = val
+			if (count($f_array) === 1)
+			{
+				$kv_array[] = $this->db->quote_ident($f_array[0]) . '= ?';
+			}
+			else // Other operators
+			{
+				$kv_array[] = $this->db->quote_ident($f_array[0]) . " {$f_array[1]} ?";
+			}
+		}
+
+		// Create the where portion of the string
+		$this->where_string = ' WHERE '.implode(', ', $kv_array);
+
 		// @todo Implement where method
 		return $this;
 	}

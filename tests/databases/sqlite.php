@@ -152,6 +152,13 @@ SQL;
 		$this->assertIsA($query, 'PDOStatement');
 	}
 
+	function TestQBSelectWhereGet()
+	{
+		$query = $this->qb->select('id, key as k, val')->where('id >', 1)->get('create_test, 2, 1');
+
+		$this->assertIsA($query, 'PDOStatement');
+	}
+
 	function TestQBSelectGet()
 	{
 		$query = $this->qb->select('id, key as k, val')->get('create_test', 2, 1);
