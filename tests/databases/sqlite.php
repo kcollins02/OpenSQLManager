@@ -154,7 +154,14 @@ SQL;
 
 	function TestQBSelectWhereGet()
 	{
-		$query = $this->qb->select('id, key as k, val')->where('id >', 1)->get('create_test, 2, 1');
+		$query = $this->qb->select('id, key as k, val')->where('id >', 1)->get('create_test', 2, 1);
+
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
+	function TestQBSelectWhereGet2()
+	{
+		$query = $this->qb->select('id, key as k, val')->where('id', 1)->get('create_test', 2, 1);
 
 		$this->assertIsA($query, 'PDOStatement');
 	}
@@ -179,7 +186,7 @@ SQL;
 
 		//Check
 		$dbs = $this->db->get_tables();
-		$this->assertTrue(empty($dbs['create_test']));
+		$this->assertFalse(in_array('create_test', $dbs));	
 	}
 
 }

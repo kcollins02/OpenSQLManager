@@ -137,6 +137,8 @@ class Query_Builder {
 
 		// Quote the identifiers
 		$safe_array = array_map(array($this->db, 'quote_ident'), $fields_array);
+		
+		unset($fields_array);
 
 		// Join the strings back together
 		for($i = 0, $c = count($safe_array); $i < $c; $i++)
@@ -149,7 +151,7 @@ class Query_Builder {
 
 		$this->select_string = implode(', ', $safe_array);
 		
-		//echo $this->select_string."<br />";
+		unset($safe_array);
 
 		return $this;
 	}
@@ -207,8 +209,10 @@ class Query_Builder {
 
 		// Create the where portion of the string
 		$this->where_string = ' WHERE '.implode(', ', $kv_array);
+		
+		unset($kv_array);
+		unset($fields);
 
-		// @todo Implement where method
 		return $this;
 	}
 	
