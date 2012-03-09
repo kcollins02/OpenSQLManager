@@ -18,7 +18,7 @@
  */
 class Query_Builder {
 
-	private $table, $where_array, $sql;
+	private $table, $where_array, $sql, $select_string;
 
 	/**
 	 * Constructor
@@ -79,15 +79,19 @@ class Query_Builder {
 		{
 			$result = $this->db->query($sql);
 		}
-		else
+		elseif ( ! empty($this->select_string))
 		{
-			$sql = $this->sql->limit($sql, $limit, $offset);
-			$result = $this->db->query($sql);
+			// Replace the star with the selected fields
+			$sql = str_replace('*', $this->select_string, $sql);
 		}
 		
-		//echo $sql."<br />";
+		// Set the limit, if it exists
+		if ($limit !== FALSE)
+		{
+			$sql = $this->sql->limit($sql, $limit, $offset);
+		}
 
-		return $result;
+		return $this->db->query($sql);
 	}
 	
 	// --------------------------------------------------------------------------
@@ -100,7 +104,33 @@ class Query_Builder {
 	 */
 	public function select($fields)
 	{
-		// @todo Implement select method
+		// Split fields by comma
+		$fields_array = explode(",", $fields);
+		$fields_array = array_map('trim', $fields_array);
+
+		// Split on 'As'
+		foreach ($fields_array as $key => $field)
+		{
+			if (stripos($field, 'as') !== FALSE)
+			{
+				$fields_array[$key] = preg_split('`as`i', $field);
+			}
+		}
+
+		// Quote the identifiers
+		$safe_array = array_map(array($this->db, 'quote_ident'), $fields_array);
+
+		// Join the strings back together
+		for($i = 0, $c = count($safe_array); $i < $count; $i++)
+		{
+			if (is_array($safe_array[$i])
+			{
+				$safe_array[$i] = implode(' AS ', $safe_array[$i]);
+			}
+		}
+
+		$this->select_string = implode(', ', $safe_array);
+
 		return $this;
 	}
 	

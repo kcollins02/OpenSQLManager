@@ -134,6 +134,14 @@ class MySQL extends DB_PDO {
 	 */
 	public function quote_ident($ident)
 	{
+		if (is_array($ident))
+		{
+			for($i = 0, $count = count($ident); $i < $count; $i++)
+			{
+				$ident[$i] = $this->quote_ident($ident[$i]);
+			}
+		}
+		
 		// Split each identifier by the period
 		$hiers = explode('.', $ident);
 

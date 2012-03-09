@@ -155,11 +155,19 @@ abstract class DB_PDO extends PDO {
 	/**
 	 * Surrounds the string with the databases identifier escape characters
 	 *
-	 * @param string $ident
+	 * @param mixed $ident
 	 * @return string
 	 */
 	public function quote_ident($ident)
 	{
+		if (is_array($ident))
+		{
+			for($i = 0, $count = count($ident); $i < $count; $i++)
+			{
+				$ident[$i] = $this->quote_ident($ident[$i]);
+			}
+		}
+
 		// Split each identifier by the period
 		$hiers = explode('.', $ident);
 
