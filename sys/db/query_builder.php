@@ -91,7 +91,7 @@ class Query_Builder {
 		
 		$sql = $this->_compile('select');
 		
-		echo $sql."<br />";
+		//echo $sql."<br />";
 
 		// Do prepared statements for anything involving a "where" clause
 		if ( ! empty($this->where_string))
