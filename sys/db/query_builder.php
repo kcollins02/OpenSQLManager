@@ -99,16 +99,23 @@ class Query_Builder {
 			$sql = $this->sql->limit($sql, $limit, $offset);
 		}
 		
-		echo $sql."<br />";
+		// echo $sql."<br />";
 
 		// Do prepared statements for anything involving a "where" clause
 		if ( ! empty($this->where_string))
 		{
-			return $this->db->prepare_execute($sql, array_values($this->where_array));
+			$result =  $this->db->prepare_execute($sql, array_values($this->where_array));
+		}
+		else
+		{	
+			// Otherwise, a simple query will do.
+			$result =  $this->db->query($sql);
 		}
 
-		// Otherwise, a simple query will do.
-		return $this->db->query($sql);
+		// Reset for next query
+		$this->_reset();
+		
+		return $result;
 	}
 	
 	// --------------------------------------------------------------------------
@@ -244,6 +251,19 @@ class Query_Builder {
 	{
 		// @todo Implement from method
 		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Clear out the class variables, so the next query can be run
+	 */
+	private function _reset()
+	{
+		unset($this->table);
+		unset($this->where_array);
+		unset($this->where_string);
+		unset($this->select_string);
 	}
 	
 	// --------------------------------------------------------------------------

@@ -70,7 +70,9 @@ class FirebirdTest extends UnitTestCase {
 	{	
 		$only_system = TRUE;
 		
-		foreach($this->tables as $t)
+		$tables = $this->db->get_system_tables();
+		
+		foreach($tables as $t)
 		{
 			if(stripos($t, 'rdb$') !== 0 && stripos($t, 'mon$') !== 0)
 			{
@@ -88,7 +90,7 @@ class FirebirdTest extends UnitTestCase {
 		$this->assertTrue($res);
 	}
 
-	function TestCreateTable()
+	/*function TestCreateTable()
 	{
 		//Attempt to create the table
 		$sql = $this->db->sql->create_table('create_test', array(
@@ -104,16 +106,16 @@ class FirebirdTest extends UnitTestCase {
 		$this->setUp();
 		
 		//Check
-		/*$table_exists = (bool)in_array('create_test', $this->tables);
+		$table_exists = (bool)in_array('create_test', $this->tables);
 		
 		echo "create_test exists :".(int)$table_exists.'<br />';
 		
-		$this->assertTrue($table_exists);*/
-	}
+		$this->assertTrue($table_exists);
+	}*/
 	
 	function TestCommitTransaction()
 	{
-		$this->TestCreateTransaction();
+		$res = $this->db->beginTransaction();
 		
 		$sql = 'INSERT INTO "create_test" ("id", "key", "val") VALUES (10, 12, 14)';
 		$this->db->query($sql);
@@ -124,7 +126,7 @@ class FirebirdTest extends UnitTestCase {
 	
 	function TestRollbackTransaction()
 	{
-		$this->TestCreateTransaction();
+		$res = $this->db->beginTransaction();
 		
 		$sql = 'INSERT INTO "create_test" ("id", "key", "val") VALUES (182, 96, 43)';
 		$this->db->query($sql);
@@ -133,6 +135,81 @@ class FirebirdTest extends UnitTestCase {
 		$this->assertTrue($res);
 	}
 	
+	
+	
+	function TestPreparedStatements()
+	{
+		$sql = <<<SQL
+			INSERT INTO "create_test" ("id", "key", "val") 
+			VALUES (?,?,?)
+SQL;
+		$this->db->prepare($sql);
+		$this->db->execute(array(1,"booger's", "Gross"));
+
+	}
+	
+	function TestPrepareExecute()
+	{
+		$sql = <<<SQL
+			INSERT INTO "create_test" ("id", "key", "val") 
+			VALUES (?,?,?)
+SQL;
+		$this->db->prepare_execute($sql, array(
+			2, "works", 'also?'
+		));
+	
+	}
+	
+	function TestPrepareQuery()
+	{
+		$this->assertFalse($this->db->prepare_query('', array()));	
+	}
+
+	/*function TestDeleteTable()
+	{
+		//Attempt to delete the table
+		$sql = $this->db->sql->delete_table('create_test');
+		$this->db->query($sql);
+		
+		//Reset
+		$this->tearDown();
+		$this->setUp();
+		
+		//Check
+		$table_exists = in_array('create_test', $this->tables);
+		$this->assertFalse($table_exists);
+	}*/
+}
+
+/**
+ * Firebird Query Builder Tests
+ */
+class FirebirdQBTest extends UnitTestCase {
+
+	function __construct()
+	{
+		parent::__construct();
+	}
+	
+	function setUp()
+	{
+		$dbpath = TEST_DIR.DS.'test_dbs'.DS.'FB_TEST_DB.FDB';
+
+		// Test the query builder
+		$params = new Stdclass();
+		$params->type = 'firebird';
+		$params->file = $dbpath;
+		$params->host = 'localhost';
+		$params->user = 'sysdba';
+		$params->pass = 'masterkey';
+		$this->qb = new Query_Builder($params);
+	}
+	
+	function tearDown()
+	{
+		unset($this->qb);
+	}
+
 	function TestQBGet()
 	{
 		$query = $this->qb->get('create_test');
@@ -175,48 +252,5 @@ class FirebirdTest extends UnitTestCase {
 
 		$this->assertTrue(is_resource($query));
 
-	}
-	
-	function TestPreparedStatements()
-	{
-		$sql = <<<SQL
-			INSERT INTO "create_test" ("id", "key", "val") 
-			VALUES (?,?,?)
-SQL;
-		$this->db->prepare($sql);
-		$this->db->execute(array(1,"booger's", "Gross"));
-
-	}
-	
-	function TestPrepareExecute()
-	{
-		$sql = <<<SQL
-			INSERT INTO "create_test" ("id", "key", "val") 
-			VALUES (?,?,?)
-SQL;
-		$this->db->prepare_execute($sql, array(
-			2, "works", 'also?'
-		));
-	
-	}
-	
-	function TestPrepareQuery()
-	{
-		$this->assertFalse($this->db->prepare_query('', array()));	
-	}
-
-	function TestDeleteTable()
-	{
-		//Attempt to delete the table
-		$sql = $this->db->sql->delete_table('create_test');
-		$this->db->query($sql);
-		
-		//Reset
-		$this->tearDown();
-		$this->setUp();
-		
-		//Check
-		$table_exists = in_array('create_test', $this->tables);
-		$this->assertFalse($table_exists);
 	}
 }

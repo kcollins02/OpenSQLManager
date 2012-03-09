@@ -130,50 +130,7 @@ SQL;
 		$res = $this->db->rollback();
 		$this->assertTrue($res);
 	}
-	
-	function TestQBGet()
-	{
-		$query = $this->qb->get('create_test');
 		
-		$this->assertIsA($query, 'PDOStatement');
-	}
-	
-	function TestQBGetLimit()
-	{
-		$query = $this->qb->get('create_test', 2);
-		
-		$this->assertIsA($query, 'PDOStatement');
-	}
-	
-	function TestQBGetLimitSkip()
-	{
-		$query = $this->qb->get('create_test', 2, 1);
-		
-		$this->assertIsA($query, 'PDOStatement');
-	}
-
-	function TestQBSelectWhereGet()
-	{
-		$query = $this->qb->select('id, key as k, val')->where('id >', 1)->get('create_test', 2, 1);
-
-		$this->assertIsA($query, 'PDOStatement');
-	}
-	
-	function TestQBSelectWhereGet2()
-	{
-		$query = $this->qb->select('id, key as k, val')->where('id', 1)->get('create_test', 2, 1);
-
-		$this->assertIsA($query, 'PDOStatement');
-	}
-
-	function TestQBSelectGet()
-	{
-		$query = $this->qb->select('id, key as k, val')->get('create_test', 2, 1);
-
-		$this->assertIsA($query, 'PDOStatement');
-
-	}
-	
 	// This is really time intensive ! Run only when needed
 	/*function TestDeleteTable()
 	{
@@ -190,4 +147,69 @@ SQL;
 		$this->assertFalse(in_array('create_test', $dbs));	
 	}*/
 
+}
+
+/**
+ * Class for testing Query Builder with SQLite 
+ */
+ class SQLiteQBTest extends UnitTestCase {
+ 
+ 	function setUp()
+	{
+		$path = dirname(__FILE__)."/../test_dbs/test_sqlite.db";
+		$this->db = new SQLite($path);
+		
+		$params = new Stdclass();
+		$params->type = 'sqlite';
+		$params->file = $path;
+		$params->host = 'localhost';
+		$this->qb = new Query_Builder($params);
+	}
+	
+	function tearDown()
+	{
+		unset($this->db);
+	}
+	
+	function TestGet()
+	{
+		$query = $this->qb->get('create_test');
+		
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
+	function TestGetLimit()
+	{
+		$query = $this->qb->get('create_test', 2);
+		
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
+	function TestGetLimitSkip()
+	{
+		$query = $this->qb->get('create_test', 2, 1);
+		
+		$this->assertIsA($query, 'PDOStatement');
+	}
+
+	function TestSelectWhereGet()
+	{
+		$query = $this->qb->select('id, key as k, val')->where('id >', 1)->get('create_test', 2, 1);
+
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
+	function TestSelectWhereGet2()
+	{
+		$query = $this->qb->select('id, key as k, val')->where('id', 1)->get('create_test', 2, 1);
+
+		$this->assertIsA($query, 'PDOStatement');
+	}
+
+	function TestSelectGet()
+	{
+		$query = $this->qb->select('id, key as k, val')->get('create_test', 2, 1);
+
+		$this->assertIsA($query, 'PDOStatement');
+	}
 }
