@@ -12,16 +12,10 @@
 
 // --------------------------------------------------------------------------
 
-/**
- * MySQLTest class.
- * 
- * @extends UnitTestCase
- */
-class MySQLTest extends UnitTestCase {
+class MySQLQBTest extends UnitTestCase {
 
 	function __construct()
 	{
-
+	
 	}
 }
- 
