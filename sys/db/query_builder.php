@@ -414,22 +414,6 @@ class Query_Builder {
 		// @todo implement order_by method
 		return $this;
 	}
-	
-	// --------------------------------------------------------------------------
-	
-	/**
-	 * Join a table 
-	 *
-	 * @param string $table
-	 * @param string $statement
-	 * @param string $type
-	 * @return $this
-	 */
-	public function join($table, $statement, $type='INNER')
-	{
-		// @todo implement join method
-		return $this;
-	}
 
 	// --------------------------------------------------------------------------
 
