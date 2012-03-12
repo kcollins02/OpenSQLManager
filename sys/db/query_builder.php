@@ -109,6 +109,20 @@ class Query_Builder {
 		
 		return $result;
 	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Sets values for inserts / updates / deletes
+	 *
+	 * @param mixed $key
+	 * @param mixed $val
+	 * @return $this
+	 */
+	public function set($key, $val)
+	{
+		// @todo Implement set method
+	}
 	
 	// --------------------------------------------------------------------------
 	
@@ -214,7 +228,82 @@ class Query_Builder {
 
 		return $this;
 	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Where clause prefixed with "OR"
+	 *
+	 * @param string $field
+	 * @param mixed $value
+	 * @return $this
+	 */
+	public function or_where($field, $value)
+	{
+		// @todo Implement or_where method
+		return $this;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Where clause with 'IN' statement
+	 *
+	 * @param mixed $field
+	 * @param mixed $val
+	 * @return $this
+	 */
+	public function where_in($field, $val)
+	{
+		// @todo Implement Where_in method
+		return $this;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Where in statement prefixed with "or"
+	 *
+	 * @param string $field
+	 * @param mixed $val
+	 * @return $this
+	 */
+	public function or_where_in($field, $val)
+	{
+		// @todo Implement or_where_in method
+		return $this;
+	}
 	
+	// --------------------------------------------------------------------------
+
+	/**
+	 * WHERE NOT IN (FOO) clause
+	 *
+	 * @param string $field
+	 * @param mixed $val
+	 * @return $this
+	 */
+	public function where_not_in($field, $val)
+	{
+		// @todo Implement where_not_in method
+		return $this;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * OR WHERE NOT IN (FOO) clause
+	 * 
+	 * @param string $field
+	 * @param mixed $val
+	 * @return $this
+	 */
+	public function or_where_not_in($field, $val)
+	{
+		// @tood Implement or_where_not_in method
+		return $this;
+	}
+
 	// --------------------------------------------------------------------------
 	
 	/**
@@ -270,7 +359,64 @@ class Query_Builder {
 		
 		return $this;
 	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Order the results by the selected field(s)
+	 *
+	 * @param string $field
+	 * @param string $type
+	 * @return $this
+	 */
+	public function order_by($field, $type="")
+	{
+		// @todo implement order_by method
+		return $this;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Creates an insert clause, and executes it
+	 *
+	 * @param string $table
+	 * @param mixed $data
+	 * @return
+	 */
+	public function insert($table, $data=array())
+	{
+		// @todo implement insert method
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Creates an update clause, and executes it
+	 *
+	 * @param string $table
+	 * @param mixed $data
+	 * @return
+	 */
+	public function update($table, $data=array())
+	{
+		// @todo implement update method
+	}
 	
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Deletes data from a table
+	 *
+	 * @param string $table
+	 * @param mixed $where
+	 * @return
+	 */
+	public function delete($table, $where='')
+	{
+		// @todo implement delete method
+	}
+
 	// --------------------------------------------------------------------------
 	
 	/**
