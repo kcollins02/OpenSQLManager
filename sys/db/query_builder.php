@@ -24,6 +24,8 @@ class Query_Builder {
 		$from_string,
 		$where_array, 
 		$where_string,
+		$set_array,
+		$set_string,
 		$limit,
 		$offset;
 
@@ -90,8 +92,6 @@ class Query_Builder {
 		}
 		
 		$sql = $this->_compile('select');
-		
-		//echo $sql."<br />";
 
 		// Do prepared statements for anything involving a "where" clause
 		if ( ! empty($this->where_string))
@@ -121,7 +121,31 @@ class Query_Builder {
 	 */
 	public function set($key, $val)
 	{
-		// @todo Implement set method
+		// Plain key, value pair
+		if (is_scalar($key) && is_scalar($val))
+		{
+			$this->set_array[$key] = $val;
+		}
+		// Object or array
+		elseif ( ! is_scalar($key))
+		{
+			foreach($key as $k => $v)
+			{
+				$this->set_array[$k] = $v;
+			}
+		}
+		
+		// Use the keys of the array to make the insert/update string
+		$fields = array_keys($this->set_array);
+		
+		// Escape the field names
+		$fields = array_map(array($this, 'quote_ident'), $fields);
+		
+		// Generate the "set" string
+		$this->set_string = implode('=?, ', $fields);
+		$this->set_string .= '=?';
+		
+		return $this;
 	}
 	
 	// --------------------------------------------------------------------------
@@ -346,6 +370,22 @@ class Query_Builder {
 	// --------------------------------------------------------------------------
 	
 	/**
+	 * Creates a Like clause in the sql statement
+	 *
+	 * @param string $field
+	 * @param mixed $val
+	 * @param string $pos
+	 * @return $this
+	 */
+	public function like($field, $val, $pos='both')
+	{
+		// @todo implement like method
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
 	 * Set a limit on the current sql statement
 	 *
 	 * @param int $limit
@@ -372,6 +412,22 @@ class Query_Builder {
 	public function order_by($field, $type="")
 	{
 		// @todo implement order_by method
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Join a table 
+	 *
+	 * @param string $table
+	 * @param string $statement
+	 * @param string $type
+	 * @return $this
+	 */
+	public function join($table, $statement, $type='INNER')
+	{
+		// @todo implement join method
 		return $this;
 	}
 
