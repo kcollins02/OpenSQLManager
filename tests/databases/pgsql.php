@@ -29,4 +29,9 @@ class PgTest extends UnitTestCase {
 	{
 		parent::__construct();
 	}
+	
+	function TestExists()
+	{
+		$this->assertTrue(in_array('pgsql', pdo_drivers()));
+	}
 }

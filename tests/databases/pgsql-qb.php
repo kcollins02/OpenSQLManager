@@ -18,4 +18,9 @@ class PgSQLQBTest extends UnitTestCase {
 	{
 	
 	}
+	
+	function TestExists()
+	{
+		$this->assertTrue(in_array('pgsql', pdo_drivers()));
+	}
 }

@@ -23,4 +23,9 @@ class ODBCTest extends UnitTestCase {
 	{
 	
 	}
+	
+	function TestExists()
+	{
+		$this->assertTrue(in_array('odbc', pdo_drivers()));
+	}
 }

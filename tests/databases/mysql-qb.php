@@ -18,4 +18,9 @@ class MySQLQBTest extends UnitTestCase {
 	{
 	
 	}
+	
+	function TestExists()
+	{
+		$this->assertTrue(in_array('mysql', pdo_drivers()));
+	}
 }
