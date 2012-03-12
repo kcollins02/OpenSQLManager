@@ -464,13 +464,28 @@ class Query_Builder {
 	 */
 	private function _reset()
 	{
-		unset($this->table);
-		unset($this->where_array);
-		unset($this->where_string);
-		unset($this->select_string);
-		unset($this->from_string);
-		unset($this->limit);
-		unset($this->offset);
+		// Only unset class variables that
+		// are not callable. Otherwise, we'll 
+		// delete class methods!
+		foreach($this as $name => $var)
+		{
+			// Skip properties that are needed for every query
+			$save_properties = array(
+				'db',
+				'sql'
+			);
+		
+			if (in_array($name, $save_properties))
+			{
+				continue;
+			}
+		
+			// Nothing query-generation related is safe!
+			if ( ! is_callable($this->$name))
+			{
+				unset($this->$name);
+			}
+		}
 	}
 	
 	// --------------------------------------------------------------------------
