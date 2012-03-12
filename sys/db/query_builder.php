@@ -65,89 +65,9 @@ class Query_Builder {
 		// Make things just slightly shorter
 		$this->sql =& $this->db->sql;
 	}
-
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Select and retrieve all records from the current table, and/or
-	 * execute current compiled query
-	 *
-	 * @param $table
-	 * @param int $limit
-	 * @param int $offset
-	 * @return object
-	 */
-	public function get($table='', $limit=FALSE, $offset=FALSE)
-	{
-		// Set the table
-		if ( ! empty($table))
-		{
-			$this->from_string = $this->db->quote_ident($table);
-		}
-
-		// Set the limit, if it exists
-		if ($limit !== FALSE)
-		{
-			$this->limit($limit, $offset);
-		}
-		
-		$sql = $this->_compile('select');
-
-		// Do prepared statements for anything involving a "where" clause
-		if ( ! empty($this->where_string))
-		{
-			$result =  $this->db->prepare_execute($sql, array_values($this->where_array));
-		}
-		else
-		{	
-			// Otherwise, a simple query will do.
-			$result =  $this->db->query($sql);
-		}
-
-		// Reset for next query
-		$this->_reset();
-		
-		return $result;
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Sets values for inserts / updates / deletes
-	 *
-	 * @param mixed $key
-	 * @param mixed $val
-	 * @return $this
-	 */
-	public function set($key, $val)
-	{
-		// Plain key, value pair
-		if (is_scalar($key) && is_scalar($val))
-		{
-			$this->set_array[$key] = $val;
-		}
-		// Object or array
-		elseif ( ! is_scalar($key))
-		{
-			foreach($key as $k => $v)
-			{
-				$this->set_array[$k] = $v;
-			}
-		}
-		
-		// Use the keys of the array to make the insert/update string
-		$fields = array_keys($this->set_array);
-		
-		// Escape the field names
-		$fields = array_map(array($this, 'quote_ident'), $fields);
-		
-		// Generate the "set" string
-		$this->set_string = implode('=?, ', $fields);
-		$this->set_string .= '=?';
-		
-		return $this;
-	}
 	
+	// --------------------------------------------------------------------------
+	// ! Select Queries
 	// --------------------------------------------------------------------------
 	
 	/**
@@ -190,6 +110,45 @@ class Query_Builder {
 		
 		unset($safe_array);
 
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Specify the database table to select from
+	 *
+	 * @param string $dbname
+	 * @return $this
+	 */
+	public function from($dbname)
+	{
+		// Split identifiers on spaces
+		$ident_array = explode(' ', trim($dbname));
+		$ident_array = array_map('trim', $ident_array);
+		
+		// Quote the identifiers 
+		$ident_array = array_map(array($this->db, 'quote_ident'), $ident_array);
+		
+		// Paste it back together
+		$this->from_string = implode(' ', $ident_array);		
+		
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Creates a Like clause in the sql statement
+	 *
+	 * @param string $field
+	 * @param mixed $val
+	 * @param string $pos
+	 * @return $this
+	 */
+	public function like($field, $val, $pos='both')
+	{
+		// @todo implement like method
 		return $this;
 	}
 	
@@ -324,10 +283,10 @@ class Query_Builder {
 	 */
 	public function or_where_not_in($field, $val)
 	{
-		// @tood Implement or_where_not_in method
+		// @todo Implement or_where_not_in method
 		return $this;
 	}
-
+	
 	// --------------------------------------------------------------------------
 	
 	/**
@@ -347,45 +306,6 @@ class Query_Builder {
 	// --------------------------------------------------------------------------
 	
 	/**
-	 * Specify the database table to select from
-	 *
-	 * @param string $dbname
-	 * @return $this
-	 */
-	public function from($dbname)
-	{
-		// Split identifiers on spaces
-		$ident_array = explode(' ', trim($dbname));
-		$ident_array = array_map('trim', $ident_array);
-		
-		// Quote the identifiers 
-		$ident_array = array_map(array($this->db, 'quote_ident'), $ident_array);
-		
-		// Paste it back together
-		$this->from_string = implode(' ', $ident_array);		
-		
-		return $this;
-	}
-	
-	// --------------------------------------------------------------------------
-	
-	/**
-	 * Creates a Like clause in the sql statement
-	 *
-	 * @param string $field
-	 * @param mixed $val
-	 * @param string $pos
-	 * @return $this
-	 */
-	public function like($field, $val, $pos='both')
-	{
-		// @todo implement like method
-		return $this;
-	}
-	
-	// --------------------------------------------------------------------------
-	
-	/**
 	 * Set a limit on the current sql statement
 	 *
 	 * @param int $limit
@@ -398,6 +318,50 @@ class Query_Builder {
 		$this->offset = $offset;
 		
 		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Select and retrieve all records from the current table, and/or
+	 * execute current compiled query
+	 *
+	 * @param $table
+	 * @param int $limit
+	 * @param int $offset
+	 * @return object
+	 */
+	public function get($table='', $limit=FALSE, $offset=FALSE)
+	{
+		// Set the table
+		if ( ! empty($table))
+		{
+			$this->from_string = $this->db->quote_ident($table);
+		}
+
+		// Set the limit, if it exists
+		if ($limit !== FALSE)
+		{
+			$this->limit($limit, $offset);
+		}
+		
+		$sql = $this->_compile('select');
+
+		// Do prepared statements for anything involving a "where" clause
+		if ( ! empty($this->where_string))
+		{
+			$result =  $this->db->prepare_execute($sql, array_values($this->where_array));
+		}
+		else
+		{	
+			// Otherwise, a simple query will do.
+			$result =  $this->db->query($sql);
+		}
+
+		// Reset for next query
+		$this->_reset();
+		
+		return $result;
 	}
 
 	// --------------------------------------------------------------------------
@@ -414,7 +378,47 @@ class Query_Builder {
 		// @todo implement order_by method
 		return $this;
 	}
+	
+	// --------------------------------------------------------------------------
+	// ! Insert/Update/Delete Queries
+	// --------------------------------------------------------------------------
 
+	/**
+	 * Sets values for inserts / updates / deletes
+	 *
+	 * @param mixed $key
+	 * @param mixed $val
+	 * @return $this
+	 */
+	public function set($key, $val)
+	{
+		// Plain key, value pair
+		if (is_scalar($key) && is_scalar($val))
+		{
+			$this->set_array[$key] = $val;
+		}
+		// Object or array
+		elseif ( ! is_scalar($key))
+		{
+			foreach($key as $k => $v)
+			{
+				$this->set_array[$k] = $v;
+			}
+		}
+		
+		// Use the keys of the array to make the insert/update string
+		$fields = array_keys($this->set_array);
+		
+		// Escape the field names
+		$fields = array_map(array($this, 'quote_ident'), $fields);
+		
+		// Generate the "set" string
+		$this->set_string = implode('=?, ', $fields);
+		$this->set_string .= '=?';
+		
+		return $this;
+	}
+	
 	// --------------------------------------------------------------------------
 
 	/**
