@@ -24,6 +24,8 @@ class Query_Builder {
 		$from_string,
 		$where_array, 
 		$where_string,
+		$insert_string,
+		$update_string,
 		$set_array,
 		$set_string,
 		$limit,
@@ -306,6 +308,35 @@ class Query_Builder {
 	// --------------------------------------------------------------------------
 	
 	/**
+	 * Group the results by the selected field(s)
+	 *
+	 * @param mixed $field
+	 * @return $this
+	 */
+	public function group_by($field)
+	{
+		// @todo Implement group_by method
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Order the results by the selected field(s)
+	 *
+	 * @param string $field
+	 * @param string $type
+	 * @return $this
+	 */
+	public function order_by($field, $type="")
+	{
+		// @todo implement order_by method
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
 	 * Set a limit on the current sql statement
 	 *
 	 * @param int $limit
@@ -364,21 +395,6 @@ class Query_Builder {
 		return $result;
 	}
 
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Order the results by the selected field(s)
-	 *
-	 * @param string $field
-	 * @param string $type
-	 * @return $this
-	 */
-	public function order_by($field, $type="")
-	{
-		// @todo implement order_by method
-		return $this;
-	}
-	
 	// --------------------------------------------------------------------------
 	// ! Insert/Update/Delete Queries
 	// --------------------------------------------------------------------------
