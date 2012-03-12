@@ -103,6 +103,13 @@ class FirebirdTest extends UnitTestCase {
 		$this->assertTrue($table_exists);
 	}*/
 	
+	function TestTruncate()
+	{
+		$this->db->truncate('create_test');
+		
+		$this->assertTrue($this->db->affected_rows() > 0);
+	}
+	
 	function TestCommitTransaction()
 	{
 		$res = $this->db->beginTransaction();

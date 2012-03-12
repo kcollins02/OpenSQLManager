@@ -46,13 +46,11 @@ class SQLite extends DB_PDO {
 	{
 		// SQLite has a TRUNCATE optimization,
 		// but no support for the actual command.
-		$sql = 'DELETE FROM :table';
+		$sql = 'DELETE FROM "'.$table.'"';
 
-		$this->prepare_query($sql, array(
-			':table' => $table
-		));
-
-		$this->statement->execute();
+		$this->statement = $this->query($sql);
+		
+		return $this->statement;
 	}
 	
 	// --------------------------------------------------------------------------

@@ -54,11 +54,11 @@ abstract class DB_PDO extends PDO {
 		$this->statement =& $query;
 		
 		
-		/*if( ! (is_array($data) || is_object($data)))
+		if( ! (is_array($data) || is_object($data)))
 		{
 			trigger_error("Invalid data argument");
 			return FALSE;
-		}*/
+		}
 		
 		// Bind the parameters
 		foreach($data as $k => $value)
@@ -125,15 +125,18 @@ abstract class DB_PDO extends PDO {
 	 * @param PDOStatement $statement
 	 * @return int
 	 */
-	public function affected_rows($statement)
+	public function affected_rows($statement='')
 	{
-		$this->statement = $statement;
-
+		if ( ! empty($statement))
+		{	
+			$this->statement = $statement;
+		}
+		
 		// Execute the query
 		$this->statement->execute();
 
 		// Return number of rows affected
-		return $this->statement->rowCount;
+		return $this->statement->rowCount();
 	}
 	
 	// --------------------------------------------------------------------------

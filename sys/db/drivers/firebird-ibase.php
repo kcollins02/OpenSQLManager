@@ -65,7 +65,7 @@ class firebird extends DB_PDO {
 	{
 		// Firebird lacka a truncate command
 		$sql = 'DELETE FROM "'.$table.'"';
-		$this->query($sql);
+		$this->statement = $this->query($sql);
 	}
 	
 	// --------------------------------------------------------------------------

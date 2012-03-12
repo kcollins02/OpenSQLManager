@@ -79,6 +79,12 @@ class SQLiteTest extends UnitTestCase {
 		$this->assertEqual($dbs['create_test'], 'CREATE TABLE "create_test" (id INTEGER PRIMARY KEY, key TEXT , val TEXT )');
 	}
 	
+	function TestTruncate()
+	{
+		$this->db->truncate('create_test');
+		$this->assertIsA($this->db->affected_rows(), 'int');
+	}
+	
 	function TestPreparedStatements()
 	{
 		$sql = <<<SQL
