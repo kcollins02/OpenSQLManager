@@ -28,7 +28,7 @@
 		$params->host = 'localhost';
 		$this->qb = new Query_Builder($params);
 		
-		//echo '<hr /> SQLite Queries <br />';
+		echo '<hr /> SQLite Queries <hr />';
  	}
 	
 	function TestGet()
@@ -117,6 +117,13 @@
 			->set('val', 'non-word')
 			->where('id', 4)
 			->update('create_test');
+			
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
+	function TestDelete()
+	{
+		$query = $this->qb->where('id', 4)->delete('create_test');
 			
 		$this->assertIsA($query, 'PDOStatement');
 	}

@@ -32,7 +32,7 @@ class FirebirdQBTest extends UnitTestCase {
 		$params->pass = 'masterkey';
 		$this->qb = new Query_Builder($params);
 		
-		//echo '<hr /> Firebird Queries <br />';
+		echo '<hr /> Firebird Queries <hr />';
 	}
 
 	function TestQBGet()
@@ -123,6 +123,13 @@ class FirebirdQBTest extends UnitTestCase {
 			->set('val', 'non-word')
 			->where('id', 4)
 			->update('create_test');
+			
+		$this->assertTrue($query);
+	}
+	
+	function TestDelete()
+	{
+		$query = $this->qb->where('id', 4)->delete('create_test');
 			
 		$this->assertTrue($query);
 	}

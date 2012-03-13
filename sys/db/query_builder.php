@@ -508,7 +508,10 @@ class Query_Builder {
 	public function delete($table, $where='')
 	{
 		// Set the where clause
-		$this->where($where);
+		if ( ! empty($where))
+		{
+			$this->where($where);
+		}
 
 		// Create the SQL and parameters
 		$sql = $this->_compile("delete", $table);
@@ -618,7 +621,7 @@ class Query_Builder {
 			break;
 		}
 		
-		//echo $sql.'<br />';
+		echo $sql.'<br />';
 		
 		return $sql;
 	}
