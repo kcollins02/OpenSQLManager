@@ -27,6 +27,7 @@ class Query_Builder {
 		$insert_string,
 		$update_string,
 		$set_array,
+		$set_array_keys,
 		$set_string,
 		$limit,
 		$offset;
@@ -423,13 +424,13 @@ class Query_Builder {
 		}
 		
 		// Use the keys of the array to make the insert/update string
-		$fields = array_keys($this->set_array);
+		$this->set_array_keys = array_keys($this->set_array);
 		
 		// Escape the field names
-		$fields = array_map(array($this, 'quote_ident'), $fields);
+		$this->set_array_keys = array_map(array($this, 'quote_ident'), $this->set_array_keys);
 		
 		// Generate the "set" string
-		$this->set_string = implode('=?, ', $fields);
+		$this->set_string = implode('=?, ', $this->set_array_keys);
 		$this->set_string .= '=?';
 		
 		return $this;
@@ -456,11 +457,32 @@ class Query_Builder {
 	 *
 	 * @param string $table
 	 * @param mixed $data
-	 * @return
+	 * @return mixed
 	 */
 	public function update($table, $data=array())
 	{
-		// @todo implement update method
+		$sql = 'UPDATE '.$this->quote_ident($table). ' SET '. $this->set_string;
+
+		$params = array_values($this->set_array);
+
+		// Do a linear array merge if there is a where string. 
+		// We need all the parameters to line up, even when
+		// there are placeholders in the where string and 
+		// the set string
+		if ( ! empty($this->where_string))
+		{
+			$sql .= $this->where_string;
+
+			$where_params = array_values($this->where_array);
+
+			foreach($where_params as $w)
+			{
+				$params[] = $w;
+			}
+		}
+
+		// Run the query
+		return $this->db->prepare_execute($sql, $params);
 	}
 	
 	// --------------------------------------------------------------------------
@@ -548,10 +570,6 @@ class Query_Builder {
 			
 			case "insert":
 				// @todo Implement insert statements
-			break;
-			
-			case "update":
-				// @todo Implement update statements
 			break;
 			
 			case "delete":
