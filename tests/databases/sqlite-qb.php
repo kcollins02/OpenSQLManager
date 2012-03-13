@@ -100,6 +100,20 @@
 		$this->assertIsA($query, 'PDOStatement');
 	}
 	
+	function TestOrderBy()
+	{
+		$query = $this->qb->select('id, key as k, val')
+			->from('create_test')
+			->where('id >', 0)
+			->where('id <', 9000)
+			->order_by('id', 'DESC')
+			->order_by('k', 'ASC')
+			->limit(5,2)
+			->get();
+			
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
 	function TestInsert()
 	{
 		$query = $this->qb->set('id', 4)

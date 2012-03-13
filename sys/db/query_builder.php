@@ -15,21 +15,34 @@
 /**
  * Convienience class for creating sql queries - also the class that 
  * instantiates the specific db driver
+ *
+ * @todo Implement query queue to better match user meaning on queries
  */
 class Query_Builder {
 
-	private $sql, 
-		$select_string, 
+	// Compiled query component strings
+	private $select_string,
 		$from_string,
-		$where_array, 
 		$where_string,
+		$like_string,
 		$insert_string,
 		$update_string,
+		$set_string,
+		$order_string;
+		
+	// Key value pairs
+	private $where_array, 
+		$like_array,
 		$set_array,
 		$set_array_keys,
-		$set_string,
-		$limit,
+		$order_array;
+		
+	// Query-global components
+	private $limit, 
 		$offset;
+	
+	// Alias to $this->db->sql	
+	private $sql;
 
 	/**
 	 * Constructor
@@ -330,7 +343,23 @@ class Query_Builder {
 	 */
 	public function order_by($field, $type="")
 	{
-		// @todo implement order_by method
+		// @todo Implement Order by Random
+	
+		// Set fields for later manipulation
+		$field = $this->db->quote_ident($field);
+		$this->order_array[$field] = $type;
+		
+		$order_clauses = array();
+		
+		// Flatten key/val pairs into an array of space-separated pairs
+		foreach($this->order_array as $k => $v)
+		{
+			$order_clauses[] = $k . ' ' . strtoupper($v);
+		}
+		
+		// Set the final string
+		$this->order_string = ' ORDER BY '.implode(',', $order_clauses);
+		
 		return $this;
 	}
 	
@@ -584,6 +613,12 @@ class Query_Builder {
 				if ( ! empty($this->where_string))
 				{
 					$sql .= $this->where_string;
+				}
+				
+				// Set the order_by string
+				if ( ! empty($this->order_string))
+				{
+					$sql .= $this->order_string;
 				}
 				
 				// Set the limit via the class variables

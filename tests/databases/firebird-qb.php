@@ -35,28 +35,28 @@ class FirebirdQBTest extends UnitTestCase {
 		echo '<hr /> Firebird Queries <hr />';
 	}
 
-	function TestQBGet()
+	function TestGet()
 	{
 		$query = $this->qb->get('create_test');
 		
 		$this->assertTrue(is_resource($query));
 	}
 	
-	function TestQBGetLimit()
+	function TestGetLimit()
 	{
 		$query = $this->qb->get('create_test', 2);
 		
 		$this->assertTrue(is_resource($query));
 	}
 	
-	function TestQBGetLimitSkip()
+	function TestGetLimitSkip()
 	{
 		$query = $this->qb->get('create_test', 2, 1);
 		
 		$this->assertTrue(is_resource($query));
 	}
 	
-	function TestQBSelectWhereGet()
+	function TestSelectWhereGet()
 	{
 		$query = $this->qb->select('id, key as k, val')
 			->where('id >', 1)
@@ -66,7 +66,7 @@ class FirebirdQBTest extends UnitTestCase {
 		$this->assertTrue(is_resource($query));
 	}
 	
-	function TestQBSelectWhereGet2()
+	function TestSelectWhereGet2()
 	{
 		$query = $this->qb->select('id, key as k, val')
 			->where(' id ', 1)
@@ -77,7 +77,7 @@ class FirebirdQBTest extends UnitTestCase {
 	}
 
 	
-	function TestQBSelectGet()
+	function TestSelectGet()
 	{
 		$query = $this->qb->select('id, key as k, val')
 			->get('create_test', 2, 1);
@@ -101,6 +101,20 @@ class FirebirdQBTest extends UnitTestCase {
 			->from('create_test ct')
 			->where('id >', 1)
 			->limit(3)
+			->get();
+			
+		$this->assertTrue(is_resource($query));
+	}
+	
+	function TestOrderBy()
+	{
+		$query = $this->qb->select('id, key as k, val')
+			->from('create_test')
+			->where('id >', 0)
+			->where('id <', 9000)
+			->order_by('id', 'DESC')
+			->order_by('k', 'ASC')
+			->limit(5,2)
 			->get();
 			
 		$this->assertTrue(is_resource($query));
@@ -133,4 +147,6 @@ class FirebirdQBTest extends UnitTestCase {
 			
 		$this->assertTrue($query);
 	}
+	
+	
 }
