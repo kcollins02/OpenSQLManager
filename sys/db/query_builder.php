@@ -355,7 +355,11 @@ class Query_Builder {
 	 */
 	public function order_by($field, $type="")
 	{
-		// @todo Implement Order by Random
+		// Random case
+		if (stripos($type, 'rand') !== FALSE)
+		{
+			$type = (($rand = $this->sql->random()) !== FALSE ) ? $rand : 'ASC';
+		}
 	
 		// Set fields for later manipulation
 		$field = $this->db->quote_ident($field);
@@ -370,7 +374,9 @@ class Query_Builder {
 		}
 		
 		// Set the final string
-		$this->order_string = ' ORDER BY '.implode(',', $order_clauses);
+		$this->order_string = (empty($rand)) 
+			? ' ORDER BY '.implode(',', $order_clauses)
+			: ' ORDER BY'.$rand;
 		
 		return $this;
 	}

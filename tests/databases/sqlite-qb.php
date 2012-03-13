@@ -114,6 +114,19 @@
 		$this->assertIsA($query, 'PDOStatement');
 	}
 	
+	function TestOrderByRandom()
+	{
+		$query = $this->qb->select('id, key as k, val')
+			->from('create_test')
+			->where('id >', 0)
+			->where('id <', 9000)
+			->order_by('id', 'rand')
+			->limit(5,2)
+			->get();
+			
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
 	function TestGroupBy()
 	{
 		$query = $this->qb->select('id, key as k, val')
