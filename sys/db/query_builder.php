@@ -424,10 +424,8 @@ class Query_Builder {
 		}
 		
 		// Use the keys of the array to make the insert/update string
-		$this->set_array_keys = array_keys($this->set_array);
-		
 		// Escape the field names
-		$this->set_array_keys = array_map(array($this, 'quote_ident'), $this->set_array_keys);
+		$this->set_array_keys = array_map(array($this->db, 'quote_ident'), array_keys($this->set_array));
 		
 		// Generate the "set" string
 		$this->set_string = implode('=?, ', $this->set_array_keys);
@@ -587,16 +585,18 @@ class Query_Builder {
 			
 			case "insert":
 				$param_count = count($this->set_array);
-				$params = array_file(0, $param_count, '?');
-				$sql = 'INSERT (' . implode(', ', $this->set_array_keys) . 
-					') INTO '. $this->quote_ident($table) . 
-					'VALUES ('.implode(', ', $params).')';
+				$params = array_fill(0, $param_count, '?');
+				$sql = 'INSERT INTO '. $this->db->quote_ident($table) . 
+					'(' . implode(', ', $this->set_array_keys) . 
+					') VALUES ('.implode(', ', $params).')';
 			break;
 			
 			case "delete":
 				// @todo Implement delete statements
 			break;
 		}
+		
+		echo $sql.'<br />';
 		
 		return $sql;
 	}

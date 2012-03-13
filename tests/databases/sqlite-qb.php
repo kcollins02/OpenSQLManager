@@ -100,4 +100,14 @@
 			
 		$this->assertIsA($query, 'PDOStatement');
 	}
+	
+	function TestInsert()
+	{
+		$query = $this->qb->set('id', 4)
+			->set('key', 4)
+			->set('val', 5)
+			->insert('create_test');
+			
+		$this->assertIsA($query, 'PDOStatement');
+	}
 }
