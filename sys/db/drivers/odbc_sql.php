@@ -48,7 +48,7 @@ class ODBC_SQL extends DB_SQL {
 	 */
 	public function limit($sql, $limit, $offset=FALSE)
 	{
-		return FALSE;
+		return $sql;
 	}
 	
 	// --------------------------------------------------------------------------
