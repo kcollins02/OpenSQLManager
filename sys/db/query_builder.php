@@ -443,11 +443,21 @@ class Query_Builder {
 	 *
 	 * @param string $table
 	 * @param mixed $data
-	 * @return
+	 * @return mixed
 	 */
 	public function insert($table, $data=array())
 	{
-		// @todo implement insert method
+		// No use duplicating logic!
+		if ( ! empty($data))
+		{
+			$this->set($data);
+		}
+		
+		$params = array_values($this->set_array);
+		
+		$sql = $this->_compile("insert", $table);
+		
+		return $this->db->prepare_execute($sql, $params);
 	}
 
 	// --------------------------------------------------------------------------
@@ -461,6 +471,12 @@ class Query_Builder {
 	 */
 	public function update($table, $data=array())
 	{
+		// No use duplicating logic!
+		if ( ! empty($data))
+		{
+			$this->set($data);
+		}
+	
 		$sql = 'UPDATE '.$this->quote_ident($table). ' SET '. $this->set_string;
 
 		$params = array_values($this->set_array);
@@ -535,10 +551,11 @@ class Query_Builder {
 	/**
 	 * String together the sql statements for sending to the db
 	 *
-	 * @param $type
+	 * @param string $type
+	 * @param string $table
 	 * @return $string
 	 */
-	private function _compile($type="select")
+	private function _compile($type="select", $table="")
 	{
 		$sql = '';
 	
@@ -569,7 +586,11 @@ class Query_Builder {
 			break;
 			
 			case "insert":
-				// @todo Implement insert statements
+				$param_count = count($this->set_array);
+				$params = array_file(0, $param_count, '?');
+				$sql = 'INSERT (' . implode(', ', $this->set_array_keys) . 
+					') INTO '. $this->quote_ident($table) . 
+					'VALUES ('.implode(', ', $params).')';
 			break;
 			
 			case "delete":
