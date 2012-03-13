@@ -73,6 +73,8 @@ class SQLite_SQL extends DB_SQL {
 
 		return $sql;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * SQL to drop the specified table
@@ -84,6 +86,8 @@ class SQLite_SQL extends DB_SQL {
 	{
 		return 'DROP TABLE IF EXISTS "'.$name.'"';
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Limit clause
@@ -101,6 +105,18 @@ class SQLite_SQL extends DB_SQL {
 		}
 
 		return $sql." LIMIT {$offset}, {$limit}";
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Random ordering keyword
+	 *
+	 * @return string
+	 */
+	public function random()
+	{
+		return ' RANDOM()';
 	}
 }
 //End of sqlite_sql.php

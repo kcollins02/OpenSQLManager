@@ -277,5 +277,12 @@ abstract class DB_SQL {
 	 * @return string
 	 */
 	abstract public function limit($sql, $limit, $offset=FALSE);
+	
+	/**
+	 * Get the sql for random ordering
+	 *
+	 * @return string
+	 */
+	abstract public function random();
 }
 // End of db_pdo.php

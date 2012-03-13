@@ -23,10 +23,20 @@ class ODBC_SQL extends DB_SQL {
 		return FALSE;
 	}
 
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Remove a table from the database
+	 *
+	 * @param string $name
+	 * @return string
+	 */
 	public function delete_table($name)
 	{
 		return "DROP TABLE {$name}";
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Limit clause
@@ -38,7 +48,19 @@ class ODBC_SQL extends DB_SQL {
 	 */
 	public function limit($sql, $limit, $offset=FALSE)
 	{
-		
+		return FALSE;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Random ordering keyword
+	 *
+	 * @return string
+	 */
+	public function random()
+	{
+		return FALSE;
 	}
 }
 // End of odbc_sql.php

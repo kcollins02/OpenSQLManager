@@ -74,6 +74,8 @@ class Firebird_SQL extends DB_SQL {
 
 		return $sql;
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Drop the selected table
@@ -85,6 +87,8 @@ class Firebird_SQL extends DB_SQL {
 	{
 		return 'DROP TABLE "'.$name.'"';
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Limit clause
@@ -110,5 +114,17 @@ class Firebird_SQL extends DB_SQL {
 		
 		return $sql;
 	} 
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Random ordering keyword
+	 *
+	 * @return string
+	 */
+	public function random()
+	{
+		return FALSE;
+	}
 }
 //End of firebird_sql.php

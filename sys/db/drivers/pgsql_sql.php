@@ -21,11 +21,15 @@ class pgSQL_SQL extends DB_SQL {
 	{
 		//TODO: implement
 	}
+	
+	// --------------------------------------------------------------------------
 
 	public function delete_table($name)
 	{
 		return 'DROP TABLE "'.$name.'"';
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Limit clause
@@ -45,6 +49,18 @@ class pgSQL_SQL extends DB_SQL {
 		}
 
 		return $sql;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Random ordering keyword
+	 *
+	 * @return string
+	 */
+	public function random()
+	{
+		return ' RANDOM()';
 	}
 
 }

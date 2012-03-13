@@ -32,6 +32,8 @@
 		//TODO: implement
 	}
 	
+	// --------------------------------------------------------------------------
+	
 	/**
 	 * Convience public function for droping a MySQL table
 	 * 
@@ -42,6 +44,8 @@
 	{
 		return "DROP TABLE `{$name}`";
 	}
+	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Limit clause
@@ -59,6 +63,18 @@
 		}
 
 		return $sql." LIMIT {$offset}, {$limit}";
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Random ordering keyword
+	 *
+	 * @return string
+	 */
+	public function random()
+	{
+		return ' RAND()';
 	}	
 }
 //End of mysql_sql.php

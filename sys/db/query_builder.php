@@ -28,14 +28,16 @@ class Query_Builder {
 		$insert_string,
 		$update_string,
 		$set_string,
-		$order_string;
+		$order_string,
+		$group_string;
 		
 	// Key value pairs
 	private $where_array, 
 		$like_array,
 		$set_array,
 		$set_array_keys,
-		$order_array;
+		$order_array,
+		$group_array;
 		
 	// Query-global components
 	private $limit, 
@@ -233,10 +235,10 @@ class Query_Builder {
 	 * Where clause prefixed with "OR"
 	 *
 	 * @param string $field
-	 * @param mixed $value
+	 * @param mixed $val
 	 * @return $this
 	 */
-	public function or_where($field, $value)
+	public function or_where($field, $val=array())
 	{
 		// @todo Implement or_where method
 		return $this;
@@ -251,7 +253,7 @@ class Query_Builder {
 	 * @param mixed $val
 	 * @return $this
 	 */
-	public function where_in($field, $val)
+	public function where_in($field, $val=array())
 	{
 		// @todo Implement Where_in method
 		return $this;
@@ -266,7 +268,7 @@ class Query_Builder {
 	 * @param mixed $val
 	 * @return $this
 	 */
-	public function or_where_in($field, $val)
+	public function or_where_in($field, $val=array())
 	{
 		// @todo Implement or_where_in method
 		return $this;
@@ -281,7 +283,7 @@ class Query_Builder {
 	 * @param mixed $val
 	 * @return $this
 	 */
-	public function where_not_in($field, $val)
+	public function where_not_in($field, $val=array())
 	{
 		// @todo Implement where_not_in method
 		return $this;
@@ -296,7 +298,7 @@ class Query_Builder {
 	 * @param mixed $val
 	 * @return $this
 	 */
-	public function or_where_not_in($field, $val)
+	public function or_where_not_in($field, $val=array())
 	{
 		// @todo Implement or_where_not_in method
 		return $this;
@@ -328,7 +330,17 @@ class Query_Builder {
 	 */
 	public function group_by($field)
 	{
-		// @todo Implement group_by method
+		if ( ! is_scalar($field))
+		{
+			$this->group_array = array_map(array($this->db, 'quote_ident'), $field);
+		}
+		else
+		{
+			$this->group_array[] = $this->db->quote_ident($field);
+		}
+		
+		$this->group_string = ' GROUP BY '.implode(', ', $this->group_array);
+		
 		return $this;
 	}
 	
@@ -613,6 +625,12 @@ class Query_Builder {
 				if ( ! empty($this->where_string))
 				{
 					$sql .= $this->where_string;
+				}
+				
+				// Set the group_by string
+				if ( ! empty($this->group_string))
+				{
+					$sql .= $this->group_string;
 				}
 				
 				// Set the order_by string

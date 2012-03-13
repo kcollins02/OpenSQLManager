@@ -120,6 +120,22 @@ class FirebirdQBTest extends UnitTestCase {
 		$this->assertTrue(is_resource($query));
 	}
 	
+	/*function TestGroupBy()
+	{
+		$query = $this->qb->select('id, key as k, val')
+			->from('create_test')
+			->where('id >', 0)
+			->where('id <', 9000)
+			->group_by('k')
+			->group_by('val')
+			->order_by('id', 'DESC')
+			->order_by('k', 'ASC')
+			->limit(5,2)
+			->get();
+			
+		$this->assertTrue(is_resource($query));
+	}*/
+	
 	function TestInsert()
 	{
 		$query = $this->qb->set('id', 4)
