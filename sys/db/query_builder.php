@@ -503,11 +503,19 @@ class Query_Builder {
 	 *
 	 * @param string $table
 	 * @param mixed $where
-	 * @return
+	 * @return mixed
 	 */
 	public function delete($table, $where='')
 	{
-		// @todo implement delete method
+		// Set the where clause
+		$this->where($where);
+
+		// Create the SQL and parameters
+		$sql = $this->_compile("delete", $table);
+		$params = array_values($this->where_array);
+
+		// Delete the table, and return the result
+		return $this->db->prepare_execute($sql, $params);
 	}
 
 	// --------------------------------------------------------------------------
@@ -600,7 +608,13 @@ class Query_Builder {
 			break;
 			
 			case "delete":
-				// @todo Implement delete statements
+				$sql = 'DELETE FROM '.$this->db->quote_ident($table);
+
+				if ( ! empty($this->where_string))
+				{
+					$sql .= $this->where_string;
+				}	
+
 			break;
 		}
 		

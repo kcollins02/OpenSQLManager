@@ -177,6 +177,22 @@ abstract class DB_PDO extends PDO {
 	// -------------------------------------------------------------------------
 
 	/**
+	 * Deletes all the rows from a table. Does the same as the truncate
+	 * method if the database does not support 'TRUNCATE';
+	 *
+	 * @param string $table
+	 * @return mixed
+	 */
+	public function empty_table($table)
+	{
+		$sql = 'DELETE FROM '.$this->quote_ident($table);
+
+		return $this->query($sql);
+	}
+
+	// -------------------------------------------------------------------------
+
+	/**
 	 * Abstract public functions to override in child classes
 	 */
 	
