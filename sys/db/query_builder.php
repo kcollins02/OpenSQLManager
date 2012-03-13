@@ -587,7 +587,7 @@ class Query_Builder {
 				$param_count = count($this->set_array);
 				$params = array_fill(0, $param_count, '?');
 				$sql = 'INSERT INTO '. $this->db->quote_ident($table) . 
-					'(' . implode(', ', $this->set_array_keys) . 
+					' (' . implode(', ', $this->set_array_keys) . 
 					') VALUES ('.implode(', ', $params).')';
 			break;
 			
