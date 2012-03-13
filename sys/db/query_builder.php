@@ -165,7 +165,39 @@ class Query_Builder {
 	 */
 	public function like($field, $val, $pos='both')
 	{
-		// @todo implement like method
+		// @todo Add to where string in the appropriate location
+	
+		$field = $this->db->quote_ident($field);
+	
+		$this->like_array[$field] = array(
+			'value' => $val,
+			'pos' => $post
+		);
+		
+		$likes = array();
+		
+		foreach($this->like_array as $field => $array)
+		{
+			$l = $field. ' LIKE ';
+			
+			if ($pos == 'before')
+			{
+				$l .= '%?';
+			}
+			elseif ($pos == 'after')
+			{
+				$l .= '?%';
+			}
+			else
+			{
+				$l .= '%?%';
+			}
+			
+			$likes[] = $l;
+		}
+		
+		$this->like_string = implode(' AND ', $likes);
+		
 		return $this;
 	}
 	

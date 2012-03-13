@@ -248,8 +248,6 @@ abstract class DB_PDO extends PDO {
  * Abstract parent for database manipulation subclasses
  */
 abstract class DB_SQL {
-
-	
 	
 	/**
 	 * Get database-specific sql to create a new table
