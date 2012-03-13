@@ -20,10 +20,7 @@ class FirebirdQBTest extends UnitTestCase {
 	function __construct()
 	{
 		parent::__construct();
-	}
-	
-	function setUp()
-	{
+		
 		$dbpath = TEST_DIR.DS.'test_dbs'.DS.'FB_TEST_DB.FDB';
 
 		// Test the query builder
@@ -34,11 +31,8 @@ class FirebirdQBTest extends UnitTestCase {
 		$params->user = 'sysdba';
 		$params->pass = 'masterkey';
 		$this->qb = new Query_Builder($params);
-	}
-	
-	function tearDown()
-	{
-		unset($this->qb);
+		
+		//echo '<hr /> Firebird Queries <br />';
 	}
 
 	function TestQBGet()
@@ -110,5 +104,26 @@ class FirebirdQBTest extends UnitTestCase {
 			->get();
 			
 		$this->assertTrue(is_resource($query));
+	}
+	
+	function TestInsert()
+	{
+		$query = $this->qb->set('id', 4)
+			->set('key', 4)
+			->set('val', 5)
+			->insert('create_test');
+			
+		$this->assertTrue($query);
+	}
+	
+	function TestUpdate()
+	{
+		$query = $this->qb->set('id', 4)
+			->set('key', 'gogle')
+			->set('val', 'non-word')
+			->where('id', 4)
+			->update('create_test');
+			
+		$this->assertTrue($query);
 	}
 }

@@ -17,20 +17,19 @@
  */
  class SQLiteQBTest extends UnitTestCase {
  
- 	function setUp()
-	{
-		$path = TEST_DIR.DS.'test_dbs'.DS.'test_sqlite.db';
+ 	function __construct()
+ 	{
+ 		parent::__construct();
+ 	
+ 		$path = TEST_DIR.DS.'test_dbs'.DS.'test_sqlite.db';
 		$params = new Stdclass();
 		$params->type = 'sqlite';
 		$params->file = $path;
 		$params->host = 'localhost';
 		$this->qb = new Query_Builder($params);
-	}
-	
-	function tearDown()
-	{
-		unset($this->qb);
-	}
+		
+		//echo '<hr /> SQLite Queries <br />';
+ 	}
 	
 	function TestGet()
 	{
@@ -107,6 +106,17 @@
 			->set('key', 4)
 			->set('val', 5)
 			->insert('create_test');
+			
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
+	function TestUpdate()
+	{
+		$query = $this->qb->set('id', 4)
+			->set('key', 'gogle')
+			->set('val', 'non-word')
+			->where('id', 4)
+			->update('create_test');
 			
 		$this->assertIsA($query, 'PDOStatement');
 	}

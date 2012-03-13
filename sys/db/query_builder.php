@@ -18,8 +18,7 @@
  */
 class Query_Builder {
 
-	private $table, 
-		$sql, 
+	private $sql, 
 		$select_string, 
 		$from_string,
 		$where_array, 
@@ -475,7 +474,7 @@ class Query_Builder {
 			$this->set($data);
 		}
 	
-		$sql = 'UPDATE '.$this->quote_ident($table). ' SET '. $this->set_string;
+		$sql = $this->_compile('update', $table);
 
 		$params = array_values($this->set_array);
 
@@ -485,8 +484,6 @@ class Query_Builder {
 		// the set string
 		if ( ! empty($this->where_string))
 		{
-			$sql .= $this->where_string;
-
 			$where_params = array_values($this->where_array);
 
 			foreach($where_params as $w)
@@ -513,6 +510,8 @@ class Query_Builder {
 		// @todo implement delete method
 	}
 
+	// --------------------------------------------------------------------------
+	// ! Miscellaneous Methods
 	// --------------------------------------------------------------------------
 	
 	/**
@@ -577,7 +576,7 @@ class Query_Builder {
 				}
 				
 				// Set the limit via the class variables
-				if (is_numeric($this->limit))
+				if (isset($this->limit) && is_numeric($this->limit))
 				{
 					$sql = $this->sql->limit($sql, $this->limit, $this->offset);
 				}
@@ -591,12 +590,21 @@ class Query_Builder {
 					') VALUES ('.implode(', ', $params).')';
 			break;
 			
+			case "update":
+				$sql = 'UPDATE '.$this->db->quote_ident($table). ' SET '. $this->set_string;
+				
+				if ( ! empty($this->where_string))
+				{
+					$sql .= $this->where_string;
+				}
+			break;
+			
 			case "delete":
 				// @todo Implement delete statements
 			break;
 		}
 		
-		echo $sql.'<br />';
+		//echo $sql.'<br />';
 		
 		return $sql;
 	}
