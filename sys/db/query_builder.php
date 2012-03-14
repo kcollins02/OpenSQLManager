@@ -464,7 +464,7 @@ class Query_Builder {
 			$this->values[] = $v;
 		}
 		
-		$string = $field.' IN ('.implode(',', $params).') ';
+		$string = $field . ' IN ('.implode(',', $params).') ';
 	
 		$this->query_map[] = array(
 			'type' => 'where_in',
@@ -494,7 +494,7 @@ class Query_Builder {
 			$this->values[] = $v;
 		}
 		
-		$string = $field.' IN ('.implode(',', $params).') ';
+		$string = $field . ' IN ('.implode(',', $params).') ';
 	
 		$this->query_map[] = array(
 			'type' => 'where_in',
@@ -567,7 +567,7 @@ class Query_Builder {
 	
 	// --------------------------------------------------------------------------
 	// ! Other Query Modifier methods
-	// --------------------------------------------------------------------------ß
+	// --------------------------------------------------------------------------
 	
 	/**
 	 * Creates a join phrase in a compiled query
@@ -585,7 +585,8 @@ class Query_Builder {
 		
 		if (preg_match('/([\[\w\.]+)([\W\s]+)(.+)/', $condition, $matches))
 		{
-			$condition = $this->db->quote_ident($matches[0]).' '.$matches[1].' '.$this->db->quote_ident($matches[2]);
+			$condition = $this->db->quote_ident($matches[0]) . ' ' . $matches[1] .
+				' ' . $this->db->quote_ident($matches[2]);
 		}
 		
 		$this->query_map[] = array(
@@ -616,7 +617,7 @@ class Query_Builder {
 			$this->group_array[] = $this->db->quote_ident($field);
 		}
 		
-		$this->group_string = ' GROUP BY '.implode(', ', $this->group_array);
+		$this->group_string = ' GROUP BY ' . implode(', ', $this->group_array);
 		
 		return $this;
 	}
