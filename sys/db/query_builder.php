@@ -207,6 +207,132 @@ class Query_Builder {
 	// --------------------------------------------------------------------------
 	
 	/**
+	 * Generates an OR Like clause
+	 *
+	 * @param string $field
+	 * @param mixed $val
+	 * @param string $pos
+	 * @return $this
+	 */
+	public function or_like($field, $val, $pos='both')
+	{
+		$field = $this->db->quote_ident($field);
+		
+		// Add the like string into the order map
+		$l = $field. ' LIKE ?';
+			
+		if ($pos == 'before')
+		{
+			$val = "%{$val}";
+		}
+		elseif ($pos == 'after')
+		{
+			$val = "{$val}%";
+		}
+		else
+		{
+			$val = "%{$val}%";
+		}
+		
+		$this->query_map[] = array(
+			'type' => 'like',
+			'conjunction' => (empty($this->query_map)) ? 'WHERE ' : ' OR ',
+			'string' => $l
+		);
+		
+		// Add to the values array
+		$this->values[] = $val;
+		
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Generates a NOT LIKE clause
+	 *
+	 * @param string $field
+	 * @param mixed $val
+	 * @param string $pos
+	 * @return $this
+	 */
+	public function not_like($field, $val, $pos='both')
+	{
+		$field = $this->db->quote_ident($field);
+		
+		// Add the like string into the order map
+		$l = $field. ' NOT LIKE ?';
+			
+		if ($pos == 'before')
+		{
+			$val = "%{$val}";
+		}
+		elseif ($pos == 'after')
+		{
+			$val = "{$val}%";
+		}
+		else
+		{
+			$val = "%{$val}%";
+		}
+		
+		$this->query_map[] = array(
+			'type' => 'like',
+			'conjunction' => (empty($this->query_map)) ? ' WHERE ' : ' AND ',
+			'string' => $l
+		);
+		
+		// Add to the values array
+		$this->values[] = $val;
+		
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Generates a OR NOT LIKE clause
+	 *
+	 * @param string $field
+	 * @param mixed $val
+	 * @param string $pos
+	 * @return $this;
+	 */
+	public function or_not_like($field, $val, $pos='both')
+	{
+		$field = $this->db->quote_ident($field);
+		
+		// Add the like string into the order map
+		$l = $field. ' NOT LIKE ?';
+			
+		if ($pos == 'before')
+		{
+			$val = "%{$val}";
+		}
+		elseif ($pos == 'after')
+		{
+			$val = "{$val}%";
+		}
+		else
+		{
+			$val = "%{$val}%";
+		}
+		
+		$this->query_map[] = array(
+			'type' => 'like',
+			'conjunction' => (empty($this->query_map)) ? ' WHERE ' : ' OR ',
+			'string' => $l
+		);
+		
+		// Add to the values array
+		$this->values[] = $val;
+		
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
 	 * Do all the repeditive stuff for where type methods
 	 *
 	 * @param mixed $key
@@ -356,7 +482,22 @@ class Query_Builder {
 	 */
 	public function or_where_in($field, $val=array())
 	{
-		// @todo Implement or_where_in method
+		$field = $this->db->quote_ident($field);
+		$params = array_fill(0, count($val), '?');
+		
+		foreach($val as $v)
+		{
+			$this->values[] = $v;
+		}
+		
+		$string = $field.' IN ('.implode(',', $params).') ';
+	
+		$this->query_map[] = array(
+			'type' => 'where_in',
+			'conjunction' => ( ! empty($this->query_map)) ? ' OR ' : ' WHERE ',
+			'string' => $string
+		);
+	
 		return $this;
 	}
 	
@@ -371,7 +512,22 @@ class Query_Builder {
 	 */
 	public function where_not_in($field, $val=array())
 	{
-		// @todo Implement where_not_in method
+		$field = $this->db->quote_ident($field);
+		$params = array_fill(0, count($val), '?');
+		
+		foreach($val as $v)
+		{
+			$this->values[] = $v;
+		}
+		
+		$string = $field.' NOT IN ('.implode(',', $params).') ';
+	
+		$this->query_map[] = array(
+			'type' => 'where_in',
+			'conjunction' => ( ! empty($this->query_map)) ? ' AND ' : ' WHERE ',
+			'string' => $string
+		);
+	
 		return $this;
 	}
 
@@ -386,7 +542,22 @@ class Query_Builder {
 	 */
 	public function or_where_not_in($field, $val=array())
 	{
-		// @todo Implement or_where_not_in method
+		$field = $this->db->quote_ident($field);
+		$params = array_fill(0, count($val), '?');
+		
+		foreach($val as $v)
+		{
+			$this->values[] = $v;
+		}
+		
+		$string = $field.' NOT IN ('.implode(',', $params).') ';
+	
+		$this->query_map[] = array(
+			'type' => 'where_in',
+			'conjunction' => ( ! empty($this->query_map)) ? ' OR ' : ' WHERE ',
+			'string' => $string
+		);
+	
 		return $this;
 	}
 	
@@ -647,6 +818,82 @@ class Query_Builder {
 
 		// Delete the table rows, and return the result
 		return $res;
+	}
+	
+	// --------------------------------------------------------------------------
+	// ! Query Grouping Methods
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Adds a paren to the current query for query grouping
+	 *
+	 * @return $this
+	 */
+	public function group_start()
+	{
+		$this->query_map[] = array(
+			'type' => 'group_start',
+			'conjunction' => '',
+			'string' => ' ('
+		);
+		
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Adds a paren to the current query for query grouping,
+	 * prefixed with 'OR'
+	 *
+	 * @return $this
+	 */
+	public function or_group_start()
+	{
+		$this->query_map[] = array(
+			'type' => 'group_start',
+			'conjunction' => '',
+			'string' => ' OR ('
+		);
+		
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Adds a paren to the current query for query grouping,
+	 * prefixed with 'OR NOT'
+	 *
+	 * @return $this
+	 */
+	public function or_not_group_start()
+	{
+		$this->query_map[] = array(
+			'type' => 'group_start',
+			'conjunction' => '',
+			'string' => ' OR NOT ('
+		);
+		
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Ends a query group
+	 *
+	 * @return $this
+	 */
+	public function group_end()
+	{
+		$this->query_map[] = array(
+			'type' => 'group_end',
+			'conjunction' => '',
+			'string' => ' ) '
+		);
+		
+		return $this;
 	}
 
 	// --------------------------------------------------------------------------
