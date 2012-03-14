@@ -33,7 +33,7 @@
 	
 	function TestGet()
 	{
-		$query = $this->qb->get('create_test');
+		$query = $this->qb->get('create_test ct');
 		
 		$this->assertIsA($query, 'PDOStatement');
 	}
@@ -138,6 +138,27 @@
 			->order_by('id', 'DESC')
 			->order_by('k', 'ASC')
 			->limit(5,2)
+			->get();
+			
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
+	function TestOrWhere()
+	{
+		$query = $this->qb->select('id, key as k, val')
+			->from('create_test')
+			->where(' id ', 1)
+			->or_where('key >', 0)
+			->limit(2, 1)
+			->get();
+		
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
+	function TestLike()
+	{
+		$query = $this->qb->from('create_test')
+			->like('key', 'og')
 			->get();
 			
 		$this->assertIsA($query, 'PDOStatement');
