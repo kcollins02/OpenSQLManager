@@ -32,7 +32,7 @@ class FirebirdQBTest extends UnitTestCase {
 		$params->pass = 'masterkey';
 		$this->qb = new Query_Builder($params);
 		
-		echo '<hr /> Firebird Queries <hr />';
+		//echo '<hr /> Firebird Queries <hr />';
 	}
 
 	function TestGet()

@@ -28,7 +28,7 @@
 		$params->host = 'localhost';
 		$this->qb = new Query_Builder($params);
 		
-		echo '<hr /> SQLite Queries <hr />';
+		//echo '<hr /> SQLite Queries <hr />';
  	}
 	
 	function TestGet()

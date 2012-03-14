@@ -24,7 +24,6 @@ class Query_Builder {
 	private $select_string,
 		$from_string,
 		$where_string,
-		$like_string,
 		$insert_string,
 		$update_string,
 		$set_string,
@@ -45,6 +44,9 @@ class Query_Builder {
 	
 	// Alias to $this->db->sql	
 	private $sql;
+	
+	// Query component order mapping
+	private $query_map;
 
 	/**
 	 * Constructor
@@ -165,8 +167,6 @@ class Query_Builder {
 	 */
 	public function like($field, $val, $pos='both')
 	{
-		// @todo Add to where string in the appropriate location
-	
 		$field = $this->db->quote_ident($field);
 	
 		$this->like_array[$field] = array(
@@ -174,29 +174,28 @@ class Query_Builder {
 			'pos' => $post
 		);
 		
-		$likes = array();
-		
-		foreach($this->like_array as $field => $array)
+		// Add the like string into the order map
+		$l = $field. ' LIKE ';
+			
+		if ($pos == 'before')
 		{
-			$l = $field. ' LIKE ';
-			
-			if ($pos == 'before')
-			{
-				$l .= '%?';
-			}
-			elseif ($pos == 'after')
-			{
-				$l .= '?%';
-			}
-			else
-			{
-				$l .= '%?%';
-			}
-			
-			$likes[] = $l;
+			$l .= '%?';
+		}
+		elseif ($pos == 'after')
+		{
+			$l .= '?%';
+		}
+		else
+		{
+			$l .= '%?%';
 		}
 		
-		$this->like_string = implode(' AND ', $likes);
+		$this->query_map[] = array(
+			'type' => 'like',
+			'conjunction' => (empty($this->query_map)) ? 'WHERE ' : ' AND ',
+			'string' => $l,
+			'value' => $val
+		);
 		
 		return $this;
 	}
@@ -712,7 +711,7 @@ class Query_Builder {
 			break;
 		}
 		
-		echo $sql.'<br />';
+		//echo $sql.'<br />';
 		
 		return $sql;
 	}
