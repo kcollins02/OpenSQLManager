@@ -26,35 +26,35 @@
 		$params->type = 'sqlite';
 		$params->file = $path;
 		$params->host = 'localhost';
-		$this->qb = new Query_Builder($params);
+		$this->db = new Query_Builder($params);
 		
-		//echo '<hr /> SQLite Queries <hr />';
+		echo '<hr /> SQLite Queries <hr />';
  	}
 	
 	function TestGet()
 	{
-		$query = $this->qb->get('create_test ct');
+		$query = $this->db->get('create_test ct');
 		
 		$this->assertIsA($query, 'PDOStatement');
 	}
 	
 	function TestGetLimit()
 	{
-		$query = $this->qb->get('create_test', 2);
+		$query = $this->db->get('create_test', 2);
 		
 		$this->assertIsA($query, 'PDOStatement');
 	}
 	
 	function TestGetLimitSkip()
 	{
-		$query = $this->qb->get('create_test', 2, 1);
+		$query = $this->db->get('create_test', 2, 1);
 		
 		$this->assertIsA($query, 'PDOStatement');
 	}
 
 	function TestSelectWhereGet()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->where('id >', 1)
 			->where('id <', 900)
 			->get('create_test', 2, 1);
@@ -64,7 +64,7 @@
 	
 	function TestSelectWhereGet2()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->where('id !=', 1)
 			->get('create_test', 2, 1);
 
@@ -73,7 +73,7 @@
 
 	function TestSelectGet()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->get('create_test', 2, 1);
 
 		$this->assertIsA($query, 'PDOStatement');
@@ -81,7 +81,7 @@
 	
 	function TestSelectFromGet()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->from('create_test ct')
 			->where('id >', 1)
 			->get();
@@ -91,7 +91,7 @@
 	
 	function TestSelectFromLimitGet()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->from('create_test ct')
 			->where('id >', 1)
 			->limit(3)
@@ -102,7 +102,7 @@
 	
 	function TestOrderBy()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->from('create_test')
 			->where('id >', 0)
 			->where('id <', 9000)
@@ -116,7 +116,7 @@
 	
 	function TestOrderByRandom()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->from('create_test')
 			->where('id >', 0)
 			->where('id <', 9000)
@@ -129,7 +129,7 @@
 	
 	function TestGroupBy()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->from('create_test')
 			->where('id >', 0)
 			->where('id <', 9000)
@@ -145,7 +145,7 @@
 	
 	function TestOrWhere()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->from('create_test')
 			->where(' id ', 1)
 			->or_where('key >', 0)
@@ -157,7 +157,7 @@
 	
 	function TestLike()
 	{
-		$query = $this->qb->from('create_test')
+		$query = $this->db->from('create_test')
 			->like('key', 'og')
 			->get();
 			
@@ -166,7 +166,7 @@
 	
 	function TestInsert()
 	{
-		$query = $this->qb->set('id', 4)
+		$query = $this->db->set('id', 4)
 			->set('key', 4)
 			->set('val', 5)
 			->insert('create_test');
@@ -176,7 +176,7 @@
 	
 	function TestUpdate()
 	{
-		$query = $this->qb->set('id', 4)
+		$query = $this->db->set('id', 4)
 			->set('key', 'gogle')
 			->set('val', 'non-word')
 			->where('id', 4)
@@ -187,7 +187,7 @@
 	
 	function TestDelete()
 	{
-		$query = $this->qb->where('id', 4)->delete('create_test');
+		$query = $this->db->where('id', 4)->delete('create_test');
 			
 		$this->assertIsA($query, 'PDOStatement');
 	}

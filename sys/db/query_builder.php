@@ -173,9 +173,7 @@ class Query_Builder {
 	 * @return $this
 	 */
 	public function like($field, $val, $pos='both')
-	{
-		// @todo Fix like syntax
-	
+	{	
 		$field = $this->db->quote_ident($field);
 		
 		// Add the like string into the order map
@@ -209,15 +207,13 @@ class Query_Builder {
 	// --------------------------------------------------------------------------
 	
 	/**
-	 * Specify condition(s) in the where clause of a query
-	 * Note: this function works with key / value, or a 
-	 * passed array with key / value pairs
-	 * 
-	 * @param mixed $key 
+	 * Do all the repeditive stuff for where type methods
+	 *
+	 * @param mixed $key
 	 * @param mixed $val
-	 * @return $this
+	 * @return array
 	 */
-	public function where($key, $val=array())
+	private function _where($key, $val=array())
 	{
 		$where = array();
 	
@@ -236,23 +232,36 @@ class Query_Builder {
 				$this->values[] = $v;
 			}
 		}
+		
+		return $where;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Specify condition(s) in the where clause of a query
+	 * Note: this function works with key / value, or a 
+	 * passed array with key / value pairs
+	 * 
+	 * @param mixed $key 
+	 * @param mixed $val
+	 * @return $this
+	 */
+	public function where($key, $val=array())
+	{
+		$where = $this->_where($key, $val);
 
 		// Create key/value placeholders
 		foreach($where as $f => $val)
 		{
-			// Split each key by spaces, incase there
+			// Split each key by spaces, in case there
 			// is an operator such as >, <, !=, etc.
 			$f_array = explode(' ', trim($f));
-
-			// Simple key = val
-			if (count($f_array) === 1)
-			{
-				$item = $this->db->quote_ident($f_array[0]) . '= ?';
-			}
-			else // Other operators
-			{
-				$item = $this->db->quote_ident($f_array[0]) . " {$f_array[1]} ?";
-			}
+			
+			$item = $this->db->quote_ident($f_array[0]);
+			
+			// Simple key value, or an operator
+			$item .= (count($f_array === 1)) ? '= ?' : " {$f_array[1]} ?"; 
 			
 			// Put in the query map for select statements
 			$this->query_map[] = array(
@@ -276,23 +285,7 @@ class Query_Builder {
 	 */
 	public function or_where($field, $val=array())
 	{
-		$where = array();
-	
-		// Key and value passed? Add them to the where array
-		if (is_scalar($field) && is_scalar($val))
-		{
-			$where[$field] = $val;
-			$this->values[] = $val;
-		}
-		// Array or object, loop through and add to the where array
-		elseif ( ! is_scalar($field))
-		{
-			foreach($key as $k => $v)
-			{
-				$where[$k] = $v;
-				$this->values[] = $v;
-			}
-		}
+		$where = $this->_where($field, $val);
 
 		// Create key/value placeholders
 		foreach($where as $f => $val)
@@ -333,7 +326,22 @@ class Query_Builder {
 	 */
 	public function where_in($field, $val=array())
 	{
-		// @todo Implement Where_in method
+		$field = $this->db->quote_ident($field);
+		$params = array_fill(0, count($val), '?');
+		
+		foreach($val as $v)
+		{
+			$this->values[] = $v;
+		}
+		
+		$string = $field.' IN ('.implode(',', $params).') ';
+	
+		$this->query_map[] = array(
+			'type' => 'where_in',
+			'conjunction' => ( ! empty($this->query_map)) ? ' AND ' : ' WHERE ',
+			'string' => $string
+		);
+	
 		return $this;
 	}
 

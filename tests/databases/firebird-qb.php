@@ -30,35 +30,35 @@ class FirebirdQBTest extends UnitTestCase {
 		$params->host = 'localhost';
 		$params->user = 'sysdba';
 		$params->pass = 'masterkey';
-		$this->qb = new Query_Builder($params);
+		$this->db = new Query_Builder($params);
 		
-		//echo '<hr /> Firebird Queries <hr />';
+		echo '<hr /> Firebird Queries <hr />';
 	}
 
 	function TestGet()
 	{
-		$query = $this->qb->get('create_test ct');
+		$query = $this->db->get('create_test ct');
 		
 		$this->assertTrue(is_resource($query));
 	}
 	
 	function TestGetLimit()
 	{
-		$query = $this->qb->get('create_test', 2);
+		$query = $this->db->get('create_test', 2);
 		
 		$this->assertTrue(is_resource($query));
 	}
 	
 	function TestGetLimitSkip()
 	{
-		$query = $this->qb->get('create_test', 2, 1);
+		$query = $this->db->get('create_test', 2, 1);
 		
 		$this->assertTrue(is_resource($query));
 	}
 	
 	function TestSelectWhereGet()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->where('id >', 1)
 			->where('id <', 800)
 			->get('create_test', 2, 1);
@@ -68,7 +68,7 @@ class FirebirdQBTest extends UnitTestCase {
 	
 	function TestSelectWhereGet2()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->where(' id ', 1)
 			
 			->get('create_test', 2, 1);
@@ -78,7 +78,7 @@ class FirebirdQBTest extends UnitTestCase {
 	
 	function TestSelectGet()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->get('create_test', 2, 1);
 
 		$this->assertTrue(is_resource($query));
@@ -86,7 +86,7 @@ class FirebirdQBTest extends UnitTestCase {
 	
 	function TestSelectFromGet()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->from('create_test ct')
 			->where('id >', 1)
 			->get();
@@ -96,7 +96,7 @@ class FirebirdQBTest extends UnitTestCase {
 	
 	function TestSelectFromLimitGet()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->from('create_test ct')
 			->where('id >', 1)
 			->limit(3)
@@ -107,7 +107,7 @@ class FirebirdQBTest extends UnitTestCase {
 	
 	function TestOrderBy()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->from('create_test')
 			->where('id >', 0)
 			->where('id <', 9000)
@@ -121,7 +121,7 @@ class FirebirdQBTest extends UnitTestCase {
 	
 	function TestOrderByRand()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->from('create_test')
 			->where('id >', 0)
 			->where('id <', 9000)
@@ -134,7 +134,7 @@ class FirebirdQBTest extends UnitTestCase {
 	
 	function TestOrWhere()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->from('create_test')
 			->where(' id ', 1)
 			->or_where('key >', 0)
@@ -146,7 +146,7 @@ class FirebirdQBTest extends UnitTestCase {
 	
 	/*function TestGroupBy()
 	{
-		$query = $this->qb->select('id, key as k, val')
+		$query = $this->db->select('id, key as k, val')
 			->from('create_test')
 			->where('id >', 0)
 			->where('id <', 9000)
@@ -162,8 +162,17 @@ class FirebirdQBTest extends UnitTestCase {
 	
 	function TestLike()
 	{
-		$query = $this->qb->from('create_test')
+		$query = $this->db->from('create_test')
 			->like('key', 'og')
+			->get();
+			
+		$this->assertTrue(is_resource($query));
+	}
+	
+	function TestWhereIn()
+	{
+		$query = $this->db->from('create_test')
+			->where_in('key', array(12, 96, "works"))
 			->get();
 			
 		$this->assertTrue(is_resource($query));
@@ -171,7 +180,7 @@ class FirebirdQBTest extends UnitTestCase {
 	
 	function TestInsert()
 	{
-		$query = $this->qb->set('id', 4)
+		$query = $this->db->set('id', 4)
 			->set('key', 4)
 			->set('val', 5)
 			->insert('create_test');
@@ -181,7 +190,7 @@ class FirebirdQBTest extends UnitTestCase {
 	
 	function TestUpdate()
 	{
-		$query = $this->qb->set('id', 4)
+		$query = $this->db->set('id', 4)
 			->set('key', 'gogle')
 			->set('val', 'non-word')
 			->where('id', 4)
@@ -192,7 +201,7 @@ class FirebirdQBTest extends UnitTestCase {
 	
 	function TestDelete()
 	{
-		$query = $this->qb->where('id', 4)->delete('create_test');
+		$query = $this->db->where('id', 4)->delete('create_test');
 			
 		$this->assertTrue($query);
 	}
