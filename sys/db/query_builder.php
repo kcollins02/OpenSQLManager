@@ -163,6 +163,8 @@ class Query_Builder {
 	}
 	
 	// --------------------------------------------------------------------------
+	// ! 'Like' methods
+	// --------------------------------------------------------------------------
 	
 	/**
 	 * Creates a Like clause in the sql statement
@@ -330,6 +332,8 @@ class Query_Builder {
 		return $this;
 	}
 	
+	// --------------------------------------------------------------------------
+	// ! 'Where' methods
 	// --------------------------------------------------------------------------
 	
 	/**
@@ -562,6 +566,8 @@ class Query_Builder {
 	}
 	
 	// --------------------------------------------------------------------------
+	// ! Other Query Modifier methods
+	// --------------------------------------------------------------------------ß
 	
 	/**
 	 * Creates a join phrase in a compiled query
@@ -571,9 +577,23 @@ class Query_Builder {
 	 * @param string $type
 	 * @return $this
 	 */
-	public function join($table, $condition, $type='inner')
+	public function join($table, $condition, $type='')
 	{
-		// @todo Implement join method
+		$table = $this->db->quote_ident($table);
+		
+		$matches = array();
+		
+		if (preg_match('/([\[\w\.]+)([\W\s]+)(.+)/', $condition, $matches))
+		{
+			$condition = $this->db->quote_ident($matches[0]).' '.$matches[1].' '.$this->db->quote_ident($matches[2]);
+		}
+		
+		$this->query_map[] = array(
+			'type' => 'join',
+			'conjunction' => strtoupper($type).' JOIN ',
+			'string' => $condition,
+		);
+		
 		return $this;
 	}
 	
@@ -654,9 +674,11 @@ class Query_Builder {
 		
 		return $this;
 	}
-	
-	// --------------------------------------------------------------------------
 
+	// --------------------------------------------------------------------------
+	// ! Query execution methods
+	// --------------------------------------------------------------------------
+	
 	/**
 	 * Select and retrieve all records from the current table, and/or
 	 * execute current compiled query
@@ -680,7 +702,7 @@ class Query_Builder {
 			$this->limit($limit, $offset);
 		}
 		
-		$sql = $this->_compile_select();
+		$sql = $this->_compile();
 
 		// Do prepared statements for anything involving a "where" clause
 		if ( ! empty($this->query_map))
@@ -697,46 +719,6 @@ class Query_Builder {
 		$this->_reset();
 		
 		return $result;
-	}
-
-	// --------------------------------------------------------------------------
-	// ! Insert/Update/Delete Queries
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Sets values for inserts / updates / deletes
-	 *
-	 * @param mixed $key
-	 * @param mixed $val
-	 * @return $this
-	 */
-	public function set($key, $val)
-	{
-		// Plain key, value pair
-		if (is_scalar($key) && is_scalar($val))
-		{
-			$this->set_array[$key] = $val;
-			$this->values[] = $val;
-		}
-		// Object or array
-		elseif ( ! is_scalar($key))
-		{
-			foreach($key as $k => $v)
-			{
-				$this->set_array[$k] = $v;
-				$this->values[] = $val;
-			}
-		}
-		
-		// Use the keys of the array to make the insert/update string
-		// Escape the field names
-		$this->set_array_keys = array_map(array($this->db, 'quote_ident'), array_keys($this->set_array));
-		
-		// Generate the "set" string
-		$this->set_string = implode('=?, ', $this->set_array_keys);
-		$this->set_string .= '=?';
-		
-		return $this;
 	}
 	
 	// --------------------------------------------------------------------------
@@ -899,6 +881,44 @@ class Query_Builder {
 	// --------------------------------------------------------------------------
 	// ! Miscellaneous Methods
 	// --------------------------------------------------------------------------
+
+	/**
+	 * Sets values for inserts / updates / deletes
+	 *
+	 * @param mixed $key
+	 * @param mixed $val
+	 * @return $this
+	 */
+	public function set($key, $val)
+	{
+		// Plain key, value pair
+		if (is_scalar($key) && is_scalar($val))
+		{
+			$this->set_array[$key] = $val;
+			$this->values[] = $val;
+		}
+		// Object or array
+		elseif ( ! is_scalar($key))
+		{
+			foreach($key as $k => $v)
+			{
+				$this->set_array[$k] = $v;
+				$this->values[] = $val;
+			}
+		}
+		
+		// Use the keys of the array to make the insert/update string
+		// Escape the field names
+		$this->set_array_keys = array_map(array($this->db, 'quote_ident'), array_keys($this->set_array));
+		
+		// Generate the "set" string
+		$this->set_string = implode('=?, ', $this->set_array_keys);
+		$this->set_string .= '=?';
+		
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------------
 	
 	/**
 	 * Clear out the class variables, so the next query can be run
@@ -945,6 +965,41 @@ class Query_Builder {
 		switch($type)
 		{
 			default:
+				$sql = 'SELECT * FROM '.$this->from_string;
+				
+				// Set the select string
+				if ( ! empty($this->select_string))
+				{
+					// Replace the star with the selected fields
+					$sql = str_replace('*', $this->select_string, $sql);
+				}
+				
+				// Set the where string
+				if ( ! empty($this->query_map))
+				{
+					foreach($this->query_map as $q)
+					{
+						$sql .= $q['conjunction'] . $q['string'];
+					}
+				}
+				
+				// Set the group_by string
+				if ( ! empty($this->group_string))
+				{
+					$sql .= $this->group_string;
+				}
+				
+				// Set the order_by string
+				if ( ! empty($this->order_string))
+				{
+					$sql .= $this->order_string;
+				}
+				
+				// Set the limit via the class variables
+				if (isset($this->limit) && is_numeric($this->limit))
+				{
+					$sql = $this->sql->limit($sql, $this->limit, $this->offset);
+				}
 			break;
 			
 			case "insert":
@@ -984,56 +1039,6 @@ class Query_Builder {
 		}
 		
 		// echo $sql.'<br />';
-		
-		return $sql;
-	}
-	
-	// --------------------------------------------------------------------------
-	
-	/**
-	 * Compiles a "select" type query
-	 *
-	 * @return string
-	 */
-	private function _compile_select()
-	{
-		$sql = 'SELECT * FROM '.$this->from_string;
-				
-		// Set the select string
-		if ( ! empty($this->select_string))
-		{
-			// Replace the star with the selected fields
-			$sql = str_replace('*', $this->select_string, $sql);
-		}
-		
-		// Set the where string
-		if ( ! empty($this->query_map))
-		{
-			foreach($this->query_map as $q)
-			{
-				$sql .= $q['conjunction'] . $q['string'];
-			}
-		}
-		
-		// Set the group_by string
-		if ( ! empty($this->group_string))
-		{
-			$sql .= $this->group_string;
-		}
-		
-		// Set the order_by string
-		if ( ! empty($this->order_string))
-		{
-			$sql .= $this->order_string;
-		}
-		
-		// Set the limit via the class variables
-		if (isset($this->limit) && is_numeric($this->limit))
-		{
-			$sql = $this->sql->limit($sql, $this->limit, $this->offset);
-		}
-		
-		echo $sql."<br />";
 		
 		return $sql;
 	}
