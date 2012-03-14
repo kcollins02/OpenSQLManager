@@ -164,6 +164,15 @@
 		$this->assertIsA($query, 'PDOStatement');
 	}
 	
+	function TestJoin()
+	{
+		$query = $this->db->from('create_test')
+			->join('create_join cj', 'cj.id = create_test.id')
+			->get();
+			
+		$this->assertIsA($query, 'PDOStatement');
+	}
+	
 	function TestInsert()
 	{
 		$query = $this->db->set('id', 4)

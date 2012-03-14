@@ -578,16 +578,15 @@ class Query_Builder {
 	 * @return $this
 	 */
 	public function join($table, $condition, $type='')
-	{
-		$table = $this->db->quote_ident($table);
+	{	
+		// Paste it back together
+		$table = implode(" ", array_map(array($this->db, 'quote_ident'), explode(' ', trim($table))));		
+		//$condition = preg_replace('`(\W)`', " $1 ", $condition);
+		$cond_array = explode(' ', trim($condition));
+		$cond_array = array_map('trim', $cond_array);
 		
-		$matches = array();
-		
-		if (preg_match('/([\[\w\.]+)([\W\s]+)(.+)/', $condition, $matches))
-		{
-			$condition = $this->db->quote_ident($matches[0]) . ' ' . $matches[1] .
-				' ' . $this->db->quote_ident($matches[2]);
-		}
+		$condition = $table . ' ON ' . $this->db->quote_ident($cond_array[0])  . $cond_array[1] .
+				' ' . $this->db->quote_ident($cond_array[2]);
 		
 		$this->query_map[] = array(
 			'type' => 'join',
@@ -947,6 +946,9 @@ class Query_Builder {
 			{
 				unset($this->$name);
 			}
+			
+			// Set values as an empty array
+			$this->values = array();
 		}
 	}
 	
@@ -959,7 +961,7 @@ class Query_Builder {
 	 * @param string $table
 	 * @return $string
 	 */
-	private function _compile($type, $table="")
+	private function _compile($type='', $table="")
 	{
 		$sql = '';
 	
@@ -1039,7 +1041,7 @@ class Query_Builder {
 			break;
 		}
 		
-		// echo $sql.'<br />';
+		echo $sql.'<br />';
 		
 		return $sql;
 	}

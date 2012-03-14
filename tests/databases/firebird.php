@@ -83,7 +83,7 @@ class FirebirdTest extends UnitTestCase {
 	/*function TestCreateTable()
 	{
 		//Attempt to create the table
-		$sql = $this->db->sql->create_table('create_test', array(
+		$sql = $this->db->sql->create_table('create_join', array(
 			'id' => 'SMALLINT', 
 			'key' => 'VARCHAR(64)', 
 			'val' => 'BLOB SUB_TYPE TEXT'
@@ -102,6 +102,8 @@ class FirebirdTest extends UnitTestCase {
 		
 		$this->assertTrue($table_exists);
 	}*/
+	
+	
 	
 	function TestTruncate()
 	{

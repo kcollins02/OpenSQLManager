@@ -73,6 +73,19 @@ class SQLiteTest extends UnitTestCase {
 			)
 		);
 		$this->db->query($sql);
+		
+		//Attempt to create the table
+		$sql = $this->db->sql->create_table('create_join', 
+			array(
+				'id' => 'INTEGER',
+				'key' => 'TEXT',
+				'val' => 'TEXT',
+			), 
+			array(
+				'id' => 'PRIMARY KEY'
+			)
+		);
+		$this->db->query($sql);
 
 		//Check
 		$dbs = $this->db->get_tables();

@@ -178,6 +178,15 @@ class FirebirdQBTest extends UnitTestCase {
 		$this->assertTrue(is_resource($query));
 	}
 	
+	function TestJoin()
+	{
+		$query = $this->db->from('create_test')
+			->join('create_join cj', 'cj.id = create_test.id')
+			->get();
+			
+		$this->assertTrue(is_resource($query));
+	}
+	
 	function TestInsert()
 	{
 		$query = $this->db->set('id', 4)
