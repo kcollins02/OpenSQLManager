@@ -117,13 +117,13 @@ class MySQLTest extends UnitTestCase {
 	
 	}
 	
-	function TestTruncate()
+	/*function TestTruncate()
 	{
 		if (empty($this->db))  return; 
 	
 		$this->db->truncate('create_test');
 		$this->assertIsA($this->db->affected_rows(), 'int');
-	}
+	}*/
 	
 	function TestPreparedStatements()
 	{
