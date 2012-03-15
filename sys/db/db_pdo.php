@@ -133,7 +133,7 @@ abstract class DB_PDO extends PDO {
 		}
 		
 		// Execute the query
-		$this->statement->execute();
+		//$this->statement->execute();
 
 		// Return number of rows affected
 		return $this->statement->rowCount();
