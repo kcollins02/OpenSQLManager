@@ -142,6 +142,8 @@ class FirebirdQBTest extends UnitTestCase {
 			->get();
 		
 		$this->assertTrue(is_resource($query));
+
+		<pre><?= print_r($this->db->fetchAll(), TRUE) ?></pre>
 	}
 	
 	/*function TestGroupBy()

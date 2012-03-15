@@ -917,6 +917,28 @@ class Query_Builder {
 		
 		return $this;
 	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Calls a function further down the inheritence chain
+	 *
+	 * @param string $name
+	 * @param array $params
+	 * @return mixed
+	 */
+	public function __call($name, $params)
+	{
+		if ( ! empty($this->db->$name))
+		{
+			if (is_callable($this->db->$name))
+			{
+				return call_user_func_array(array($this->db, $name), $params);
+			}
+		}
+
+		return NULL;
+	}	
 	
 	// --------------------------------------------------------------------------
 	
