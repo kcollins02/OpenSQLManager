@@ -1063,7 +1063,7 @@ class Query_Builder {
 			break;
 		}
 		
-		echo $sql.'<br />';
+		// echo $sql.'<br />';
 		
 		return $sql;
 	}
