@@ -15,7 +15,7 @@
 /**
  * Firebird Query Builder Tests
  */
-class FirebirdQBTest extends UnitTestCase {
+class FirebirdQBTest extends QBTest {
 
 	function __construct()
 	{
@@ -32,7 +32,7 @@ class FirebirdQBTest extends UnitTestCase {
 		$params->pass = 'masterkey';
 		$this->db = new Query_Builder($params);
 		
-		echo '<hr /> Firebird Queries <hr />';
+		// echo '<hr /> Firebird Queries <hr />';
 	}
 
 	function TestGet()
@@ -119,7 +119,7 @@ class FirebirdQBTest extends UnitTestCase {
 		$this->assertIsA($query, 'Firebird_Result');
 	}
 	
-	function TestOrderByRand()
+	function TestOrderByRandom()
 	{
 		$query = $this->db->select('id, key as k, val')
 			->from('create_test')
@@ -142,6 +142,11 @@ class FirebirdQBTest extends UnitTestCase {
 			->get();
 		
 		$this->assertIsA($query, 'Firebird_Result');
+	}
+	
+	function TestGroupBy()
+	{
+	
 	}
 	
 	/*function TestGroupBy()
