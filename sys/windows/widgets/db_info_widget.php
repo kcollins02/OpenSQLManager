@@ -328,7 +328,7 @@ class DB_Info_Widget extends GtkTable {
 		}
 
 		// Add firebird support, if exists
-		if(function_exists('ibase_connect') && ! in_array('firebird', $pdo_drivers))
+		if(function_exists('fbird_connect') && ! in_array('firebird', $pdo_drivers))
 		{
 			$drivers[] = "Firebird";
 		}
