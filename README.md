@@ -2,6 +2,8 @@
 
 OpenSQLManager is an attempt to create an alternative to Navicat that is free and open. It is build with PHP-GTK, so I'm looking for a way to create normal binaries. 
 
+[![Build Status](https://secure.travis-ci.org/timw4mail/OpenSQLManager.png)](http://travis-ci.org/timw4mail/OpenSQLManager)
+
 ### Pre-configured version of php for windows
 Because php-gtk is such a pain to compile on Windows, I've put together this package from the latest php-gtk windows package. It's available in the downloads section.
 
