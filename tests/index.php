@@ -15,9 +15,10 @@
 /**
  * Unit test bootstrap - Using php simpletest
  */
-define('BASE_DIR', '../src');
 define('TEST_DIR', dirname(__FILE__));
+define('BASE_DIR', str_replace(basename(TEST_DIR), '', TEST_DIR).'/sys/');
 define('DS', DIRECTORY_SEPARATOR);
+
 
 // Include simpletest
 // it has to be set in your php path, or put in the tests folder
@@ -34,14 +35,14 @@ function do_include($path)
 
 // Include core tests
 require_once("core.php");
-require_once("../sys/db/db_pdo.php");
-require_once("../sys/db/query_builder.php");
+require_once(BASE_DIR.'db/db_pdo.php');
+require_once(BASE_DIR.'db/query_builder.php');
 
 
 // Include db tests
 // Load db classes based on capability
-$src_path = "../sys/db/drivers/";
-$test_path = "./databases/";
+$src_path = BASE_DIR.'db/drivers/';
+$test_path = TEST_DIR.'/databases/';
 
 foreach(pdo_drivers() as $d)
 {

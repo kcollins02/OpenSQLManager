@@ -2,6 +2,5 @@
 *.DS_Store
 settings.json
 errors.txt
-*/simpletest/*
 tests/test_dbs/*
 test_config.json
