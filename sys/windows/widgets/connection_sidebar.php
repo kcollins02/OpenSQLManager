@@ -17,6 +17,11 @@ class Connection_Sidebar extends GtkVBox {
 	protected $settings, $menu, $treeview, $model;
 	private static $instance;
 
+	/**
+	 * Return the current instance of the class
+	 *
+	 * @return Connection_Sidebar
+	 */
 	public static function &get_instance()
 	{
 		if( ! isset(self::$instance))
@@ -27,6 +32,8 @@ class Connection_Sidebar extends GtkVBox {
 
 		return self::$instance;
 	}
+
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Constructor method
@@ -68,6 +75,8 @@ class Connection_Sidebar extends GtkVBox {
 		$this->pack_start($this->treeview);
 		$this->pack_start($add_button, FALSE);
 	}
+
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Renders the connection sidebar widget
