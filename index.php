@@ -115,6 +115,46 @@ if(function_exists('fbird_connect'))
 
 // --------------------------------------------------------------------------
 
+/**
+ * Create info dialog to retun an informational message
+ *
+ * @return void
+ */
+function alert($message)
+{
+	$dialog = new GTKMessageDialog(
+		NULL,
+		Gtk::DIALOG_MODAL,
+		Gtk::MESSAGE_INFO,
+		Gtk::BUTTONS_OK,
+		$message
+	);
+	$dialog->run();
+	$dialog->destroy();
+}
+
+// --------------------------------------------------------------------------
+
+/**
+ * Create info dialog to retun an informational message
+ *
+ * @return void
+ */
+function error($message)
+{
+	$dialog = new GTKMessageDialog(
+		NULL,
+		Gtk::DIALOG_MODAL,
+		Gtk::MESSAGE_ERROR,
+		Gtk::BUTTONS_OK,
+		$message
+	);
+	$dialog->run();
+	$dialog->destroy();
+}
+
+// --------------------------------------------------------------------------
+
 // Create the main window
 new Main();
 

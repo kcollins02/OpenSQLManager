@@ -223,6 +223,7 @@ class Connection_Sidebar extends GtkVBox {
 		{
 			$remove = new GtkImageMenuItem('Delete Connection');
 			$remove->set_image(GtkImage::new_from_stock(GTK::STOCK_CANCEL, Gtk::ICON_SIZE_MENU));
+			$remove->connect_simple('activate', array($this, 'remove_connection'));
 
 			$this->menu->append($remove);
 		}
@@ -237,10 +238,9 @@ class Connection_Sidebar extends GtkVBox {
 	/**
 	 * Remove a connection from the connection manager
 	 * 
-	 * @param string $key
 	 * @return  void
 	 */
-	public function remove_connection($key)
+	public function remove_connection()
 	{
 		//@todo implement
 		$model = $this->treeview->get_model();

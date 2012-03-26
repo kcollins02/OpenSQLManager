@@ -259,31 +259,13 @@ class DB_Info_Widget extends GtkTable {
 		}
 		catch (PDOException $e)
 		{
-			$dialog = new GTKMessageDialog(
-				NULL,
-				Gtk::DIALOG_MODAL,
-				Gtk::MESSAGE_ERROR,
-				Gtk::BUTTONS_OK,
-				"Error connecting to database: \n\n" . $e->getMessage()
-			);
-			$dialog->run();
-			$dialog->destroy();
-			
+			error("Error connecting to database: \n\n" . $e->getMessage());
 			return;
 		}
 		
 		// Successful Connection?
 		// Tell the user!
-		$dialog = new GTKMessageDialog(
-			NULL,
-			Gtk::DIALOG_MODAL,
-			Gtk::MESSAGE_INFO,
-			Gtk::BUTTONS_OK,
-			"Successfully connected"
-		);
-		
-		$dialog->run();
-		$dialog->destroy();
+		alert("Successfully Connected.");
 	}
 
 	/**
