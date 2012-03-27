@@ -34,9 +34,10 @@ class Settings {
 	}
 	
 	/**
-	 * Load the settings file
+	 * Load the settings file - private so it can't be loaded
+	 * directly - the settings should be safe!
 	 */
-	protected function __construct()
+	private function __construct()
 	{
 		$path = SETTINGS_DIR.'/settings.json'; 
 
@@ -58,6 +59,8 @@ class Settings {
 		}
 
 	}
+
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Output the settings on destruct

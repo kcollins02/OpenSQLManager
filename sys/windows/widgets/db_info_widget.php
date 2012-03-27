@@ -350,6 +350,6 @@ class DB_Info_Widget extends GtkTable {
 	 */
 	private function _validate()
 	{
-
+		// @todo Implement
 	}
 }
