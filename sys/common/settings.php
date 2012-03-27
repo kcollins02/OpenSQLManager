@@ -123,6 +123,9 @@ class Settings {
 		{
 			return FALSE;
 		}
+
+		// Save the json
+		$this->__destruct();
 	}
 
 	// --------------------------------------------------------------------------
@@ -143,6 +146,9 @@ class Settings {
 		{
 			return FALSE;
 		}
+
+		// Save the json
+		$this->__destruct();
 	}
 
 	// --------------------------------------------------------------------------
@@ -161,6 +167,9 @@ class Settings {
 
 		// Remove the db name from the object
 		unset($this->current->dbs->{$name});
+
+		// Save the json
+		$this->__destruct();
 	}
 
 	// --------------------------------------------------------------------------

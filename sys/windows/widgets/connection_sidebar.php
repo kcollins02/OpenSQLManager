@@ -233,12 +233,27 @@ class Connection_Sidebar extends GtkVBox {
 	// --------------------------------------------------------------------------
 
 	/**
+	 * Update the connection information for an existing connection
+	 */
+	public function edit_connection()
+	{
+		//@todo implement
+	}
+
+	// --------------------------------------------------------------------------	
+
+	/**
 	 * Remove a connection from the connection manager
 	 * 
 	 * @return  void
 	 */
 	public function remove_connection($col)
 	{
+		if ( ! confirm("Are you sure you want to remove this database connection?"))
+		{
+			return;
+		}
+
 		//@todo implement
 		$model = $this->treeview->get_model();
 	}

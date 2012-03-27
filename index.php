@@ -118,6 +118,7 @@ if(function_exists('fbird_connect'))
 /**
  * Create info dialog to retun an informational message
  *
+ * @param  string $message
  * @return void
  */
 function alert($message)
@@ -138,6 +139,7 @@ function alert($message)
 /**
  * Create info dialog to retun an informational message
  *
+ * @param string $message
  * @return void
  */
 function error($message)
@@ -151,6 +153,30 @@ function error($message)
 	);
 	$dialog->run();
 	$dialog->destroy();
+}
+
+// --------------------------------------------------------------------------
+
+/**
+ * Creates a binary confirmation dialog
+ *
+ * @param string $message
+ * @return bool
+ */
+function confirm($message)
+{
+	$dialog = new GTKMessageDialog(
+		NULL,
+		Gtk::DIALOG_MODAL,
+		Gtk::MESSAGE_QUESTION,
+		Gtk::BUTTONS_YES_NO,
+		$message
+	);
+
+	$answer = $dialog->run();
+	$dialog->destroy();
+
+	return ($answer === Gtk::RESPONSE_YES) ? TRUE : FALSE;
 }
 
 // --------------------------------------------------------------------------
