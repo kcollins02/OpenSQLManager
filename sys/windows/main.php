@@ -27,14 +27,52 @@ class Main extends GtkWindow {
 	public function __construct()
 	{
 		parent::__construct();
-		
-		//Resize to a sane size
-		$this->set_size_request(640, 480);
 
-		$this->set_position(Gtk::WIN_POS_CENTER);
+		$this->settings =& Settings::get_instance();
+		
+
+		if ( ! is_null($this->settings->width) && ! is_null($this->settings->height))
+		{
+			//Resize to the last size
+			$this->set_size_request($this->settings->width, $this->settings->height);
+		}
+		else
+		{
+			//Resize to a sane size
+			$this->set_size_request(640, 480);
+		}
+
+		if (! is_null($this->settings->position))
+		{
+			$this->move($this->settings->position[0], $this->settings->position[1]);
+		}
+		else
+		{
+			$this->set_position(Gtk::WIN_POS_CENTER);
+		}
 
 		//Layout the interface
 		$this->_main_layout();
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Some cleanup for when the main window is closed
+	 */
+	public function __destruct()
+	{
+		// Save the Window position
+		$this->settings->position = $this->get_position();
+
+		list($width, $height) = $this->get_size();
+
+		// Save the Window hegiht
+		$this->settings->height = $height;
+
+		// Save the Window width
+		$this->settings->width = $width;
+
 	}
 
 	// --------------------------------------------------------------------------

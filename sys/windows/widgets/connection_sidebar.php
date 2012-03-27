@@ -64,7 +64,7 @@ class Connection_Sidebar extends GtkVBox {
 			$this->_render();			
 
 			// Set up context menu event
-			$this->treeview->connect('button-press-event', array(&$this, 'on_button'));
+			$this->treeview->connect('button-press-event', array($this, 'on_button'));
 
 
 			$selection = $this->treeview->get_selection();
@@ -102,11 +102,11 @@ class Connection_Sidebar extends GtkVBox {
 
 		// Icon column
 		$cell_renderer = new GtkCellRendererPixbuf();
-		$this->treeview->insert_column_with_data_func(0, 'Type', $cell_renderer, array(&$this, 'set_icon'));
+		$this->treeview->insert_column_with_data_func(0, 'Type', $cell_renderer, array($this, 'set_icon'));
 
 		// Label column
 		$cell_renderer = new GtkCellRendererText();
-		$this->treeview->insert_column_with_data_func(1, 'Connection name', $cell_renderer, array(&$this, 'set_label'));
+		$this->treeview->insert_column_with_data_func(1, 'Connection name', $cell_renderer, array($this, 'set_label'));
 	}
 
 	// --------------------------------------------------------------------------
@@ -187,7 +187,9 @@ class Connection_Sidebar extends GtkVBox {
 		if ($event->button == 3)
 		{
 			// get the row and column
-			list($path_array, $col, $x, $y)= $view->get_path_at_pos($event->x, $event->y);
+			$path_array = $view->get_path_at_pos($event->x, $event->y);
+        	$path = $path_array[0][0];
+        	$col = $path_array[1];
 
 			// Don't try to get values for an item that doesn't exist. Instead, return,
 			// so that the program doesn't crash because someone thought it funny
@@ -196,13 +198,9 @@ class Connection_Sidebar extends GtkVBox {
 			{
 				return;
 			}
-
-			$path = $path_array[0];
-			//$col = $path_array[1];
-			$col_title = $col->get_title();
 		}
 
-		$this->menu = $this->conn_popup_menu($path, $col_title, $event);
+		$this->menu = $this->conn_popup_menu($path, $event, $col, $path_array);
 	}
 
 	// --------------------------------------------------------------------------
@@ -211,11 +209,10 @@ class Connection_Sidebar extends GtkVBox {
 	 * Creates and displays a context menu for the selected connection
 	 * 
 	 * @param  array $pos 
-	 * @param  string $title
 	 * @param  object $event
 	 * @return void
 	 */
-	public function conn_popup_menu($pos, $title, $event)
+	public function conn_popup_menu($pos, $event, $col, $all)
 	{
 		$this->menu = new GtkMenu();
 
@@ -223,7 +220,7 @@ class Connection_Sidebar extends GtkVBox {
 		{
 			$remove = new GtkImageMenuItem('Delete Connection');
 			$remove->set_image(GtkImage::new_from_stock(GTK::STOCK_CANCEL, Gtk::ICON_SIZE_MENU));
-			$remove->connect_simple('activate', array($this, 'remove_connection'));
+			$remove->connect_simple('activate', array($this, 'remove_connection'), $all);
 
 			$this->menu->append($remove);
 		}
@@ -240,7 +237,7 @@ class Connection_Sidebar extends GtkVBox {
 	 * 
 	 * @return  void
 	 */
-	public function remove_connection()
+	public function remove_connection($col)
 	{
 		//@todo implement
 		$model = $this->treeview->get_model();
