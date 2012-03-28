@@ -150,7 +150,7 @@ class Main extends GtkWindow {
 
 		$scrolled_win = new GtkScrolledWindow();
     	$scrolled_win->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-    	//$scrolled_win->add(new DataGrid());
+    	$scrolled_win->add(new Data_Grid());
 
     	// Add the connection sidebar
     	$this->connection_sidebar =& Connection_Sidebar::get_instance();
@@ -189,10 +189,6 @@ class Main extends GtkWindow {
 
 		//File Menu
 		{
-			//Set up the open item
-			//$open = new GtkImageMenuItem(GTK::STOCK_OPEN);
-			//$file_menu->append($open);
-
 			//Set up the quit item
 			$quit = new GtkImageMenuItem(GTK::STOCK_QUIT);
 			$quit->connect_simple('activate', array($this, 'quit'));
