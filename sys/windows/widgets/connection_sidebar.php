@@ -7,11 +7,14 @@
  * @author 		Timothy J. Warren
  * @copyright	Copyright (c) 2012
  * @link 		https://github.com/aviat4ion/OpenSQLManager
- * @license 	http://philsturgeon.co.uk/code/dbad-license 
+ * @license 	http://philsturgeon.co.uk/code/dbad-license
  */
 
 // --------------------------------------------------------------------------
 
+/**
+ * Widget managing saved database connections
+ */
 class Connection_Sidebar extends GtkVBox {
 
 	protected $settings, $menu, $treeview, $model;
@@ -61,7 +64,7 @@ class Connection_Sidebar extends GtkVBox {
 			$this->model = new GtkListStore(GObject::TYPE_PHP_VALUE, GObject::TYPE_STRING);
 
 			// Render the treeview
-			$this->_render();			
+			$this->_render();
 
 			// Set up context menu event
 			$this->treeview->connect('button-press-event', array($this, 'on_button'));
@@ -70,7 +73,7 @@ class Connection_Sidebar extends GtkVBox {
 			$selection = $this->treeview->get_selection();
 			$selection->set_mode(GTK::SELECTION_SINGLE);
 		}
-		
+
 
 		$this->pack_start($this->treeview);
 		$this->pack_start($add_button, FALSE);
@@ -96,7 +99,7 @@ class Connection_Sidebar extends GtkVBox {
 				$this->model->set($iter, 0, $db);
 			}
 		}
-		
+
 		// Initialize the treeview with the data
 		$this->treeview = new GtkTreeView($this->model);
 
@@ -113,8 +116,8 @@ class Connection_Sidebar extends GtkVBox {
 
 	/**
 	 * Sets the icon for the current db type
-	 * 
-	 * @param GtkTreeView Column $col   
+	 *
+	 * @param GtkTreeView Column $col
 	 * @param GtkCellRenderer $cell
 	 * @param GtkTreeModel $this->model
 	 * @param GtkTreeIter $iter
@@ -142,7 +145,7 @@ class Connection_Sidebar extends GtkVBox {
 
 	/**
 	 * Sets the label of the current db connection
-	 * 
+	 *
 	 * @param GtkTreeViewColumn $col
 	 * @param GtkCellRenderer $cell
 	 * @param GtkTreeModel $this->model
@@ -159,7 +162,7 @@ class Connection_Sidebar extends GtkVBox {
 
 	/**
 	 * Returns window for creating a new database connection
-	 * 
+	 *
 	 * @return Add_DB object
 	 */
 	public function new_conn()
@@ -171,7 +174,7 @@ class Connection_Sidebar extends GtkVBox {
 
 	/**
 	 * Event for mouse clicks on connection sidebar
-	 * 
+	 *
 	 * @param  GtkTreeView $view
 	 * @param  $event
 	 * @return void
@@ -207,8 +210,8 @@ class Connection_Sidebar extends GtkVBox {
 
 	/**
 	 * Creates and displays a context menu for the selected connection
-	 * 
-	 * @param  array $pos 
+	 *
+	 * @param  array $pos
 	 * @param  object $event
 	 * @return void
 	 */
@@ -224,7 +227,7 @@ class Connection_Sidebar extends GtkVBox {
 
 			$this->menu->append($remove);
 		}
-		
+
 		// Popup the menu
 		$this->menu->show_all();
 		$this->menu->popup();
@@ -240,11 +243,11 @@ class Connection_Sidebar extends GtkVBox {
 		//@todo implement
 	}
 
-	// --------------------------------------------------------------------------	
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Remove a connection from the connection manager
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function remove_connection($col)
@@ -262,7 +265,7 @@ class Connection_Sidebar extends GtkVBox {
 
 	/**
 	 * Add a connection to the connection manager
-	 * 
+	 *
 	 * @param  string $key
 	 * @param  array $vals
 	 * @return  void

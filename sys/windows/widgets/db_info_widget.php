@@ -7,7 +7,7 @@
  * @author 		Timothy J. Warren
  * @copyright	Copyright (c) 2012
  * @link 		https://github.com/aviat4ion/OpenSQLManager
- * @license 	http://philsturgeon.co.uk/code/dbad-license 
+ * @license 	http://philsturgeon.co.uk/code/dbad-license
  */
 
 // --------------------------------------------------------------------------
@@ -19,8 +19,8 @@ class DB_Info_Widget extends GtkTable {
 
 	protected $conn, $dbtype, $host, $user, $pass, $database, $settings, $db_file, $port;
 
-	public function __construct($conn='', $dbtype='', $host='localhost', 
-		$user='', $pass='', $database='', $db_file=NULL, $port='', $conn_db='')
+	public function __construct($conn='', $dbtype='', $host='localhost',
+		$user='', $pass='', $db_file=NULL, $port='', $conn_db='')
 	{
 		parent::__construct();
 
@@ -38,6 +38,7 @@ class DB_Info_Widget extends GtkTable {
 				Gtk::FILE_CHOOSER_ACTION_OPEN);
 
 		// Populate the available database types
+		// @todo Select type based on dbtype passed
 		$db_types = $this->get_available_dbs();
 		foreach($db_types as $t)
 		{
@@ -51,6 +52,7 @@ class DB_Info_Widget extends GtkTable {
 		$this->pass->set_text($pass);
 		$this->conn_db->set_text($conn_db);
 		$this->db_file->set_filename($db_file);
+		$this->port->set_text($port);
 
 		// Layout the table
 		$this->layout();
@@ -64,7 +66,7 @@ class DB_Info_Widget extends GtkTable {
 		// Reset defaults when changing db types
 		$this->dbtype->connect_simple("changed", array($this, "change_db"));
 
-		//Table attach 
+		//Table attach
 		//$tbl->attach(left_start, right_stop, top_start, bottom_stop)
 
 		// Placeholder vars for y values, so that rows can be
@@ -120,10 +122,10 @@ class DB_Info_Widget extends GtkTable {
 		{
 			$add_button = new GtkButton();
 			$add_button->set_label("Add Connnection");
-			$add_button->set_image(GTKImage::new_from_stock(GTK::STOCK_ADD, 
-				Gtk::ICON_SIZE_SMALL_TOOLBAR));	
+			$add_button->set_image(GTKImage::new_from_stock(GTK::STOCK_ADD,
+				Gtk::ICON_SIZE_SMALL_TOOLBAR));
 			$this->attach($add_button, 0, 1, ++$y1, ++$y2);
-			$add_button->connect_simple("clicked", array($this, 'db_add'));	
+			$add_button->connect_simple("clicked", array($this, 'db_add'));
 		}
 
 		// Test connection button
@@ -137,7 +139,7 @@ class DB_Info_Widget extends GtkTable {
 
 	/**
 	 * Set defaults for new database type
-	 * 
+	 *
 	 * @return void
 	 */
 	public function change_db()
@@ -219,7 +221,7 @@ class DB_Info_Widget extends GtkTable {
 		$this->settings->add_db($this->conn->get_text(), $data);
 
 		// Pass to connection sidebar to update
-		
+
 
 		// Destroy the parent window
 		$parent_window =& $this->get_parent_window();
@@ -249,9 +251,9 @@ class DB_Info_Widget extends GtkTable {
 			return;
 		}
 
-		// Catch connection exceptions, and 
+		// Catch connection exceptions, and
 		// display the error message to the
-		// user so they can edit the db 
+		// user so they can edit the db
 		// parameters
 		try
 		{
@@ -262,7 +264,7 @@ class DB_Info_Widget extends GtkTable {
 			error("Error connecting to database: \n\n" . $e->getMessage());
 			return;
 		}
-		
+
 		// Successful Connection?
 		// Tell the user!
 		alert("Successfully Connected.");
@@ -270,7 +272,7 @@ class DB_Info_Widget extends GtkTable {
 
 	/**
 	 * Checks what database drivers are available
-	 * 
+	 *
 	 * @return array
 	 */
 	public function get_available_dbs()
@@ -322,7 +324,7 @@ class DB_Info_Widget extends GtkTable {
 
 	/**
 	 * Simple helper function for adding a row to the GtkTable
-	 * 
+	 *
 	 * @param GtkTable &$table
 	 * @param string $label
 	 * @param string $vname
@@ -345,7 +347,7 @@ class DB_Info_Widget extends GtkTable {
 
 	/**
 	 * Filter input based on the requirements of the specified database
-	 * 
+	 *
 	 * @return bool
 	 */
 	private function _validate()
