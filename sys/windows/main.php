@@ -33,12 +33,12 @@ class Main extends GtkWindow {
 
 		if ( ! is_null($this->settings->width) && ! is_null($this->settings->height))
 		{
-			//Resize to the last size
+			// Resize to the last size
 			$this->set_size_request($this->settings->width, $this->settings->height);
 		}
 		else
 		{
-			//Resize to a sane size
+			// Resize to a sane size
 			$this->set_size_request(640, 480);
 		}
 
@@ -51,7 +51,7 @@ class Main extends GtkWindow {
 			$this->set_position(Gtk::WIN_POS_CENTER);
 		}
 
-		//Layout the interface
+		// Layout the interface
 		$this->_main_layout();
 	}
 
@@ -150,7 +150,7 @@ class Main extends GtkWindow {
 
 		$scrolled_win = new GtkScrolledWindow();
     	$scrolled_win->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-    	$scrolled_win->add(new Data_Grid());
+    	$scrolled_win->add_with_viewport(new DB_tabs());
 
     	// Add the connection sidebar
     	$this->connection_sidebar =& Connection_Sidebar::get_instance();
@@ -173,23 +173,23 @@ class Main extends GtkWindow {
 	 */
 	private function _create_menu()
 	{
-		//Menu Bar
+		// Menu Bar
 		$menu_bar = new GtkMenuBar();
 
-		//Menu Bar Top Items
+		// Menu Bar Top Items
 		$top_file_menu = new GtkMenuItem('_File');
 		$top_help_menu = new GtkMenuItem('_Help');
 
-		//Add sub Menus to top items
+		// Add sub Menus to top items
 		$file_menu = new GtkMenu();
 		$top_file_menu->set_submenu($file_menu);
 		$help_menu = new GtkMenu();
 		$top_help_menu->set_submenu($help_menu);
 
 
-		//File Menu
+		// File Menu
 		{
-			//Set up the quit item
+			// Set up the quit item
 			$quit = new GtkImageMenuItem(GTK::STOCK_QUIT);
 			$quit->connect_simple('activate', array($this, 'quit'));
 			$file_menu->append($quit);
@@ -198,9 +198,9 @@ class Main extends GtkWindow {
 			$menu_bar->append($top_file_menu);
 		}
 
-		//Help Menu
+		// Help Menu
 		{
-			//Set up the about item
+			// Set up the about item
 			$about = new GtkImageMenuItem(GTK::STOCK_ABOUT);
 			$about->connect_simple('activate', array($this, 'about'));
 			$help_menu->append($about);
