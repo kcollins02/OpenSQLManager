@@ -13,16 +13,16 @@
 // --------------------------------------------------------------------------
 
 /**
- * Window controlling addition of database connections
+ * Window controlling modifications of database connections
  */
-class Add_DB extends GtkWindow {
+class Edit_DB extends GtkWindow {
 
 	public function __construct()
 	{
 		parent::__construct();
 
 		$this->set_position(Gtk::WIN_POS_CENTER);
-		$this->set_title("Add Database Connection");
+		$this->set_title("Edit Database Connection");
 
 		// Create the layout table
 		$connection_form = new DB_Info_Widget();
@@ -33,4 +33,4 @@ class Add_DB extends GtkWindow {
 	}
 }
 
-// End of add_db.php
+// End of edit_db.php

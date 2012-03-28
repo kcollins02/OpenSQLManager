@@ -7,7 +7,7 @@
  * @author 		Timothy J. Warren
  * @copyright	Copyright (c) 2012
  * @link 		https://github.com/aviat4ion/OpenSQLManager
- * @license 	http://philsturgeon.co.uk/code/dbad-license 
+ * @license 	http://philsturgeon.co.uk/code/dbad-license
  */
 
 // --------------------------------------------------------------------------
@@ -55,7 +55,7 @@ register_shutdown_function('log_fatal');
 // --------------------------------------------------------------------------
 
 // Make sure php-gtk works
-if ( ! class_exists('gtk')) 
+if ( ! class_exists('gtk'))
 {
 	trigger_error("PHP-gtk not found. Please load the php-gtk2 extension in your php.ini", E_USER_ERROR);
 	die();
@@ -70,7 +70,12 @@ if( ! class_exists('pdo'))
 
 // --------------------------------------------------------------------------
 
-// Bulk loading wrapper workaround for PHP < 5.4
+/**
+ * Alias for require_once for array_map
+ *
+ * @param string $path
+ * @return void
+ */
 function do_include($path)
 {
 	require_once($path);
@@ -80,8 +85,8 @@ function do_include($path)
 {
 	array_map('do_include', glob(BASE_DIR . "/common/*.php"));
 	array_map('do_include', glob(BASE_DIR . "/db/*.php"));
-	array_map('do_include',  glob(BASE_DIR . "/windows/widgets/*.php"));
-	array_map('do_include',  glob(BASE_DIR . "/windows/*.php"));
+	array_map('do_include', glob(BASE_DIR . "/windows/widgets/*.php"));
+	array_map('do_include', glob(BASE_DIR . "/windows/*.php"));
 }
 
 // --------------------------------------------------------------------------
@@ -98,7 +103,7 @@ foreach(pdo_drivers() as $d)
 	}
 
 	$file = "{$path}{$d}.php";
-	
+
 	if(is_file($file))
 	{
 		require_once("{$path}{$d}.php");
@@ -113,6 +118,8 @@ if(function_exists('fbird_connect'))
 	require_once("{$path}firebird_sql.php");
 }
 
+// --------------------------------------------------------------------------
+// ! Global Functions
 // --------------------------------------------------------------------------
 
 /**

@@ -7,14 +7,14 @@
  * @author 		Timothy J. Warren
  * @copyright	Copyright (c) 2012
  * @link 		https://github.com/aviat4ion/OpenSQLManager
- * @license 	http://philsturgeon.co.uk/code/dbad-license 
+ * @license 	http://philsturgeon.co.uk/code/dbad-license
  */
 
 // --------------------------------------------------------------------------
 
 /**
  * Class for manipulating datbase connections, and program settings
- * 
+ *
  * Use JSON for compatibility
  */
 class Settings {
@@ -32,14 +32,14 @@ class Settings {
 
 		return self::$instance;
 	}
-	
+
 	/**
 	 * Load the settings file - private so it can't be loaded
 	 * directly - the settings should be safe!
 	 */
 	private function __construct()
 	{
-		$path = SETTINGS_DIR.'/settings.json'; 
+		$path = SETTINGS_DIR.'/settings.json';
 
 		if( ! is_file($path))
 		{
@@ -74,14 +74,14 @@ class Settings {
 
 	/**
 	 * Magic method to simplify isset checking for config options
-	 * 
+	 *
 	 * @param string $key
-	 * @return $mixed
+	 * @return mixed
 	 */
 	public function __get($key)
 	{
-		return (isset($this->current->{$key}) && $key != "dbs") 
-			? $this->current->{$key} 
+		return (isset($this->current->{$key}) && $key != "dbs")
+			? $this->current->{$key}
 			: NULL;
 	}
 
@@ -89,9 +89,9 @@ class Settings {
 
 	/**
 	 * Magic method to simplify setting config options
-	 * 
+	 *
 	 * @param string $key
-	 * @param mixed $val
+	 * @param mixed
 	 */
 	public function __set($key, $val)
 	{
@@ -101,7 +101,7 @@ class Settings {
 			return FALSE;
 		}
 
-		$this->current->{$key} = $val;
+		return $this->current->{$key} = $val;
 	}
 
 	// --------------------------------------------------------------------------
@@ -155,7 +155,7 @@ class Settings {
 
 	/**
 	 * Remove a database connection
-	 * 
+	 *
 	 * @param  string $name
 	 */
 	public function remove_db($name)
@@ -173,11 +173,11 @@ class Settings {
 	}
 
 	// --------------------------------------------------------------------------
-	
+
 	/**
 	 * Retreive all db connections
-	 * 
-	 * @return  array 
+	 *
+	 * @return  array
 	 */
 	public function get_dbs()
 	{
@@ -194,7 +194,9 @@ class Settings {
 	 */
 	public function get_db($name)
 	{
-		return (isset($this->current->dbs->{$name})) ? $this->current->dbs->{$name} : FALSE;
+		return (isset($this->current->dbs->{$name}))
+			? $this->current->dbs->{$name}
+			: FALSE;
 	}
 
 }

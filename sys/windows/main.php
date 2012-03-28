@@ -7,7 +7,7 @@
  * @author 		Timothy J. Warren
  * @copyright	Copyright (c) 2012
  * @link 		https://github.com/aviat4ion/OpenSQLManager
- * @license 	http://philsturgeon.co.uk/code/dbad-license 
+ * @license 	http://philsturgeon.co.uk/code/dbad-license
  */
 
 // --------------------------------------------------------------------------
@@ -29,7 +29,7 @@ class Main extends GtkWindow {
 		parent::__construct();
 
 		$this->settings =& Settings::get_instance();
-		
+
 
 		if ( ! is_null($this->settings->width) && ! is_null($this->settings->height))
 		{
@@ -79,6 +79,8 @@ class Main extends GtkWindow {
 
 	/**
 	 * Display About menu with version information
+	 *
+	 * @return void
 	 */
 	public function about()
 	{
@@ -111,7 +113,7 @@ class Main extends GtkWindow {
 
 	// --------------------------------------------------------------------------
 
-	/** 
+	/**
 	 * Quits the GTK loop
 	 */
 	public function quit()
@@ -123,13 +125,14 @@ class Main extends GtkWindow {
 
 	/**
 	 * Layout the main interface
-	 * 
 	 * Create menus, hboxes, vboxs and other widgets
+	 *
+	 * @return void
 	 */
 	private function _main_layout()
 	{
 		$this->set_title('OpenSQLManager');
-		
+
 		// Quit when this window is closed
 		$this->connect_simple('destroy', array('gtk', 'main_quit'));
 
@@ -183,7 +186,7 @@ class Main extends GtkWindow {
 		$help_menu = new GtkMenu();
 		$top_help_menu->set_submenu($help_menu);
 
-		
+
 		//File Menu
 		{
 			//Set up the open item
@@ -210,9 +213,8 @@ class Main extends GtkWindow {
 			$menu_bar->append($top_help_menu);
 		}
 
-		
-		return $menu_bar;
-	}	
-}
 
+		return $menu_bar;
+	}
+}
 // End of main.php
