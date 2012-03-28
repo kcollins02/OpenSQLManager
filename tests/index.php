@@ -7,7 +7,7 @@
  * @author 		Timothy J. Warren
  * @copyright	Copyright (c) 2012
  * @link 		https://github.com/aviat4ion/OpenSQLManager
- * @license 	http://philsturgeon.co.uk/code/dbad-license 
+ * @license 	http://philsturgeon.co.uk/code/dbad-license
  */
 
 // --------------------------------------------------------------------------
@@ -26,6 +26,7 @@ require_once('simpletest/autorun.php');
 
 // Require base testing classes
 require_once(TEST_DIR.'/parent.php');
+require_once(TEST_DIR.'/settings.php');
 
 // Bulk loading wrapper workaround for PHP < 5.4
 function do_include($path)
@@ -35,6 +36,7 @@ function do_include($path)
 
 // Include core tests
 require_once("core.php");
+require_once(BASE_DIR.'common/settings.php');
 require_once(BASE_DIR.'db/db_pdo.php');
 require_once(BASE_DIR.'db/query_builder.php');
 
@@ -46,7 +48,7 @@ $test_path = TEST_DIR.'/databases/';
 
 foreach(pdo_drivers() as $d)
 {
-	// PDO firebird isn't stable enough to 
+	// PDO firebird isn't stable enough to
 	// bother, so skip it.
 	if ($d === 'firebird')
 	{
@@ -54,7 +56,7 @@ foreach(pdo_drivers() as $d)
 	}
 
 	$src_file = "{$src_path}{$d}.php";
-	
+
 	if(is_file($src_file))
 	{
 		require_once("{$src_path}{$d}.php");

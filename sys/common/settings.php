@@ -39,6 +39,11 @@ class Settings {
 	 */
 	private function __construct()
 	{
+		if ( ! defined('SETTINGS_DIR'))
+		{
+			define('SETTINGS_DIR', '.');
+		}
+
 		$path = SETTINGS_DIR.'/settings.json';
 
 		if( ! is_file($path))
