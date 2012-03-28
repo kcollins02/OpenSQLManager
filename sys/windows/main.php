@@ -150,7 +150,7 @@ class Main extends GtkWindow {
 
 		$scrolled_win = new GtkScrolledWindow();
     	$scrolled_win->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-    	$scrolled_win->add(new DataGrid());
+    	//$scrolled_win->add(new DataGrid());
 
     	// Add the connection sidebar
     	$this->connection_sidebar =& Connection_Sidebar::get_instance();

@@ -221,6 +221,12 @@ class Connection_Sidebar extends GtkVBox {
 
 		// Set up menu items
 		{
+			$edit = new GtkImageMenuItem('Edit Connection');
+			$edit->set_image(GtkImage::new_from_stock(GTK::STOCK_EDIT, GTK::ICON_SIZE_MENU));
+			$edit->connect_simple('activate', array($this, 'edit_connection'));
+
+			$this->menu->append($edit);
+
 			$remove = new GtkImageMenuItem('Delete Connection');
 			$remove->set_image(GtkImage::new_from_stock(GTK::STOCK_CANCEL, Gtk::ICON_SIZE_MENU));
 			$remove->connect_simple('activate', array($this, 'remove_connection'), $all);
