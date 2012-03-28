@@ -21,10 +21,55 @@ class SettingsTest extends UnitTestCase {
 	{
 		parent::__construct();
 		$this->settings =& Settings::get_instance();
+		
+		// Delete test json file
+		unlink('settings.json');
 	}
 
 	function TestExists()
 	{
 		$this->assertIsA($this->settings, 'Settings');
+	}
+	
+	function TestGetEmptyDBs()
+	{
+		$this->assertTrue(is_object($this->settings->get_dbs()));
+	}
+	
+	function TestGetNull()
+	{
+		$this->assertFalse(isset($this->settings->foo));
+	}
+	
+	function TestSet()
+	{
+		$bar = $this->settings->foo = 'bar';
+	
+		$this->assertEqual('bar', $bar);
+	}
+	
+	function TestGet()
+	{
+		$this->assertEqual('bar', $this->settings->foo);
+	}
+	
+	function TestSetDBProperty()
+	{
+		$res = $this->settings->__set('dbs', 2);
+		$this->assertFalse($res);
+	}
+	
+	function TestGetEmptyDB()
+	{
+		$this->assertFalse($this->settings->get_db('foo'));
+	}
+	
+	function TestAddDB()
+	{
+		$this->settings->add_db('foo', array());
+		
+		$db = $this->settings->get_db('foo');
+		
+		$this->assertTrue(isset($db));
 	}
 }
