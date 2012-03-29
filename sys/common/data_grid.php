@@ -21,10 +21,15 @@ class Data_Grid extends GtkTreeView {
 
 	/**
 	 * Create the object
+	 *
+	 * @param object $model
 	 */
-	public function __construct()
+	public function __construct($model = null)
 	{
-		$this->model = new GtkTreeStore(Gobject::TYPE_PHP_VALUE, Gobject::TYPE_PHP_VALUE);
+		$this->model = ( ! is_null($model))
+			? $model
+			: new GtkTreeStore(Gobject::TYPE_PHP_VALUE, Gobject::TYPE_PHP_VALUE);
+
 		parent::__construct($this->model);
 	}
 
@@ -40,4 +45,30 @@ class Data_Grid extends GtkTreeView {
 	{
 		// @todo implement
 	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Set the value of the cell at the provided coordinate array
+	 *
+	 * @param array $coord
+	 * @param mixed $val
+	 */
+	public function set(array $coord, $val)
+	{
+		// @todo implement
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Return a new Data_grid object
+	 *
+	 * @param object $model
+	 */
+	public function reset($model = null)
+	{
+		return new Data_Grid($model);
+	}
 }
+// End of data_grid.php

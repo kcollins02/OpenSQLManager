@@ -17,7 +17,12 @@
  */
 class Edit_DB extends GtkWindow {
 
-	public function __construct()
+	/**
+	 * Connection editing window
+	 *
+	 * @param string $db
+	 */
+	public function __construct($db)
 	{
 		parent::__construct();
 
@@ -25,12 +30,11 @@ class Edit_DB extends GtkWindow {
 		$this->set_title("Edit Database Connection");
 
 		// Create the layout table
-		$connection_form = new DB_Info_Widget();
+		$connection_form = new DB_Info_Widget(Settings::get_instance()->get_db($db));
 
 		// Add the Vbox, and show the window
 		$this->add($connection_form);
 		$this->show_all();
 	}
 }
-
 // End of edit_db.php

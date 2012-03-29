@@ -32,5 +32,4 @@ class Add_DB extends GtkWindow {
 		$this->show_all();
 	}
 }
-
 // End of add_db.php

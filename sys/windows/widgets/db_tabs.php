@@ -17,6 +17,25 @@
  */
 class DB_tabs extends GTKNotebook {
 
+	private static $instance;
+
+	/**
+	 * Return the db tabs object if it exists, or create and return
+	 *
+	 * @return DB_tabs
+	 */
+	public static function &get_instance()
+	{
+		if (empty(self::$instance))
+		{
+			self::$instance = new DB_tabs();
+		}
+
+		return self::$instance;
+	}
+
+	// --------------------------------------------------------------------------
+
 	/**
 	 * Create the object
 	 */
@@ -47,6 +66,20 @@ class DB_tabs extends GTKNotebook {
 		}
 
 		$this->append_page($widget, new GtkLabel($label));
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Creates a new instance of this class, and destroys the existing
+	 * instance
+	 *
+	 * @return DB_tabs
+	 */
+	public function reset()
+	{
+		unset(self::$instance);
+		return self::get_instance();
 	}
 
 }

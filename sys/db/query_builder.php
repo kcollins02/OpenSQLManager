@@ -21,8 +21,6 @@ class Query_Builder {
 	// Compiled query component strings
 	private $select_string,
 		$from_string,
-		$insert_string,
-		$update_string,
 		$set_string,
 		$order_string,
 		$group_string;

@@ -17,7 +17,7 @@
  */
 class Connection_Sidebar extends GtkVBox {
 
-	protected $settings, $menu, $treeview, $model;
+	protected $settings, $menu, $treeview;
 	private static $instance;
 
 	/**
@@ -60,9 +60,6 @@ class Connection_Sidebar extends GtkVBox {
 
 		// Treeview to show database connections
 		{
-			// Create a Storage object for connection list
-			$this->model = new GtkListStore(GObject::TYPE_PHP_VALUE, GObject::TYPE_STRING);
-
 			// Render the treeview
 			$this->_render();
 
@@ -86,6 +83,11 @@ class Connection_Sidebar extends GtkVBox {
 	 */
 	protected function _render()
 	{
+		// Initialize the treeview
+		$this->treeview = new Data_Grid();
+
+		$model = $this->treeview->get_model();
+
 		// Add the existing connections to the model
 		$db_conns = $this->settings->get_dbs();
 		if( ! empty($db_conns))
@@ -95,13 +97,10 @@ class Connection_Sidebar extends GtkVBox {
 				$db = $props;
 				$db->name = $name;
 
-				$iter = $this->model->append();
-				$this->model->set($iter, 0, $db);
+				$iter = $model->append();
+				$model->set($iter, 0, $db);
 			}
 		}
-
-		// Initialize the treeview with the data
-		$this->treeview = new GtkTreeView($this->model);
 
 		// Icon column
 		$cell_renderer = new GtkCellRendererPixbuf();
@@ -125,7 +124,7 @@ class Connection_Sidebar extends GtkVBox {
 	public function set_icon($col, $cell, $model, $iter)
 	{
 		$col->set_reorderable(TRUE);
-		$info = $this->model->get_value($iter, 0);
+		$info = $model->get_value($iter, 0);
 		$db_type = strtolower($info->type);
 		$img_file = BASE_DIR."/images/{$db_type}-logo-32.png";
 
@@ -154,7 +153,7 @@ class Connection_Sidebar extends GtkVBox {
 	public function set_label($col, $cell, $model, $iter)
 	{
 		$col->set_reorderable(TRUE);
-		$info = $this->model->get_value($iter, 0);
+		$info = $model->get_value($iter, 0);
 		$cell->set_property('text', $info->name);
 	}
 
