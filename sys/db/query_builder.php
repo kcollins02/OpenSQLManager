@@ -78,27 +78,37 @@ class Query_Builder {
 		$params->type = strtolower($params->type);
 		$dbtype = ($params->type !== 'postgresql') ? $params->type : 'pgsql';
 
-		// Initiate the constructor for the selected database
+		// Create the dsn for the database to connect to
 		switch($dbtype)
 		{
 			default:
-				$this->db = new $dbtype("host={$params->host};port={$params->port};dbname={$params->database}", $params->user, $params->pass);
-			break;
-
-			case "sqlite":
-				if ( ! empty($params->user) &&  ! empty($params->pass))
+				if ( ! empty($params->port))
 				{
-					$this->db = new $dbtype($params->file, $params->user, $params->pass);
+					$dsn = "host={$params->host};dbname={$params->database}";
 				}
 				else
 				{
-					$this->db = new $dbtype($params->file);
+					$dsn = "host={$params->host};port={$params->port};dbname={$params->database}";
 				}
 			break;
 
-			case "firebird":
-				$this->db = new $dbtype("{$params->host}:{$params->file}", $params->user, $params->pass);
+			case "sqlite":
+				$dsn = $params->file;
 			break;
+
+			case "firebird":
+				$dsn = "{$params->host}:{$params->file}";
+			break;
+		}
+
+		// Create the database connection
+		if ( ! empty($params->user) &&  ! empty($params->pass))
+		{
+			$this->db = new $dbtype($dsn, $params->user, $params->pass);
+		}
+		else
+		{
+			$this->db = new $dbtype($dsn);
 		}
 		
 		// Make things just slightly shorter
