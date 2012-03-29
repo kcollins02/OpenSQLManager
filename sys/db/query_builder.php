@@ -102,7 +102,7 @@ class Query_Builder {
 		}
 
 		// Create the database connection
-		if ( ! empty($params->user) &&  ! empty($params->pass))
+		if ( ! empty($params->user) &&  ! empty($params->pass) && $db_type !== 'sqlite')
 		{
 			$this->db = new $dbtype($dsn, $params->user, $params->pass);
 		}
