@@ -82,13 +82,11 @@ class Query_Builder {
 		switch($dbtype)
 		{
 			default:
+				$dsn = "host={$params->host};dbname={$params->database}";
+
 				if ( ! empty($params->port))
 				{
-					$dsn = "host={$params->host};port={$params->port};dbname={$params->database}";
-				}
-				else
-				{
-					$dsn = "host={$params->host};dbname={$params->database}";
+					$dsn .= ";port={$params->port}";
 				}
 			break;
 
@@ -102,7 +100,7 @@ class Query_Builder {
 		}
 
 		// Create the database connection
-		if ( ! empty($params->user) && $db_type !== 'sqlite')
+		if ( ! empty($params->user))
 		{
 			$this->db = new $dbtype($dsn, $params->user, $params->pass);
 		}
