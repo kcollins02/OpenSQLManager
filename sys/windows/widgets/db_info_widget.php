@@ -19,12 +19,28 @@ class DB_Info_Widget extends GtkTable {
 
 	protected $conn, $dbtype, $host, $user, $pass, $database, $settings, $db_file, $port;
 
-	public function __construct($conn='', $dbtype='', $host='localhost',
-		$user='', $pass='', $db_file=NULL, $port='', $conn_db='')
+	public function __construct($conn_name="")
 	{
 		parent::__construct();
 
 		$this->settings =& Settings::get_instance();
+
+		if ( ! empty($conn_name))
+		{
+			$db = $this->settings->get_db($conn_name);
+		}
+		else
+		{
+			$db = new StdClass();
+			$db->conn = '';
+			$db->host = '';
+			$db->user = '';
+			$db->pass = '';
+			$db->port = '';
+			$db->conn_db = '';
+			$db->dbtype = '';
+			$db->db_file = NULL;
+		}
 
 		// Set up the form elements, with default values
 		$this->conn = new GtkEntry();
@@ -46,13 +62,13 @@ class DB_Info_Widget extends GtkTable {
 		}
 
 		// Populate the text fields with default values
-		$this->conn->set_text($conn);
-		$this->host->set_text($host);
-		$this->user->set_text($user);
-		$this->pass->set_text($pass);
-		$this->conn_db->set_text($conn_db);
-		$this->db_file->set_filename($db_file);
-		$this->port->set_text($port);
+		$this->conn->set_text($db->conn);
+		$this->host->set_text($db->host);
+		$this->user->set_text($db->user);
+		$this->pass->set_text($db->pass);
+		$this->conn_db->set_text($db->conn_db);
+		$this->db_file->set_filename($db->file);
+		$this->port->set_text($db->port);
 
 		// Layout the table
 		$this->layout();
@@ -118,14 +134,26 @@ class DB_Info_Widget extends GtkTable {
 			$this->_add_row("Password", 'pass', $y1, $y2);
 		}
 
-		// Add connection button
+		// Add/Edit connection button
 		{
+			$conn_name = $this->conn->get_text();
+			$caption = (empty($conn_name)) ? 'Add Connection' : 'Edit Connection';
+
 			$add_button = new GtkButton();
-			$add_button->set_label("Add Connnection");
+			$add_button->set_label($caption);
 			$add_button->set_image(GTKImage::new_from_stock(GTK::STOCK_ADD,
 				Gtk::ICON_SIZE_SMALL_TOOLBAR));
 			$this->attach($add_button, 0, 1, ++$y1, ++$y2);
-			$add_button->connect_simple("clicked", array($this, 'db_add'));
+
+			if ( ! empty($conn_name))
+			{
+				$add_button->connect_simple("clicked", array($this, 'db_edit'));
+			}
+			else
+			{
+				$add_button->connect_simple("clicked", array($this, 'db_add'));
+			}
+			
 		}
 
 		// Test connection button
@@ -216,12 +244,44 @@ class DB_Info_Widget extends GtkTable {
 			'pass' => $this->pass->get_text(),
 			'port' => $this->port->get_text(),
 			'file' => $this->db_file->get_filename(),
+			'conn_db' => $this->conn_db->get_text(),
+			'name' => $this->conn->get_text(),
 		);
 
-		$this->settings->add_db($this->conn->get_text(), $data);
+		$this->settings->add_db($data['name'], $data);
 
 		// Pass to connection sidebar to update
+		// @todo Add new db to treeview
 
+		// Destroy the parent window
+		$parent_window =& $this->get_parent_window();
+
+		$parent_window->destroy();
+	}
+
+	/**
+	 * Edit an existing database connection
+	 */
+	public function db_edit()
+	{
+		$data = array(
+			'type' => strtolower($this->dbtype->get_active_text()),
+			'host' => $this->host->get_text(),
+			'user' => $this->user->get_text(),
+			'pass' => $this->pass->get_text(),
+			'port' => $this->port->get_text(),
+			'file' => $this->db_file->get_filename(),
+			'conn_db' => $this->conn_db->get_text(),
+			'name' => $this->conn->get_text(),
+		);
+
+		$this->settings->update_db($data['name'], $data);
+
+		// Pass to connection sidebar to update
+		// @todo Update db in treeview
+		
+		// Let the user know the connection has been updated
+		alert("Changes to database connection have been saved");
 
 		// Destroy the parent window
 		$parent_window =& $this->get_parent_window();
@@ -242,6 +302,7 @@ class DB_Info_Widget extends GtkTable {
 		$params->pass = $this->pass->get_text();
 		$params->port = $this->port->get_text();
 		$params->file = $this->db_file->get_filename();
+		$params->database = $this->conn_db->get_text();
 
 		// Return early if a db type isn't selected.
 		// Better to bail out then crash because of
@@ -344,14 +405,5 @@ class DB_Info_Widget extends GtkTable {
 		$this->attach($lblalign, 0, 1, ++$y1, ++$y2);
 		$this->attach($vname, 1, 2, $y1, $y2);
 	}
-
-	/**
-	 * Filter input based on the requirements of the specified database
-	 *
-	 * @return bool
-	 */
-	private function _validate()
-	{
-		// @todo Implement
-	}
 }
+// End of db_info_widget.php
