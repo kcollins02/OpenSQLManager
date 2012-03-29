@@ -83,8 +83,10 @@ class Connection_Sidebar extends GtkVBox {
 	 */
 	protected function _render()
 	{
-		// Initialize the treeview
-		$this->treeview = new Data_Grid();
+		// Create the treeview
+		$this->treeview = (isset($this->treeview))
+			? $this->treeview
+			: new Data_Grid();
 
 		$model = $this->treeview->get_model();
 
@@ -236,6 +238,16 @@ class Connection_Sidebar extends GtkVBox {
 		// Popup the menu
 		$this->menu->show_all();
 		$this->menu->popup();
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Recreate sidebar widget to update connections
+	 */
+	public function refresh()
+	{
+		$this->_render();
 	}
 
 	// --------------------------------------------------------------------------

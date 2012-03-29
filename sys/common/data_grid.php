@@ -62,13 +62,11 @@ class Data_Grid extends GtkTreeView {
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Return a new Data_grid object
-	 *
-	 * @param object $model
+	 * Empty the model
 	 */
 	public function reset($model = null)
 	{
-		return new Data_Grid($model);
+		$this->model->clear();
 	}
 }
 // End of data_grid.php

@@ -251,7 +251,7 @@ class DB_Info_Widget extends GtkTable {
 		$this->settings->add_db($data['name'], $data);
 
 		// Pass to connection sidebar to update
-		// @todo Add new db to treeview
+		Connection_Sidebar::get_instance()->refresh();
 
 		// Destroy the parent window
 		$parent_window =& $this->get_parent_window();
@@ -278,7 +278,7 @@ class DB_Info_Widget extends GtkTable {
 		$this->settings->update_db($data['name'], $data);
 
 		// Pass to connection sidebar to update
-		// @todo Update db in treeview
+		Connection_Sidebar::get_instance()->refresh();
 		
 		// Let the user know the connection has been updated
 		alert("Changes to database connection have been saved");
