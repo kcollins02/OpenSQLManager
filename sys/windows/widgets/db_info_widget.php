@@ -17,7 +17,38 @@
  */
 class DB_Info_Widget extends GtkTable {
 
-	protected $conn, $dbtype, $host, $user, $pass, $database, $settings, $db_file, $port;
+	/**
+	 * Alias to Settings::get_instance
+	 * @var Settings
+	 */
+	private $settings;
+
+	/**
+	 * Fields
+	 */
+	protected $conn,
+		$conn_db,
+		$dbtype,
+		$host,
+		$user,
+		$pass,
+		$database,
+		$db_file,
+		$port,
+		$old_conn;
+
+	/**
+	 * Labels
+	 */
+	protected $lblconn,
+		$lblconn_db,
+		$lbldbtype,
+		$lblhost,
+		$lbluser,
+		$lblpass,
+		$lbldatabase,
+		$lbldb_file,
+		$lblport;
 
 	/**
 	 * No params = add, params = edit
@@ -76,7 +107,12 @@ class DB_Info_Widget extends GtkTable {
 		// Select the proper db type if editing
 		if ( ! empty($db->type))
 		{
+			// Set the old conn variable for editing
+			$this->old_conn = $db->name;
+
 			$dbtype = strtolower($db->type);
+
+			// Set the db type based  on the current connection
 			$this->dbtype->set_active(array_search($dbtype, $lower_db_types));
 
 			// Set default path
@@ -84,10 +120,10 @@ class DB_Info_Widget extends GtkTable {
 			{
 				$this->db_file->set_filename($db->file);
 			}
-
-			$this->set_db($dbtype);
 		}
 	}
+
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Table layout
@@ -185,6 +221,8 @@ class DB_Info_Widget extends GtkTable {
 		}
 	}
 
+	// --------------------------------------------------------------------------
+
 	/**
 	 * Set defaults for new database type
 	 *
@@ -252,11 +290,16 @@ class DB_Info_Widget extends GtkTable {
 		}
 	}
 
+	// --------------------------------------------------------------------------
+
 	/**
 	 * Like change_db function, but save current values
+	 *
+	 * @return void
 	 */
-	public function set_db($dbtype)
+	public function set_db()
 	{
+		$dbtype = strtolower($this->dbtype->get_active_text());
 
 		// Reset
 		$this->db_file->hide();
@@ -292,6 +335,8 @@ class DB_Info_Widget extends GtkTable {
 		}
 	}
 
+	// --------------------------------------------------------------------------
+
 	/**
 	 * Adds the database to the settings file
 	 */
@@ -319,6 +364,8 @@ class DB_Info_Widget extends GtkTable {
 		$parent_window->destroy();
 	}
 
+	// --------------------------------------------------------------------------
+
 	/**
 	 * Edit an existing database connection
 	 */
@@ -335,7 +382,7 @@ class DB_Info_Widget extends GtkTable {
 			'name' => $this->conn->get_text(),
 		);
 
-		if ($this->settings->edit_db($data))
+		if ($this->settings->edit_db($this->old_conn, $data))
 		{
 			// Let the user know the connection has been updated
 			alert("Changes to database connection have been saved");
@@ -353,6 +400,8 @@ class DB_Info_Widget extends GtkTable {
 
 		$parent_window->destroy();
 	}
+
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Test a db connection, and display a popup with the result of the test
@@ -395,6 +444,8 @@ class DB_Info_Widget extends GtkTable {
 		// Tell the user!
 		alert("Successfully Connected.");
 	}
+
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Checks what database drivers are available
@@ -447,6 +498,8 @@ class DB_Info_Widget extends GtkTable {
 
 		return $drivers;
 	}
+
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Simple helper function for adding a row to the GtkTable

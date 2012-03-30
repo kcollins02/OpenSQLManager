@@ -35,6 +35,9 @@ class Edit_DB extends GtkWindow {
 		// Add the Vbox, and show the window
 		$this->add($connection_form);
 		$this->show_all();
+
+		// Hide fields
+		$connection_form->set_db();
 	}
 }
 // End of edit_db.php

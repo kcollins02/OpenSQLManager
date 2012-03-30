@@ -146,11 +146,24 @@ class Settings {
 	 *
 	 * @param array $params
 	 */
-	public function edit_db($params)
+	public function edit_db($name, $params)
 	{
-		if(isset($this->current->dbs->{$params['name']}))
+		if (isset($this->current->dbs->{$name}) && ($name === $params['name']))
 		{
-			$this->current->dbs->{$params['name']} = $params;
+			$this->current->dbs->{$name} = $params;
+		}
+		elseif ($name !== $params['name'])
+		{
+			unset($this->current->dbs->{$name});
+
+			if ( ! isset($this->current->dbs->{$params['name']}))
+			{
+				$this->current->dbs->{$params['name']} = $params;
+			}
+			else
+			{
+				return FALSE;
+			}
 		}
 		else
 		{
@@ -159,6 +172,8 @@ class Settings {
 
 		// Save the json
 		$this->__destruct();
+
+		return TRUE;
 	}
 
 	// --------------------------------------------------------------------------
