@@ -252,6 +252,7 @@ class Connection_Sidebar extends GtkVBox {
 	 */
 	public function refresh()
 	{
+		$this->treeview->reset();
 		$cols = $this->treeview->get_columns();
 
 		foreach($cols as $c)
