@@ -67,6 +67,13 @@ class Data_Grid extends GtkTreeView {
 	public function reset($model = null)
 	{
 		$this->model->clear();
+
+		$cols = $this->get_columns();
+
+		foreach($cols as $c)
+		{
+			$this->remove_column($c);
+		}
 	}
 }
 // End of data_grid.php
