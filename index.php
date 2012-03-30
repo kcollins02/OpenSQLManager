@@ -162,6 +162,8 @@ function alert($message)
 		Gtk::BUTTONS_OK,
 		$message
 	);
+
+	$dialog->set_position(Gtk::WIN_POS_CENTER);
 	$dialog->run();
 	$dialog->destroy();
 }
@@ -183,6 +185,8 @@ function error($message)
 		Gtk::BUTTONS_OK,
 		$message
 	);
+
+	$dialog->set_position(Gtk::WIN_POS_CENTER);
 	$dialog->run();
 	$dialog->destroy();
 }
@@ -205,6 +209,7 @@ function confirm($message)
 		$message
 	);
 
+	$dialog->set_position(Gtk::WIN_POS_CENTER);
 	$answer = $dialog->run();
 	$dialog->destroy();
 

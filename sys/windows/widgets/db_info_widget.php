@@ -19,26 +19,27 @@ class DB_Info_Widget extends GtkTable {
 
 	protected $conn, $dbtype, $host, $user, $pass, $database, $settings, $db_file, $port;
 
-	public function __construct($conn_name="")
+	/**
+	 * No params = add, params = edit
+	 *
+	 * @param object $db
+	 */
+	public function __construct($db=null)
 	{
 		parent::__construct();
 
 		$this->settings =& Settings::get_instance();
 
-		if ( ! empty($conn_name))
-		{
-			$db = $this->settings->get_db($conn_name);
-		}
-		else
+		if (is_null($db))
 		{
 			$db = new StdClass();
-			$db->conn = '';
+			$db->name = '';
 			$db->host = '';
 			$db->user = '';
 			$db->pass = '';
 			$db->port = '';
 			$db->conn_db = '';
-			$db->dbtype = '';
+			$db->type = '';
 			$db->file = NULL;
 		}
 
@@ -54,24 +55,38 @@ class DB_Info_Widget extends GtkTable {
 				Gtk::FILE_CHOOSER_ACTION_OPEN);
 
 		// Populate the available database types
-		// @todo Select type based on dbtype passed
 		$db_types = $this->get_available_dbs();
 		foreach($db_types as $t)
 		{
 			$this->dbtype->append_text($t);
 		}
+		$lower_db_types = array_map('strtolower', $db_types);
 
 		// Populate the text fields with default values
-		$this->conn->set_text($db->conn);
+		$this->conn->set_text($db->name);
 		$this->host->set_text($db->host);
 		$this->user->set_text($db->user);
 		$this->pass->set_text($db->pass);
 		$this->conn_db->set_text($db->conn_db);
-		$this->db_file->set_filename($db->file);
 		$this->port->set_text($db->port);
 
 		// Layout the table
 		$this->layout();
+
+		// Select the proper db type if editing
+		if ( ! empty($db->type))
+		{
+			$dbtype = strtolower($db->type);
+			$this->dbtype->set_active(array_search($dbtype, $lower_db_types));
+
+			// Set default path
+			if ( ! empty($db->file))
+			{
+				$this->db_file->set_filename($db->file);
+			}
+
+			$this->set_db($dbtype);
+		}
 	}
 
 	/**
@@ -137,12 +152,17 @@ class DB_Info_Widget extends GtkTable {
 		// Add/Edit connection button
 		{
 			$conn_name = $this->conn->get_text();
-			$caption = (empty($conn_name)) ? 'Add Connection' : 'Edit Connection';
+			$caption = (empty($conn_name)) ? 'Add Connection' : 'Update Connection';
 
 			$add_button = new GtkButton();
 			$add_button->set_label($caption);
-			$add_button->set_image(GTKImage::new_from_stock(GTK::STOCK_ADD,
-				Gtk::ICON_SIZE_SMALL_TOOLBAR));
+
+			( ! empty($conn_name))
+				? $add_button->set_image(GTKImage::new_from_stock(GTK::STOCK_SAVE,
+					GTK::ICON_SIZE_SMALL_TOOLBAR))
+				: $add_button->set_image(GTKImage::new_from_stock(GTK::STOCK_ADD,
+					Gtk::ICON_SIZE_SMALL_TOOLBAR));
+
 			$this->attach($add_button, 0, 1, ++$y1, ++$y2);
 
 			if ( ! empty($conn_name))
@@ -233,6 +253,46 @@ class DB_Info_Widget extends GtkTable {
 	}
 
 	/**
+	 * Like change_db function, but save current values
+	 */
+	public function set_db($dbtype)
+	{
+
+		// Reset
+		$this->db_file->hide();
+		$this->lbldb_file->hide();
+
+		switch($dbtype)
+		{
+			default:
+			break;
+
+			case "firebird":
+				$this->lbldb_file->show();
+				$this->db_file->show();
+				$this->conn_db->hide();
+				$this->lblconn_db->hide();
+			break;
+
+			case "odbc":
+				$this->lbldb_file->show();
+				$this->db_file->show();
+			break;
+
+			case "sqlite":
+				$this->lbldb_file->show();
+				$this->db_file->show();
+				$this->port->hide();
+				$this->lblport->hide();
+				$this->host->hide();
+				$this->lblhost->hide();
+				$this->conn_db->hide();
+				$this->lblconn_db->hide();
+			break;
+		}
+	}
+
+	/**
 	 * Adds the database to the settings file
 	 */
 	public function db_add()
@@ -275,13 +335,18 @@ class DB_Info_Widget extends GtkTable {
 			'name' => $this->conn->get_text(),
 		);
 
-		$this->settings->update_db($data['name'], $data);
+		if ($this->settings->edit_db($data))
+		{
+			// Let the user know the connection has been updated
+			alert("Changes to database connection have been saved");
+		}
+		else
+		{
+			error("Error saving changes");
+		}
 
 		// Pass to connection sidebar to update
 		Connection_Sidebar::get_instance()->refresh();
-
-		// Let the user know the connection has been updated
-		alert("Changes to database connection have been saved");
 
 		// Destroy the parent window
 		$parent_window =& $this->get_parent_window();

@@ -125,6 +125,8 @@ class Settings {
 	{
 		if( ! isset($this->current->dbs->{$name}))
 		{
+			$params['name'] = $name;
+
 			$this->current->dbs->{$name} = array();
 			$this->current->dbs->{$name} = $params;
 		}
@@ -142,14 +144,13 @@ class Settings {
 	/**
 	 * Edit a database connection
 	 *
-	 * @param string $name
 	 * @param array $params
 	 */
-	public function edit_db($name, $params)
+	public function edit_db($params)
 	{
-		if(isset($this->current->dbs->{$name}))
+		if(isset($this->current->dbs->{$params['name']}))
 		{
-			$this->current->dbs->{$name} = $params;
+			$this->current->dbs->{$params['name']} = $params;
 		}
 		else
 		{

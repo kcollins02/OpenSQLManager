@@ -265,7 +265,7 @@ class Connection_Sidebar extends GtkVBox {
 	 */
 	public function edit_connection()
 	{
-		//@todo implement
+		return new Edit_Db($this->treeview->get(0));
 	}
 
 	// --------------------------------------------------------------------------
@@ -291,21 +291,5 @@ class Connection_Sidebar extends GtkVBox {
 		// Refresh the sidebar
 		$this->refresh();
 	}
-
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Add a connection to the connection manager
-	 *
-	 * @param  string $key
-	 * @param  array $vals
-	 * @return  void
-	 */
-	public function add_connection($key, $vals)
-	{
-		//@todo implement
-		$model = $this->treeview->get_model();
-	}
-
 }
 // End of connection_sidebar.php
