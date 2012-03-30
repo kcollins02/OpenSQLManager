@@ -36,14 +36,21 @@ class Data_Grid extends GtkTreeView {
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Get the value of the cell at the provided coordinate array
+	 * Get the value of the model for the current selection
 	 *
-	 * @param array $coord
+	 * @param int pos
 	 * @return mixed
 	 */
-	public function get(array $coord)
+	public function get($pos = 0)
 	{
-		// @todo implement
+		// Get the selection object of the row
+		$sel = $this->get_selection();
+
+		// Get the model and iterator for the selected row
+		list($model, $iter) = $sel->get_selected();
+
+		// Get the data from the model
+		return $model->get_value($iter, $pos);
 	}
 
 	// --------------------------------------------------------------------------
@@ -64,7 +71,7 @@ class Data_Grid extends GtkTreeView {
 	/**
 	 * Empty the model
 	 */
-	public function reset($model = null)
+	public function reset()
 	{
 		$this->model->clear();
 

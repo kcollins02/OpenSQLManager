@@ -219,6 +219,8 @@ class Connection_Sidebar extends GtkVBox {
 	 *
 	 * @param  array $pos
 	 * @param  object $event
+	 * @param  object $col
+	 * @param  array  $all
 	 * @return void
 	 */
 	public function conn_popup_menu($pos, $event, $col, $all)
@@ -273,15 +275,21 @@ class Connection_Sidebar extends GtkVBox {
 	 *
 	 * @return  void
 	 */
-	public function remove_connection($col)
+	public function remove_connection()
 	{
 		if ( ! confirm("Are you sure you want to remove this database connection?"))
 		{
 			return;
 		}
 
-		//@todo implement
-		$model = $this->treeview->get_model();
+		// Get the data from the model for the current selection
+		$data = $this->treeview->get(0);
+
+		// Remove the connection from the settings
+		$this->settings->remove_db($data->name);
+
+		// Refresh the sidebar
+		$this->refresh();
 	}
 
 	// --------------------------------------------------------------------------

@@ -72,7 +72,11 @@ class Settings {
 	 */
 	public function __destruct()
 	{
-		file_put_contents(SETTINGS_DIR . '/settings.json', json_encode($this->current));
+		$file_string = (defined('JSON_PRETTY_PRINT'))
+			? json_encode($this->current, JSON_PRETTY_PRINT)
+			: json_encode($this->current);
+
+		file_put_contents(SETTINGS_DIR . '/settings.json', $file_string);
 	}
 
 	// --------------------------------------------------------------------------
