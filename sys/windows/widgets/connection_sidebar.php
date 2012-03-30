@@ -96,6 +96,11 @@ class Connection_Sidebar extends GtkVBox {
 		{
 			foreach($db_conns as $name => $props)
 			{
+				if (is_array($props))
+				{
+					$props = array_to_object($props);
+				}
+
 				$db = $props;
 				$db->name = $name;
 
@@ -247,6 +252,13 @@ class Connection_Sidebar extends GtkVBox {
 	 */
 	public function refresh()
 	{
+		$cols = $this->treeview->get_columns();
+
+		foreach($cols as $c)
+		{
+			$this->treeview->remove_column($c);
+		}
+
 		$this->_render();
 	}
 

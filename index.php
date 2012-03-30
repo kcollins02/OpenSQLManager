@@ -123,6 +123,31 @@ if(function_exists('fbird_connect'))
 // --------------------------------------------------------------------------
 
 /**
+ * Convert an array to an object
+ *
+ * @param array $array
+ * @return object
+ */
+function array_to_object($array)
+{
+	if (is_object($array))
+	{
+		return $array;
+	}
+
+	$obj = new StdClass();
+
+	foreach($array as $k => $v)
+	{
+		$obj->$k = $v;
+	}
+
+	return $obj;
+}
+
+// --------------------------------------------------------------------------
+
+/**
  * Create info dialog to retun an informational message
  *
  * @param  string $message

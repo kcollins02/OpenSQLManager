@@ -39,7 +39,7 @@ class DB_Info_Widget extends GtkTable {
 			$db->port = '';
 			$db->conn_db = '';
 			$db->dbtype = '';
-			$db->db_file = NULL;
+			$db->file = NULL;
 		}
 
 		// Set up the form elements, with default values
@@ -153,7 +153,7 @@ class DB_Info_Widget extends GtkTable {
 			{
 				$add_button->connect_simple("clicked", array($this, 'db_add'));
 			}
-			
+
 		}
 
 		// Test connection button
@@ -279,7 +279,7 @@ class DB_Info_Widget extends GtkTable {
 
 		// Pass to connection sidebar to update
 		Connection_Sidebar::get_instance()->refresh();
-		
+
 		// Let the user know the connection has been updated
 		alert("Changes to database connection have been saved");
 
