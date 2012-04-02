@@ -180,7 +180,25 @@ class Connection_Sidebar extends GtkVBox {
 	 */
 	public function set_status_icon($col, $cell, $model, $iter)
 	{
+		$col->set_reorderable(TRUE);
+		$info = $model->get_value($iter, 0);
 
+		list($width, $height) = Gtk::icon_size_lookup(Gtk::ICON_SIZE_SMALL_TOOLBAR);
+
+		$conns = DB_Reg::get_connections();
+
+		/*if(in_array($info->name, $conns))
+		{
+			$img = new GTKImage();
+			$img->set_from_stock(GTK::STOCK_YES, Gtk::ICON_SIZE_SMALL_TOOLBAR);
+			$cell->set_property('pixbuf', $img->get_pixbuf());
+		}
+		else
+		{
+			$img = new GTKImage();
+			$img->set_from_stock(GTK::STOCK_NO, Gtk::ICON_SIZE_SMALL_TOOLBAR);
+			$cell->set_property('pixbuf', $img->get_pixbuf());
+		}*/
 	}
 
 	// --------------------------------------------------------------------------

@@ -20,7 +20,7 @@
  */
 class DB_Reg {
 
-	private static $instance;
+	private static $instance=array();
 
 	/**
 	 * Registry access method
