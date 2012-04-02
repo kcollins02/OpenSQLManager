@@ -225,6 +225,12 @@ class Connection_Sidebar extends GtkVBox {
 
 		// Set up menu items
 		{
+			$connect = new GtkImageMenuItem('Connect');
+			$connect->set_image(GtkImage::new_from_stock(GTK::STOCK_CONNECT, GTK::ICON_SIZE_MENU));
+			$connect->connect_simple('activate', array($this, 'db_connect'));
+
+			$this->menu->append($connect);
+
 			$edit = new GtkImageMenuItem('Edit Connection');
 			$edit->set_image(GtkImage::new_from_stock(GTK::STOCK_EDIT, GTK::ICON_SIZE_MENU));
 			$edit->connect_simple('activate', array($this, 'edit_connection'));
@@ -286,6 +292,32 @@ class Connection_Sidebar extends GtkVBox {
 
 		// Refresh the sidebar
 		$this->refresh();
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Create connection to a database
+	 *
+	 * @param string $name
+	 * @return void
+	 */
+	public function db_connect()
+	{
+		$data = $this->treeview->get(0);
+
+		// Make sure to catch connection exceptions
+		try
+		{
+			$conn =& DB_Reg::get_db($data->name);
+		}
+		catch(PDOException $e)
+		{
+			error("Could not connect to database:\n". $e->getMessage());
+			return;
+		}
+
+		DB_Tabs::get_instance()->get_db_tabs($conn);
 	}
 }
 // End of connection_sidebar.php

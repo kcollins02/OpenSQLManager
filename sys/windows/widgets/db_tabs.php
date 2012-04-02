@@ -80,5 +80,17 @@ class DB_tabs extends GTKNotebook {
 		return self::get_instance();
 	}
 
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Create tabs for database aspects
+	 *
+	 * @param Query_Builder $conn
+	 * @return void
+	 */
+	public function get_db_tabs(&$conn)
+	{
+		print_r($conn->get_tables());
+	}
 }
 // End of db_tabs.php

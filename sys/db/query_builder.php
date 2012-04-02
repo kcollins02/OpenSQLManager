@@ -948,12 +948,9 @@ class Query_Builder {
 	 */
 	public function __call($name, $params)
 	{
-		if ( ! empty($this->db->$name))
+		if (method_exists($this->db, $name))
 		{
-			if (is_callable($this->db->$name))
-			{
-				return call_user_func_array(array($this->db, $name), $params);
-			}
+			return call_user_func_array(array($this->db, $name), $params);
 		}
 
 		return NULL;

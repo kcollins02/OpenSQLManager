@@ -33,7 +33,7 @@ class DB_Reg {
 		if ( ! isset(self::$instance[$key]))
 		{
 			// The constructor sets the instance
-			new DBReg($key);
+			new DB_Reg($key);
 		}
 
 		return self::$instance[$key];
