@@ -120,6 +120,9 @@ class DB_Info_Widget extends GtkTable {
 			{
 				$this->db_file->set_filename($db->file);
 			}
+
+			$this->pass->set_text($db->pass);
+			$this->conn_db->set_text($db->conn_db);
 		}
 	}
 

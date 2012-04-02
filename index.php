@@ -29,6 +29,7 @@ date_default_timezone_set('GMT');
 // Set the current directory as the base for included files
 define('BASE_DIR', dirname(__FILE__).'/sys');
 define('SETTINGS_DIR', dirname(__FILE__));
+define('PROGRAM_NAME', 'OpenSQLManager');
 
 // --------------------------------------------------------------------------
 
@@ -116,104 +117,6 @@ if(function_exists('fbird_connect'))
 {
 	require_once("{$path}firebird.php");
 	require_once("{$path}firebird_sql.php");
-}
-
-// --------------------------------------------------------------------------
-// ! Global Functions
-// --------------------------------------------------------------------------
-
-/**
- * Convert an array to an object
- *
- * @param array $array
- * @return object
- */
-function array_to_object($array)
-{
-	if (is_object($array))
-	{
-		return $array;
-	}
-
-	$obj = new StdClass();
-
-	foreach($array as $k => $v)
-	{
-		$obj->$k = $v;
-	}
-
-	return $obj;
-}
-
-// --------------------------------------------------------------------------
-
-/**
- * Create info dialog to retun an informational message
- *
- * @param  string $message
- * @return void
- */
-function alert($message)
-{
-	$dialog = new GTKMessageDialog(
-		NULL,
-		Gtk::DIALOG_MODAL,
-		Gtk::MESSAGE_INFO,
-		Gtk::BUTTONS_OK,
-		$message
-	);
-
-	$dialog->set_position(Gtk::WIN_POS_CENTER);
-	$dialog->run();
-	$dialog->destroy();
-}
-
-// --------------------------------------------------------------------------
-
-/**
- * Create info dialog to retun an informational message
- *
- * @param string $message
- * @return void
- */
-function error($message)
-{
-	$dialog = new GTKMessageDialog(
-		NULL,
-		Gtk::DIALOG_MODAL,
-		Gtk::MESSAGE_ERROR,
-		Gtk::BUTTONS_OK,
-		$message
-	);
-
-	$dialog->set_position(Gtk::WIN_POS_CENTER);
-	$dialog->run();
-	$dialog->destroy();
-}
-
-// --------------------------------------------------------------------------
-
-/**
- * Creates a binary confirmation dialog
- *
- * @param string $message
- * @return bool
- */
-function confirm($message)
-{
-	$dialog = new GTKMessageDialog(
-		NULL,
-		Gtk::DIALOG_MODAL,
-		Gtk::MESSAGE_QUESTION,
-		Gtk::BUTTONS_YES_NO,
-		$message
-	);
-
-	$dialog->set_position(Gtk::WIN_POS_CENTER);
-	$answer = $dialog->run();
-	$dialog->destroy();
-
-	return ($answer === Gtk::RESPONSE_YES) ? TRUE : FALSE;
 }
 
 // --------------------------------------------------------------------------

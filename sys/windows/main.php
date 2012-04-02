@@ -78,42 +78,6 @@ class Main extends GtkWindow {
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Display About menu with version information
-	 *
-	 * @return void
-	 */
-	public function about()
-	{
-		$dlg = new GtkAboutDialog();
-		$dlg->set_transient_for($this);
-
-		$dlg->set_program_name($this->get_title());
-		$dlg->set_version('0.1.0pre');
-
-		$dlg->set_copyright("Copyright (c) ".date('Y')." Timothy J. Warren");
-
-		$dlg->set_website('https://github.com/aviat4ion/OpenSQLManager');
-		$dlg->set_website_label('Fork on Github');
-
-		$dlg->set_license(file_get_contents(BASE_DIR . "/LICENSE"));
-
-		$dlg->set_authors(array(
-			'Timothy J. Warren',
-			//'Nathan Dupuie',
-		));
-
-		/*$dlg->set_artists(array(
-			'Nathan Dupuie',
-		));*/
-
-		$dlg->run();
-
-		$dlg->destroy();
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
 	 * Quits the GTK loop
 	 */
 	public function quit()
@@ -131,7 +95,7 @@ class Main extends GtkWindow {
 	 */
 	private function _main_layout()
 	{
-		$this->set_title('OpenSQLManager');
+		$this->set_title(PROGRAM_NAME);
 
 		// Quit when this window is closed
 		$this->connect_simple('destroy', array('gtk', 'main_quit'));
@@ -202,7 +166,7 @@ class Main extends GtkWindow {
 		{
 			// Set up the about item
 			$about = new GtkImageMenuItem(GTK::STOCK_ABOUT);
-			$about->connect_simple('activate', array($this, 'about'));
+			$about->connect_simple('activate', 'about');
 			$help_menu->append($about);
 
 			// Add the top level menu to the menubar

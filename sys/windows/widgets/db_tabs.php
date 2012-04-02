@@ -90,7 +90,39 @@ class DB_tabs extends GTKNotebook {
 	 */
 	public function get_db_tabs(&$conn)
 	{
-		print_r($conn->get_tables());
+		$tables = new Data_Grid();
+		$table_model = $tables->get_model();
+		$table_data = $conn->get_tables();
+
+		foreach($table_data as $t)
+		{
+			$iter = $table_model->append();
+			$table_model->set($iter, 0, $t);
+		}
+
+		$cell_renderer = new GtkCellRendererText();
+		$tables->insert_column_with_data_func(0, 'Table Name', $cell_renderer, array($this, 'add_data_col'));
+
+		$this->add_tab('Tables', $tables);
+
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Adds a column of data to the model
+	 *
+	 * @param GtkTreeViewColumn $col
+	 * @param GtkCellRenderer $cell
+	 * @param GtkTreeModel $model
+	 * @param GtkTreeIter $iter
+	 * @param int $i
+	 * @return void
+	 */
+	public function add_data_col($col, $cell, $model, $iter, $i=0)
+	{
+		$data = $model->get_value($iter, $i);
+		$cell->set_property('text', $data);
 	}
 }
 // End of db_tabs.php
