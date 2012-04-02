@@ -197,7 +197,6 @@ class Connection_Sidebar extends GtkVBox {
 		{
 			// get the row and column
 			$path_array = $view->get_path_at_pos($event->x, $event->y);
-        	$path = $path_array[0][0];
         	$col = $path_array[1];
 
 			// Don't try to get values for an item that doesn't exist. Instead, return,
@@ -209,7 +208,7 @@ class Connection_Sidebar extends GtkVBox {
 			}
 		}
 
-		$this->menu = $this->conn_popup_menu($path, $event, $col, $path_array);
+		$this->menu = $this->conn_popup_menu($path_array);
 	}
 
 	// --------------------------------------------------------------------------
@@ -217,13 +216,10 @@ class Connection_Sidebar extends GtkVBox {
 	/**
 	 * Creates and displays a context menu for the selected connection
 	 *
-	 * @param  array $pos
-	 * @param  object $event
-	 * @param  object $col
 	 * @param  array  $all
 	 * @return void
 	 */
-	public function conn_popup_menu($pos, $event, $col, $all)
+	public function conn_popup_menu($all)
 	{
 		$this->menu = new GtkMenu();
 

@@ -45,8 +45,6 @@ class DB_tabs extends GTKNotebook {
 
 		// Move the tab bar to the bottom
 		$this->set_tab_pos(Gtk::POS_BOTTOM);
-
-		$this->add_tab('Tables');
 	}
 
 	// --------------------------------------------------------------------------

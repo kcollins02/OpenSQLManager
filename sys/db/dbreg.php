@@ -62,7 +62,7 @@ class DB_Reg {
 	 *
 	 * @return array
 	 */
-	public function get_connections()
+	public static function get_connections()
 	{
 		return array_keys(self::$instance);
 	}

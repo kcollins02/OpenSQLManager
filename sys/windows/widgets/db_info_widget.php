@@ -432,7 +432,7 @@ class DB_Info_Widget extends GtkTable {
 		// parameters
 		try
 		{
-			$db = new Query_Builder($params);
+			new Query_Builder($params);
 		}
 		catch (PDOException $e)
 		{
