@@ -116,6 +116,10 @@ class Connection_Sidebar extends GtkVBox {
 		// Label column
 		$cell_renderer = new GtkCellRendererText();
 		$this->treeview->insert_column_with_data_func(1, 'Connection name', $cell_renderer, array($this, 'set_label'));
+
+		// Status column
+		$cell_renderer = new GtkCellRendererPixbuf();
+		$this->treeview->insert_column_with_data_func(2, 'Status', $cell_renderer, array($this, 'set_status_icon'));
 	}
 
 	// --------------------------------------------------------------------------
@@ -162,6 +166,21 @@ class Connection_Sidebar extends GtkVBox {
 		$col->set_reorderable(TRUE);
 		$info = $model->get_value($iter, 0);
 		$cell->set_property('text', $info->name);
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Sets the status icon of the current db connection
+	 *
+	 * @param GtkTreeViewColumn $col
+	 * @param GtkCellRenderer $cell
+	 * @param GtkTreeModel $model
+	 * @param GtkTreeIter $iter
+	 */
+	public function set_status_icon($col, $cell, $model, $iter)
+	{
+
 	}
 
 	// --------------------------------------------------------------------------

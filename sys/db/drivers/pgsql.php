@@ -7,7 +7,7 @@
  * @author 		Timothy J. Warren
  * @copyright	Copyright (c) 2012
  * @link 		https://github.com/aviat4ion/OpenSQLManager
- * @license 	http://philsturgeon.co.uk/code/dbad-license 
+ * @license 	http://philsturgeon.co.uk/code/dbad-license
  */
 
 // --------------------------------------------------------------------------
@@ -21,7 +21,7 @@ class pgSQL extends DB_PDO {
 
 	/**
 	 * Connect to a PosgreSQL database
-	 * 
+	 *
 	 * @param string $dsn
 	 * @param string $username=null
 	 * @param string $password=null
@@ -35,7 +35,7 @@ class pgSQL extends DB_PDO {
 		$class = __CLASS__.'_sql';
 		$this->sql = new $class;
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
@@ -46,21 +46,21 @@ class pgSQL extends DB_PDO {
 	public function truncate($table)
 	{
 		$sql = 'TRUNCATE "' . $table . '"';
-		$this->query($sql); 
+		$this->query($sql);
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
 	 * Get list of databases for the current connection
-	 * 
+	 *
 	 * @return array
 	 */
 	public function get_dbs()
 	{
 		$sql = <<<SQL
-			SELECT "datname" FROM "pg_database" 
-			WHERE "datname" NOT IN ('template0','template1') 
+			SELECT "datname" FROM "pg_database"
+			WHERE "datname" NOT IN ('template0','template1')
 			ORDER BY 1
 SQL;
 
@@ -70,28 +70,28 @@ SQL;
 
 		return $dbs;
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
 	 * Get the list of tables for the current db
-	 * 
+	 *
 	 * @return array
 	 */
 	public function get_tables()
 	{
 		$sql = <<<SQL
-			SELECT "tablename" FROM "pg_tables" 
-			WHERE "tablename" NOT LIKE 'pg\_%'
-			AND "tablename" NOT LIKE 'sql\%'
+			SELECT "tablename" FROM "pg_tables"
+			WHERE "tablename" NOT LIKE 'pg_%'
+			AND "tablename" NOT LIKE 'sql_%'
 SQL;
 
 		$res = $this->query($sql);
 
 		$tables = $res->fetchAll(PDO::FETCH_ASSOC);
-		
+
 		$good_tables = array();
-		
+
 		foreach($tables as $t)
 		{
 			$good_tables[] = $t['tablename'];
@@ -99,12 +99,12 @@ SQL;
 
 		return $good_tables;
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
 	 * Get the list of system tables
-	 * 
+	 *
 	 * @return array
 	 */
 	public function get_system_tables()
@@ -114,21 +114,21 @@ SQL;
 			WHERE "tablename" LIKE 'pg\_%'
 			OR "tablename" LIKE 'sql\%'
 SQL;
-		
+
 		$res = $this->query($sql);
 
 		$tables = $res->fetchAll(PDO::FETCH_ASSOC);
 
 		return $tables;
-		
+
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
 	 * Get a list of schemas, either for the current connection, or
 	 * for the current datbase, if specified.
-	 * 
+	 *
 	 * @param string $database=""
 	 * @return array
 	 */
@@ -137,7 +137,7 @@ SQL;
 		if($database === "")
 		{
 			$sql = <<<SQL
-				SELECT DISTINCT "schemaname" FROM "pg_tables" 
+				SELECT DISTINCT "schemaname" FROM "pg_tables"
 				WHERE "schemaname" NOT LIKE 'pg\_%'
 SQL;
 
@@ -153,18 +153,18 @@ SQL;
 
 		return $schemas;
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
 	 * Get a list of views for the current db
-	 * 
+	 *
 	 * @return array
 	 */
 	public function get_views()
 	{
 		$sql = <<<SQL
-		 	SELECT "viewname" FROM "pg_views" 
+		 	SELECT "viewname" FROM "pg_views"
 			WHERE "viewname" NOT LIKE 'pg\_%';
 SQL;
 
@@ -174,21 +174,21 @@ SQL;
 
 		return $views;
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
 	 * Return the number of rows returned for a SELECT query
-	 * 
+	 *
 	 * @return int
 	 */
 	public function num_rows()
 	{
 		return (isset($this->statement)) ? $this->statement->rowCount : FALSE;
 	}
-	
+
 	// --------------------------------------------------------------------------
-	
+
 	/**
 	 * Create an SQL backup file for the current database's structure
 	 *
@@ -197,11 +197,11 @@ SQL;
 	public function backup_structure()
 	{
 		// @todo Implement Backup function
-		return '';	
+		return '';
 	}
-	
+
 	// --------------------------------------------------------------------------
-	
+
 	/**
 	 * Create an SQL backup file for the current database's data
 	 *

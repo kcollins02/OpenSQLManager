@@ -80,7 +80,7 @@ class Query_Builder {
 		switch($dbtype)
 		{
 			default:
-				$dsn = "host={$params->host};dbname={$params->database}";
+				$dsn = "host={$params->host};dbname={$params->conn_db}";
 
 				if ( ! empty($params->port))
 				{
