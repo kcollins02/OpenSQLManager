@@ -47,8 +47,8 @@ class Connection_Sidebar extends GtkVBox {
 
 		$this->settings =& Settings::get_instance();
 
-		$dblabel = new GtkLabel('Database Connections');
-		$dblabel->set_alignment(0,0);
+		//$dblabel = new GtkLabel('Database Connections');
+		//$dblabel->set_alignment(0,0);
 
 		$add_button = new GtkButton();
 		$add_button->set_label("New Connnection");
@@ -56,7 +56,7 @@ class Connection_Sidebar extends GtkVBox {
 
 		$add_button->connect_simple('clicked', array($this, 'new_conn'));
 
-		$this->pack_start($dblabel, FALSE, FALSE);
+		//$this->pack_start($dblabel, FALSE, FALSE);
 
 		// Treeview to show database connections
 		{
@@ -115,7 +115,7 @@ class Connection_Sidebar extends GtkVBox {
 
 		// Label column
 		$cell_renderer = new GtkCellRendererText();
-		$this->treeview->insert_column_with_data_func(1, 'Connection name', $cell_renderer, array($this, 'set_label'));
+		$this->treeview->insert_column_with_data_func(1, 'Name', $cell_renderer, array($this, 'set_label'));
 
 		// Status column
 		$cell_renderer = new GtkCellRendererPixbuf();
@@ -187,18 +187,14 @@ class Connection_Sidebar extends GtkVBox {
 
 		$conns = DB_Reg::get_connections();
 
-		/*if(in_array($info->name, $conns))
+		if(in_array($info->name, $conns))
 		{
-			$img = new GTKImage();
-			$img->set_from_stock(GTK::STOCK_YES, Gtk::ICON_SIZE_SMALL_TOOLBAR);
-			$cell->set_property('pixbuf', $img->get_pixbuf());
+			$cell->set_property('stock-id', 'gtk-yes');
 		}
 		else
 		{
-			$img = new GTKImage();
-			$img->set_from_stock(GTK::STOCK_NO, Gtk::ICON_SIZE_SMALL_TOOLBAR);
-			$cell->set_property('pixbuf', $img->get_pixbuf());
-		}*/
+			$cell->set_property('stock-id', 'gtk-no');
+		}
 	}
 
 	// --------------------------------------------------------------------------
@@ -260,11 +256,24 @@ class Connection_Sidebar extends GtkVBox {
 	{
 		$this->menu = new GtkMenu();
 
+		$data = $this->treeview->get(0);
+		$conns = DB_Reg::get_connections();
+
 		// Set up menu items
 		{
-			$connect = new GtkImageMenuItem('Connect');
-			$connect->set_image(GtkImage::new_from_stock(GTK::STOCK_CONNECT, GTK::ICON_SIZE_MENU));
-			$connect->connect_simple('activate', array($this, 'db_connect'));
+			// Show disconnect
+			if (in_array($data->name, $conns))
+			{
+				$connect = new GtkImageMenuItem('Disconnect');
+				$connect->set_image(GtkImage::new_from_stock(GTK::STOCK_DISCONNECT, GTK::ICON_SIZE_MENU));
+				$connect->connect_simple('activate', array($this, 'db_disconnect'));
+			}
+			else
+			{
+				$connect = new GtkImageMenuItem('Connect');
+				$connect->set_image(GtkImage::new_from_stock(GTK::STOCK_CONNECT, GTK::ICON_SIZE_MENU));
+				$connect->connect_simple('activate', array($this, 'db_connect'));
+			}
 
 			$this->menu->append($connect);
 
@@ -355,6 +364,20 @@ class Connection_Sidebar extends GtkVBox {
 		}
 
 		DB_Tabs::get_instance()->get_db_tabs($conn);
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Disconnect from a database
+	 */
+	public function db_disconnect()
+	{
+		$data = $this->treeview->get(0);
+
+		DB_Reg::remove_db($data->name);
+
+		$this->refresh();
 	}
 }
 // End of connection_sidebar.php

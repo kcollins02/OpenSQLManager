@@ -120,7 +120,7 @@ function about()
 	$dlg = new GtkAboutDialog();
 
 	$dlg->set_program_name(PROGRAM_NAME);
-	$dlg->set_version('0.1.0pre');
+	$dlg->set_version(VERSION);
 
 	$dlg->set_copyright("Copyright (c) ".date('Y')." Timothy J. Warren");
 

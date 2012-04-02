@@ -66,5 +66,18 @@ class DB_Reg {
 	{
 		return array_keys(self::$instance);
 	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Remove a database connection
+	 *
+	 * @param string $key
+	 * @return void
+	 */
+	public static function remove_db($key)
+	{
+		unset(self::$instance[$key]);
+	}
 }
 // End of dbreg.php

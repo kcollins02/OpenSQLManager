@@ -17,6 +17,10 @@
  */
 class DB_tabs extends GTKNotebook {
 
+	/**
+	 * Current Tab Widget object
+	 * @var DB_Tabs
+	 */
 	private static $instance;
 
 	/**
@@ -44,7 +48,7 @@ class DB_tabs extends GTKNotebook {
 		parent::__construct();
 
 		// Move the tab bar to the bottom
-		$this->set_tab_pos(Gtk::POS_BOTTOM);
+		//$this->set_tab_pos(Gtk::POS_BOTTOM);
 	}
 
 	// --------------------------------------------------------------------------
@@ -74,7 +78,7 @@ class DB_tabs extends GTKNotebook {
 	 *
 	 * @return DB_tabs
 	 */
-	public function reset()
+	public static function reset()
 	{
 		unset(self::$instance);
 		return self::get_instance();

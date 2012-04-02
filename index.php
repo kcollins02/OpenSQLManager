@@ -30,6 +30,7 @@ date_default_timezone_set('GMT');
 define('BASE_DIR', dirname(__FILE__).'/sys');
 define('SETTINGS_DIR', dirname(__FILE__));
 define('PROGRAM_NAME', 'OpenSQLManager');
+define('VERSION', '0.1.0pre');
 
 // --------------------------------------------------------------------------
 

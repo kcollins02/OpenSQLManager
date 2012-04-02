@@ -419,7 +419,7 @@ class DB_Info_Widget extends GtkTable {
 		$params->pass = $this->pass->get_text();
 		$params->port = $this->port->get_text();
 		$params->file = $this->db_file->get_filename();
-		$params->database = $this->conn_db->get_text();
+		$params->conn_db = $this->conn_db->get_text();
 
 		// Return early if a db type isn't selected.
 		// Better to bail out then crash because of
