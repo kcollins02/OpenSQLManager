@@ -363,7 +363,7 @@ class Connection_Sidebar extends GtkVBox {
 			return;
 		}
 
-		DB_Tabs::get_instance()->get_db_tabs($conn);
+		DB_Tabs::get_db_tabs($conn);
 	}
 
 	// --------------------------------------------------------------------------

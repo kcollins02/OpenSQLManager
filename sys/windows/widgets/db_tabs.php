@@ -80,7 +80,7 @@ class DB_tabs extends GTKNotebook {
 	 */
 	public static function reset()
 	{
-		unset(self::$instance);
+		self::$instance = new DB_tabs();
 		return self::get_instance();
 	}
 
@@ -92,7 +92,7 @@ class DB_tabs extends GTKNotebook {
 	 * @param Query_Builder $conn
 	 * @return void
 	 */
-	public function get_db_tabs(&$conn)
+	public static function get_db_tabs(&$conn)
 	{
 		$tables = new Data_Grid();
 		$table_model = $tables->get_model();
@@ -100,14 +100,16 @@ class DB_tabs extends GTKNotebook {
 
 		foreach($table_data as $t)
 		{
-			$iter = $table_model->append();
-			$table_model->set($iter, 0, $t);
+			$table_model->append(null, array($t));
+			//$table_model->set($iter, 0, $t);
 		}
 
 		$cell_renderer = new GtkCellRendererText();
-		$tables->insert_column_with_data_func(0, 'Table Name', $cell_renderer, array($this, 'add_data_col'));
+		$tables->insert_column_with_data_func(0, 'Table Name', $cell_renderer, array(self::$instance, 'add_data_col'));
 
-		$this->add_tab('Tables', $tables);
+		self::$instance->add_tab('Tables', $tables);
+
+		self::$instance->show_all();
 
 	}
 
@@ -125,6 +127,7 @@ class DB_tabs extends GTKNotebook {
 	 */
 	public function add_data_col($col, $cell, $model, $iter, $i=0)
 	{
+		$col->set_visible(TRUE);
 		$data = $model->get_value($iter, $i);
 		$cell->set_property('text', $data);
 	}
