@@ -73,20 +73,6 @@ class DB_tabs extends GTKNotebook {
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Creates a new instance of this class, and destroys the existing
-	 * instance
-	 *
-	 * @return DB_tabs
-	 */
-	public static function reset()
-	{
-		self::$instance = new DB_tabs();
-		return self::get_instance();
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
 	 * Create tabs for database aspects
 	 *
 	 * @param Query_Builder $conn
@@ -94,20 +80,51 @@ class DB_tabs extends GTKNotebook {
 	 */
 	public static function get_db_tabs(&$conn)
 	{
-		$tables = new Data_Grid();
-		$table_model = $tables->get_model();
-		$table_data = $conn->get_tables();
+		// Empty the tabs
+		self::reset();
 
-		foreach($table_data as $t)
+		// 'Tables' Tab
 		{
-			$table_model->append(null, array($t));
-			//$table_model->set($iter, 0, $t);
+			$tables = new Data_Grid();
+			$table_model = $tables->get_model();
+			$table_data = $conn->get_tables();
+
+			foreach($table_data as $t)
+			{
+				$table_model->append(null, array($t));
+				//$table_model->set($iter, 0, $t);
+			}
+
+			$cell_renderer = new GtkCellRendererText();
+			$tables->insert_column_with_data_func(0, 'Table Name', $cell_renderer, array(self::$instance, 'add_data_col'));
+
+
+			self::$instance->add_tab('Tables', $tables);
 		}
 
-		$cell_renderer = new GtkCellRendererText();
-		$tables->insert_column_with_data_func(0, 'Table Name', $cell_renderer, array(self::$instance, 'add_data_col'));
+		// 'Databases' Tab
+		{
+			$dbs = new Data_Grid();
+			$db_model = $dbs->get_model();
+			$db_data = $conn->get_dbs();
 
-		self::$instance->add_tab('Tables', $tables);
+			if($db_data)
+			{
+				foreach($db_data as $d)
+				{
+					$db_model->append(null, array($d));
+				}
+
+				$cell_renderer = new GtkCellRendererText();
+				$dbs->insert_column_with_data_func(0, 'DB Name', $cell_renderer, array(self::$instance, 'add_data_col'));
+
+				self::$instance->add_tab('Databases', $dbs);
+
+			}
+
+
+		}
+
 
 		self::$instance->show_all();
 
@@ -130,6 +147,19 @@ class DB_tabs extends GTKNotebook {
 		$col->set_visible(TRUE);
 		$data = $model->get_value($iter, $i);
 		$cell->set_property('text', $data);
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Remove current tabs
+	 */
+	public static function reset()
+	{
+		for($i=0, $max=self::$instance->get_n_pages(); $i <= $max; $i++)
+		{
+			self::$instance->remove_page($i);
+		}
 	}
 }
 // End of db_tabs.php

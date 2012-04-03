@@ -376,6 +376,7 @@ class Connection_Sidebar extends GtkVBox {
 		$data = $this->treeview->get(0);
 
 		DB_Reg::remove_db($data->name);
+		DB_Tabs::reset();
 
 		$this->refresh();
 	}

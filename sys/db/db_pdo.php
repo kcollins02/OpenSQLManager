@@ -206,6 +206,13 @@ abstract class DB_PDO extends PDO {
 	abstract public function get_tables();
 
 	/**
+	 * Return list of dbs for the current connection, if possible
+	 *
+	 * @return array
+	 */
+	abstract public function get_dbs();
+
+	/**
 	 * Empty the passed table
 	 *
 	 * @param string $table

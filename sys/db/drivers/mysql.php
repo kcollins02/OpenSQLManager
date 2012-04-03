@@ -7,7 +7,7 @@
  * @author 		Timothy J. Warren
  * @copyright	Copyright (c) 2012
  * @link 		https://github.com/aviat4ion/OpenSQLManager
- * @license 	http://philsturgeon.co.uk/code/dbad-license 
+ * @license 	http://philsturgeon.co.uk/code/dbad-license
  */
 
  // --------------------------------------------------------------------------
@@ -21,7 +21,7 @@ class MySQL extends DB_PDO {
 
 	/**
 	 * Connect to MySQL Database
-	 * 
+	 *
 	 * @param string $dsn
 	 * @param string $username=null
 	 * @param string $password=null
@@ -34,7 +34,7 @@ class MySQL extends DB_PDO {
 		$class = __CLASS__.'_sql';
 		$this->sql = new $class;
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
@@ -51,42 +51,51 @@ class MySQL extends DB_PDO {
 
 	/**
 	 * Get databases for the current connection
-	 * 
+	 *
 	 * @return array
 	 */
 	public function get_dbs()
 	{
 		$res = $this->query("SHOW DATABASES");
-		return array_values($this->fetchAll(PDO::FETCH_ASSOC));
+		$vals = array_values($res->fetchAll(PDO::FETCH_ASSOC));
+
+		$return = array();
+
+		foreach($vals as $v)
+		{
+			$return[] = $v['Database'];
+		}
+
+		return $return;
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
 	 * Returns the tables available in the current database
-	 * 
+	 *
 	 * @return array
 	 */
 	public function get_tables()
 	{
 		$res = $this->query("SHOW TABLES");
-		
+
 		$tables = array();
 		$rows = $res->fetchAll(PDO::FETCH_NUM);
-		
+
 		foreach($rows as $r)
 		{
 			$tables[] = $r[0];
 		}
-		
+
 		return $tables;
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
 	 * Returns system tables for the current database
-	 * 
+	 *
 	 * @return array
 	 */
 	public function get_system_tables()
@@ -94,21 +103,21 @@ class MySQL extends DB_PDO {
 		//MySQL doesn't have system tables
 		return array();
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
 	 * Return the number of rows returned for a SELECT query
-	 * 
+	 *
 	 * @return int
 	 */
 	public function num_rows()
 	{
 		return isset($this->statement) ? $this->statement->rowCount() : FALSE;
 	}
-	
+
 	// --------------------------------------------------------------------------
-	
+
 	/**
 	 * Create an SQL backup file for the current database's structure
 	 *
@@ -117,11 +126,11 @@ class MySQL extends DB_PDO {
 	public function backup_structure()
 	{
 		// @todo Implement Backup function
-		return '';	
+		return '';
 	}
-	
+
 	// --------------------------------------------------------------------------
-	
+
 	/**
 	 * Create an SQL backup file for the current database's data
 	 *
@@ -147,7 +156,7 @@ class MySQL extends DB_PDO {
 		{
 			return array_map(array($this, 'quote_ident'), $ident);
 		}
-		
+
 		// Split each identifier by the period
 		$hiers = explode('.', $ident);
 
