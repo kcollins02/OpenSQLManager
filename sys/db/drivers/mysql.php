@@ -56,17 +56,8 @@ class MySQL extends DB_PDO {
 	 */
 	public function get_dbs()
 	{
-		$res = $this->query("SHOW DATABASES");
-		$vals = array_values($res->fetchAll(PDO::FETCH_ASSOC));
-
-		$return = array();
-
-		foreach($vals as $v)
-		{
-			$return[] = $v['Database'];
-		}
-
-		return $return;
+		$res = $this->query("SHOW DATABASES WHERE `Database` !='information_schema'");
+		return db_filter(array_values($res->fetchAll(PDO::FETCH_ASSOC)), 'Database');
 	}
 
 	// --------------------------------------------------------------------------
@@ -78,17 +69,21 @@ class MySQL extends DB_PDO {
 	 */
 	public function get_tables()
 	{
-		$res = $this->query("SHOW TABLES");
+		$res = $this->query('SHOW TABLES');
+		return db_filter($res->fetchAll(PDO::FETCH_NUM), 0);
+	}
 
-		$tables = array();
-		$rows = $res->fetchAll(PDO::FETCH_NUM);
+	// --------------------------------------------------------------------------
 
-		foreach($rows as $r)
-		{
-			$tables[] = $r[0];
-		}
-
-		return $tables;
+	/**
+	 * Get list of views for the current database
+	 *
+	 * @return array
+	 */
+	public function get_views()
+	{
+		$res = $this->query('SELECT `table_name` FROM `information_schema`.`views`');
+		return db_filter($res->fetchAll(PDO::FETCH_NUM), 'table_name');
 	}
 
 	// --------------------------------------------------------------------------

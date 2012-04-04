@@ -26,6 +26,9 @@ error_reporting(-1 & ~(E_STRICT));
 // Set the stupid timezone so PHP shuts up.
 date_default_timezone_set('GMT');
 
+// Don't set an arbitary memory limit!
+ini_set('memory_limit', -1);
+
 // Set the current directory as the base for included files
 define('BASE_DIR', dirname(__FILE__).'/sys');
 define('SETTINGS_DIR', dirname(__FILE__));

@@ -213,6 +213,13 @@ abstract class DB_PDO extends PDO {
 	abstract public function get_dbs();
 
 	/**
+	 * Return list of views for the current database
+	 *
+	 * @return array
+	 */
+	abstract public function get_views();
+
+	/**
 	 * Empty the passed table
 	 *
 	 * @param string $table

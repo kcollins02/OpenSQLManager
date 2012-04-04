@@ -143,4 +143,23 @@ function about()
 	$dlg->destroy();
 }
 
+/**
+ * Filter out db rows into one array
+ *
+ * @param array $array
+ * @param mixed $index
+ * @return array
+ */
+function db_filter($array, $index)
+{
+	$new_array = array();
+
+	foreach($array as $a)
+	{
+		$new_array[] = $a[$index];
+	}
+
+	return $new_array;
+}
+
 // End of functions.php

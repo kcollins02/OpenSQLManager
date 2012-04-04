@@ -89,7 +89,7 @@ class DB_tabs extends GTKNotebook {
 			$db_model = $dbs->get_model();
 			$db_data = $conn->get_dbs();
 
-			if($db_data)
+			if($db_data !== FALSE)
 			{
 				foreach($db_data as $d)
 				{
@@ -115,7 +115,6 @@ class DB_tabs extends GTKNotebook {
 			foreach($table_data as $t)
 			{
 				$table_model->append(null, array($t));
-				//$table_model->set($iter, 0, $t);
 			}
 
 			$cell_renderer = new GtkCellRendererText();
@@ -127,7 +126,22 @@ class DB_tabs extends GTKNotebook {
 
 		// 'Views' Tab
 		{
-			
+			$views = new Data_grid();
+			$view_model = $views->get_model();
+			$view_data = $conn->get_views();
+
+			if ($view_data !== FALSE)
+			{
+				foreach($view_data as $v)
+				{
+					$view_model->append(null, array($v));
+				}
+
+				$cell_renderer = new GtkCellRendererText();
+				$views->insert_column_with_data_func(0, 'View Name', $cell_renderer, array(self::$instance, 'add_data_col'));
+
+				self::$instance->add_tab('Views', $views);
+			}
 		}
 
 
@@ -149,8 +163,16 @@ class DB_tabs extends GTKNotebook {
 	 */
 	public function add_data_col($col, $cell, $model, $iter, $i=0)
 	{
-		$col->set_visible(TRUE);
 		$data = $model->get_value($iter, $i);
+
+		if (empty($data))
+		{
+			return;
+		}
+
+		print_r($data);
+
+		$col->set_visible(TRUE);
 		$cell->set_property('text', $data);
 	}
 

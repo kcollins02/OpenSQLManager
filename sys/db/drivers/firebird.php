@@ -152,6 +152,19 @@ SQL;
 	// --------------------------------------------------------------------------
 
 	/**
+	 * Get list of views for the current database
+	 *
+	 * @return array
+	 */
+	public function get_views()
+	{
+		// @todo Implement
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
 	 * Not applicable to firebird
 	 *
 	 * @return FALSE

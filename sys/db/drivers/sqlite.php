@@ -83,12 +83,25 @@ SQL;
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Not applicable to firebird
+	 * Not applicable to SQLite
 	 *
 	 * @return FALSE
 	 */
 	public function get_dbs()
 	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Get list of views for the current database
+	 *
+	 * @return array
+	 */
+	public function get_views()
+	{
+		// @todo Implement
 		return FALSE;
 	}
 

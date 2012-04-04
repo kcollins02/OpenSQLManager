@@ -66,9 +66,7 @@ SQL;
 
 		$res = $this->query($sql);
 
-		$dbs = $res->fetchAll(PDO::FETCH_ASSOC);
-
-		return $dbs;
+		return db_filter($res->fetchAll(PDO::FETCH_ASSOC), 'datname');
 	}
 
 	// --------------------------------------------------------------------------
@@ -88,16 +86,8 @@ SQL;
 
 		$res = $this->query($sql);
 
-		$tables = $res->fetchAll(PDO::FETCH_ASSOC);
+		return db_filter($res->fetchAll(PDO::FETCH_ASSOC), 'tablename');
 
-		$good_tables = array();
-
-		foreach($tables as $t)
-		{
-			$good_tables[] = $t['tablename'];
-		}
-
-		return $good_tables;
 	}
 
 	// --------------------------------------------------------------------------
@@ -117,10 +107,7 @@ SQL;
 
 		$res = $this->query($sql);
 
-		$tables = $res->fetchAll(PDO::FETCH_ASSOC);
-
-		return $tables;
-
+		return db_filter($res->fetchAll(PDO::FETCH_ASSOC), 'tablename');
 	}
 
 	// --------------------------------------------------------------------------
@@ -170,9 +157,8 @@ SQL;
 
 		$res = $this->query($sql);
 
-		$views = $res->fetchAll(PDO::FETCH_ASSOC);
 
-		return $views;
+		return db_filter($res->fetchAll(PDO::FETCH_ASSOC), 'viewname');
 	}
 
 	// --------------------------------------------------------------------------

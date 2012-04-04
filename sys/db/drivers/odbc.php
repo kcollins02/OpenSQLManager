@@ -45,11 +45,23 @@ class ODBC extends DB_PDO {
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Not applicable to firebird
+	 * Not applicable to ODBC
 	 *
 	 * @return FALSE
 	 */
 	public function get_dbs()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Not applicable to ODBC
+	 *
+	 * @return FALSE
+	 */
+	public function get_views()
 	{
 		return FALSE;
 	}
