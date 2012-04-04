@@ -22,8 +22,8 @@ class SettingsTest extends UnitTestCase {
 		parent::__construct();
 		$this->settings =& Settings::get_instance();
 		
-		// Delete test json file
-		unlink('settings.json');
+		// Make sure to delete 'foo' if it exists
+		$this->settings->remove_db('foo');
 	}
 
 	function TestExists()
