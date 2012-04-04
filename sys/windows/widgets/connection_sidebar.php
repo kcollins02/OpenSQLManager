@@ -183,8 +183,6 @@ class Connection_Sidebar extends GtkVBox {
 		$col->set_reorderable(TRUE);
 		$info = $model->get_value($iter, 0);
 
-		list($width, $height) = Gtk::icon_size_lookup(Gtk::ICON_SIZE_SMALL_TOOLBAR);
-
 		$conns = DB_Reg::get_connections();
 
 		if(in_array($info->name, $conns))

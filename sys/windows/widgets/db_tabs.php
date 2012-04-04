@@ -83,25 +83,6 @@ class DB_tabs extends GTKNotebook {
 		// Empty the tabs
 		self::reset();
 
-		// 'Tables' Tab
-		{
-			$tables = new Data_Grid();
-			$table_model = $tables->get_model();
-			$table_data = $conn->get_tables();
-
-			foreach($table_data as $t)
-			{
-				$table_model->append(null, array($t));
-				//$table_model->set($iter, 0, $t);
-			}
-
-			$cell_renderer = new GtkCellRendererText();
-			$tables->insert_column_with_data_func(0, 'Table Name', $cell_renderer, array(self::$instance, 'add_data_col'));
-
-
-			self::$instance->add_tab('Tables', $tables);
-		}
-
 		// 'Databases' Tab
 		{
 			$dbs = new Data_Grid();
@@ -123,6 +104,30 @@ class DB_tabs extends GTKNotebook {
 			}
 
 
+		}
+
+		// 'Tables' Tab
+		{
+			$tables = new Data_Grid();
+			$table_model = $tables->get_model();
+			$table_data = $conn->get_tables();
+
+			foreach($table_data as $t)
+			{
+				$table_model->append(null, array($t));
+				//$table_model->set($iter, 0, $t);
+			}
+
+			$cell_renderer = new GtkCellRendererText();
+			$tables->insert_column_with_data_func(0, 'Table Name', $cell_renderer, array(self::$instance, 'add_data_col'));
+
+
+			self::$instance->add_tab('Tables', $tables);
+		}
+
+		// 'Views' Tab
+		{
+			
 		}
 
 
