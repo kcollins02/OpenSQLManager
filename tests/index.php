@@ -36,6 +36,9 @@ function do_include($path)
 
 // Include core tests
 require_once("core.php");
+
+// Include required methods
+require_once(BASE_DIR.'common/functions.php');
 require_once(BASE_DIR.'common/settings.php');
 require_once(BASE_DIR.'db/db_pdo.php');
 require_once(BASE_DIR.'db/query_builder.php');
