@@ -85,63 +85,17 @@ class DB_tabs extends GTKNotebook {
 
 		// 'Databases' Tab
 		{
-			$dbs = new Data_Grid();
-			$db_model = $dbs->get_model();
-			$db_data = $conn->get_dbs();
-
-			if($db_data !== FALSE)
-			{
-				foreach($db_data as $d)
-				{
-					$db_model->append(null, array($d));
-				}
-
-				$cell_renderer = new GtkCellRendererText();
-				$dbs->insert_column_with_data_func(0, 'DB Name', $cell_renderer, array(self::$instance, 'add_data_col'));
-
-				self::$instance->add_tab('Databases', $dbs);
-
-			}
-
-
+			self::_add_tab($conn, 'Databases', 'Db Name', 'get_dbs');
 		}
 
 		// 'Tables' Tab
 		{
-			$tables = new Data_Grid();
-			$table_model = $tables->get_model();
-			$table_data = $conn->get_tables();
-
-			foreach($table_data as $t)
-			{
-				$table_model->append(null, array($t));
-			}
-
-			$cell_renderer = new GtkCellRendererText();
-			$tables->insert_column_with_data_func(0, 'Table Name', $cell_renderer, array(self::$instance, 'add_data_col'));
-
-
-			self::$instance->add_tab('Tables', $tables);
+			self::_add_tab($conn, 'Tables', 'Table Name', 'get_tables');
 		}
 
 		// 'Views' Tab
 		{
-			$views = new Data_grid();
-			$view_model = $views->get_model();
-			$view_data = $conn->get_views();
-
-			if ($view_data !== FALSE)
-			{
-				foreach($view_data as $v)
-				{
-					$view_model->append(null, array($v));
-				}
-
-				$cell_renderer = new GtkCellRendererText();
-				$views->insert_column_with_data_func(0, 'View Name', $cell_renderer, array(self::$instance, 'add_data_col'));
-
-				self::$instance->add_tab('Views', $views);
-			}
+			self::_add_tab($conn, 'Views', 'View Name', 'get_views');
 		}
 
 
@@ -170,8 +124,6 @@ class DB_tabs extends GTKNotebook {
 			return;
 		}
 
-		print_r($data);
-
 		$col->set_visible(TRUE);
 		$cell->set_property('text', $data);
 	}
@@ -186,6 +138,39 @@ class DB_tabs extends GTKNotebook {
 		for($i=0, $max=self::$instance->get_n_pages(); $i <= $max; $i++)
 		{
 			self::$instance->remove_page($i);
+		}
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Simplify adding tabs to the Notebook object
+	 *
+	 * @param object $conn
+	 * @param string $tab_name
+	 * @param string $col_name
+	 * @param string $method
+	 * @return void
+	 */
+	private static function _add_tab(&$conn, $tab_name, $col_name, $method)
+	{
+		$tab = new Data_Grid();
+		$tab_model = $tab->get_model();
+
+		$tab_data = call_user_func_array(array($conn, $method), array());
+
+		if($tab_data !== FALSE)
+		{
+			foreach($tab_data as $d)
+			{
+				$tab_model->append(null, array($d));
+			}
+
+			$cell_renderer = new GtkCellRendererText();
+			$tab->insert_column_with_data_func(0, $col_name, $cell_renderer, array(self::$instance, 'add_data_col'));
+
+			self::$instance->add_tab($tab_name, $tab);
+
 		}
 	}
 }
