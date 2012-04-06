@@ -108,6 +108,18 @@ SQL;
 	// --------------------------------------------------------------------------
 
 	/**
+	 * Not applicable to SQlite
+	 *
+	 * @return FALSE
+	 */
+	public function get_sequences()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
 	 * List system tables for the current database
 	 *
 	 * @return array

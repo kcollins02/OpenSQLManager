@@ -220,6 +220,13 @@ abstract class DB_PDO extends PDO {
 	abstract public function get_views();
 
 	/**
+	 * Return list of sequences for the current database, if they exist
+	 *
+	 * @return array
+	 */
+	abstract public function get_sequences();
+
+	/**
 	 * Empty the passed table
 	 *
 	 * @param string $table

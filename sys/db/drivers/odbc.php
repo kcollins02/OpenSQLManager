@@ -69,6 +69,18 @@ class ODBC extends DB_PDO {
 	// --------------------------------------------------------------------------
 
 	/**
+	 * Not applicable to ODBC
+	 *
+	 * @return FALSE
+	 */
+	public function get_sequences()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
 	 * List system tables for the current database/connection
 	 *
 	 * @return  array

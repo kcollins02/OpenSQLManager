@@ -165,6 +165,19 @@ SQL;
 	// --------------------------------------------------------------------------
 
 	/**
+	 * Get list of sequences for the current database
+	 *
+	 * @return array
+	 */
+	public function get_sequences()
+	{
+		// @todo Implement
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
 	 * Not applicable to firebird
 	 *
 	 * @return FALSE
@@ -519,7 +532,8 @@ class Firebird_Result {
 	 */
 	public function rowCount($statement="")
 	{
-		return fbird_affected_rows();
+		$statement = $statement OR $this->statement;
+		return fbird_affected_rows($statement);
 	}
 
 	// --------------------------------------------------------------------------

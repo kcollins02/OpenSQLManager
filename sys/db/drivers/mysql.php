@@ -89,6 +89,18 @@ class MySQL extends DB_PDO {
 	// --------------------------------------------------------------------------
 
 	/**
+	 * Not applicable to MySQL
+	 *
+	 * @return FALSE
+	 */
+	public function get_sequences()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
 	 * Returns system tables for the current database
 	 *
 	 * @return array

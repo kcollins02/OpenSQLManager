@@ -152,13 +152,34 @@ SQL;
 	{
 		$sql = <<<SQL
 		 	SELECT "viewname" FROM "pg_views"
-			WHERE "viewname" NOT LIKE 'pg\_%';
+			WHERE "schemaname" NOT IN
+				('pg_catalog', 'information_schema')
+			AND "viewname" !~ '^pg_'
 SQL;
 
 		$res = $this->query($sql);
 
 
 		return db_filter($res->fetchAll(PDO::FETCH_ASSOC), 'viewname');
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Get a list of sequences for the current db
+	 *
+	 * @return array
+	 */
+	public function get_sequences()
+	{
+		$sql = <<<SQL
+			SELECT "c"."relname"
+			FROM "pg_class" "c"
+			WHERE "c"."relkind" = 'S';
+SQL;
+
+		$res = $this->query($sql);
+		return db_filter($res->fetchAll(PDO::FETCH_ASSOC), 'relname');
 	}
 
 	// --------------------------------------------------------------------------
