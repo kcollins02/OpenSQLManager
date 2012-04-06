@@ -195,8 +195,18 @@ abstract class DB_PDO extends PDO {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Abstract public functions to override in child classes
+	 * Return schemas for databases that list them
+	 *
+	 * @return array
 	 */
+	public function get_schemas()
+	{
+		return FALSE;
+	}
+
+	// -------------------------------------------------------------------------
+	// ! Abstract public functions to override in child classes
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Return list of tables for the current database

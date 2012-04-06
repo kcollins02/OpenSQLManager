@@ -88,6 +88,11 @@ class DB_tabs extends GTKNotebook {
 			self::_add_tab($conn, 'Databases', 'Db Name', 'get_dbs');
 		}
 
+		// 'Schemas' Tab
+		{
+			self::_add_tab($conn, 'Schemas', 'Schema Name', 'get_schemas');
+		}
+
 		// 'Tables' Tab
 		{
 			self::_add_tab($conn, 'Tables', 'Table Name', 'get_tables');
@@ -96,6 +101,11 @@ class DB_tabs extends GTKNotebook {
 		// 'Views' Tab
 		{
 			self::_add_tab($conn, 'Views', 'View Name', 'get_views');
+		}
+
+		// 'Sequences' Tab
+		{
+			self::_add_tab($conn, 'Sequences', 'Sequence Name', 'get_sequences');
 		}
 
 
@@ -152,12 +162,12 @@ class DB_tabs extends GTKNotebook {
 	 * @param string $method
 	 * @return void
 	 */
-	private static function _add_tab(&$conn, $tab_name, $col_name, $method)
+	private static function _add_tab(&$conn, $tab_name, $col_name, $method, $params=array())
 	{
 		$tab = new Data_Grid();
 		$tab_model = $tab->get_model();
 
-		$tab_data = call_user_func_array(array($conn, $method), array());
+		$tab_data = call_user_func_array(array($conn, $method), $params);
 
 		if($tab_data !== FALSE)
 		{

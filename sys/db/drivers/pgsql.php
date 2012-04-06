@@ -117,29 +117,20 @@ SQL;
 	 * Get a list of schemas, either for the current connection, or
 	 * for the current datbase, if specified.
 	 *
-	 * @param string $database=""
 	 * @return array
 	 */
-	public function get_schemas($database="")
+	public function get_schemas()
 	{
-		if($database === "")
-		{
 			$sql = <<<SQL
 				SELECT DISTINCT "schemaname" FROM "pg_tables"
 				WHERE "schemaname" NOT LIKE 'pg\_%'
-SQL;
-
-		}
-
-		$sql = <<<SQL
-			SELECT "nspname" FROM pg_namespace
-			WHERE "nspname" NOT LIKE 'pg\_%'
+				AND "schemaname" != 'information_schema'
 SQL;
 
 		$res = $this->query($sql);
 		$schemas = $res->fetchAll(PDO::FETCH_ASSOC);
 
-		return $schemas;
+		return db_filter($schemas, 'schemaname');
 	}
 
 	// --------------------------------------------------------------------------
