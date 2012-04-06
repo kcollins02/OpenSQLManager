@@ -135,6 +135,7 @@ class firebird extends DB_PDO {
 			SELECT "RDB\$RELATION_NAME" FROM "RDB\$RELATIONS"
 			WHERE "RDB\$RELATION_NAME" NOT LIKE 'RDB$%'
 			AND "RDB\$RELATION_NAME" NOT LIKE 'MON$%'
+			AND RDB\$VIEW_CONTEXT IS NULL
 			ORDER BY "RDB\$RELATION_NAME" ASC
 SQL;
 
@@ -159,8 +160,15 @@ SQL;
 	 */
 	public function get_views()
 	{
-		// @todo Implement
-		return FALSE;
+		$sql = <<<SQL
+			SELECT "RDB\$RELATION_NAME"
+			FROM "RDB\$RELATIONS"
+			WHERE "RDB\$VIEW_BLR" IS NOT NULL
+			AND ("RDB\$SYSTEM_FLAG" IS NULL OR "RDB\$SYSTEM_FLAG" = 0)
+SQL;
+		$res = $this->query($sql);
+
+		return db_filter($res->fetchAll(PDO::FETCH_ASSOC), 'RDB$RELATION_NAME');
 	}
 
 	// --------------------------------------------------------------------------
@@ -172,11 +180,44 @@ SQL;
 	 */
 	public function get_sequences()
 	{
+		$sql = <<<SQL
+			SELECT "RDB\$GENERATOR_NAME"
+			FROM "RDB\$GENERATORS"
+			WHERE "RDB\$SYSTEM_FLAG"=0;
+SQL;
+		$res = $this->query($sql);
+
+		return db_filter($res->fetchAll(PDO::FETCH_ASSOC), 'RDB$GENERATOR_NAME');
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Return list of custom functions for the current database
+	 *
+	 * @return array
+	 */
+	public function get_functions()
+	{
 		// @todo Implement
 		return FALSE;
 	}
 
 	// --------------------------------------------------------------------------
+
+	/**
+	 * Return list of triggers for the current database
+	 *
+	 * @return array
+	 */
+	public function get_triggers()
+	{
+		// @todo Implement
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
 
 	/**
 	 * Not applicable to firebird
@@ -306,7 +347,7 @@ SQL;
 	 * @param string $str
 	 * @return string
 	 */
-	public function quote($str, $param_type=NULL)
+	public function quote($str)
 	{
 		if(is_numeric($str))
 		{
@@ -336,11 +377,9 @@ SQL;
 	/**
 	 * Bind a prepared query with arguments for executing
 	 *
-	 * @param string $sql
-	 * @param mixed $args
 	 * @return FALSE
 	 */
-	public function prepare_query($sql, $args)
+	public function prepare_query()
 	{
 		// You can't bind query statements before execution with
 		// the firebird database

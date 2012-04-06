@@ -179,6 +179,32 @@ SQL;
 	// --------------------------------------------------------------------------
 
 	/**
+	 * Return list of custom functions for the current database
+	 *
+	 * @return array
+	 */
+	public function get_functions()
+	{
+		// @todo Implement
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Return list of triggers for the current database
+	 *
+	 * @return array
+	 */
+	public function get_triggers()
+	{
+		// @todo Implement
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
 	 * Return the number of rows returned for a SELECT query
 	 *
 	 * @return int

@@ -71,14 +71,7 @@ class SQLite extends DB_PDO {
 SQL;
 
 		$res = $this->query($sql);
-		$result = $res->fetchAll(PDO::FETCH_ASSOC);
-
-		foreach($result as $r)
-		{
-			$tables[] = $r['name'];
-		}
-
-		return $tables;
+		return db_filter($res->fetchAll(PDO::FETCH_ASSOC), 'name');
 	}
 
 	// --------------------------------------------------------------------------
@@ -102,8 +95,11 @@ SQL;
 	 */
 	public function get_views()
 	{
-		// @todo Implement
-		return FALSE;
+		$sql = <<<SQL
+			SELECT "name" FROM "sqlite_master" WHERE "type" = 'view'
+SQL;
+		$res = $this->query($sql);
+		return db_filter($res->fetchALL(PDO::FETCH_ASSOC), 'name');
 	}
 
 	// --------------------------------------------------------------------------
@@ -115,6 +111,32 @@ SQL;
 	 */
 	public function get_sequences()
 	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Return list of custom functions for the current database
+	 *
+	 * @return array
+	 */
+	public function get_functions()
+	{
+		// @todo Implement
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Return list of triggers for the current database
+	 *
+	 * @return array
+	 */
+	public function get_triggers()
+	{
+		// @todo Implement
 		return FALSE;
 	}
 
