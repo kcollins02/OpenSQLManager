@@ -519,6 +519,7 @@ class Firebird_Result {
 
 		// Let php do all the hard stuff in converting
 		// the array of arguments into a list of arguments
+		// Then pass the resource to the constructor
 		$this->__construct(call_user_func_array('fbird_execute', $args));
 
 		return $this;
@@ -531,10 +532,9 @@ class Firebird_Result {
 	 *
 	 * @return int
 	 */
-	public function rowCount($statement="")
+	public function rowCount()
 	{
-		$statement = $statement OR $this->statement;
-		return fbird_affected_rows($statement);
+		return fbird_affected_rows();
 	}
 
 	// --------------------------------------------------------------------------
