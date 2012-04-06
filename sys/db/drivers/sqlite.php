@@ -64,9 +64,10 @@ class SQLite extends DB_PDO {
 	{
 		$tables = array();
 		$sql = <<<SQL
-			SELECT "name", "sql"
+			SELECT "name"
 			FROM "sqlite_master"
 			WHERE "type"='table'
+			ORDER BY "name" DESC
 SQL;
 
 		$res = $this->query($sql);

@@ -61,7 +61,7 @@ class pgSQL extends DB_PDO {
 		$sql = <<<SQL
 			SELECT "datname" FROM "pg_database"
 			WHERE "datname" NOT IN ('template0','template1')
-			ORDER BY 1
+			ORDER BY "datname" ASC
 SQL;
 
 		$res = $this->query($sql);
@@ -82,6 +82,7 @@ SQL;
 			SELECT "tablename" FROM "pg_tables"
 			WHERE "tablename" NOT LIKE 'pg_%'
 			AND "tablename" NOT LIKE 'sql_%'
+			ORDER BY "tablename" ASC
 SQL;
 
 		$res = $this->query($sql);
@@ -155,6 +156,7 @@ SQL;
 			WHERE "schemaname" NOT IN
 				('pg_catalog', 'information_schema')
 			AND "viewname" !~ '^pg_'
+			ORDER BY "viewname" ASC
 SQL;
 
 		$res = $this->query($sql);
@@ -175,7 +177,8 @@ SQL;
 		$sql = <<<SQL
 			SELECT "c"."relname"
 			FROM "pg_class" "c"
-			WHERE "c"."relkind" = 'S';
+			WHERE "c"."relkind" = 'S'
+			ORDER BY "relname" ASC
 SQL;
 
 		$res = $this->query($sql);
