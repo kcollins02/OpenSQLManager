@@ -210,6 +210,22 @@ SQL;
 	// --------------------------------------------------------------------------
 
 	/**
+	 * Retrun list of stored procedures for the current database
+	 *
+	 * @return array
+	 */
+	public function get_procedures()
+	{
+		$sql = 'SELECT * FROM "RDB$PROCEDURES"';
+		
+		$res = $this->query($sql);
+
+		return $res->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
 	 * Return list of triggers for the current database
 	 *
 	 * @return array

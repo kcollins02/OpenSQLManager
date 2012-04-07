@@ -97,6 +97,18 @@ class ODBC extends DB_PDO {
 	 *
 	 * @return FALSE
 	 */
+	public function get_procedures()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Not applicable to ODBC
+	 *
+	 * @return FALSE
+	 */
 	public function get_triggers()
 	{
 		return FALSE;

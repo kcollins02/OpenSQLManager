@@ -244,6 +244,13 @@ abstract class DB_PDO extends PDO {
 	abstract public function get_functions();
 
 	/**
+	 * Return list of stored procedures for the current database
+	 *
+	 * @return array
+	 */
+	abstract public function get_procedures();
+
+	/**
 	 * Return list of triggers for the current database
 	 *
 	 * @return array

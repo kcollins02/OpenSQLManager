@@ -192,14 +192,40 @@ SQL;
 	// --------------------------------------------------------------------------
 
 	/**
+	 * Retrun list of stored procedures for the current database
+	 *
+	 * @return array
+	 */
+	public function get_procedures()
+	{
+		$sql = <<<SQL
+			SELECT "routine_name"
+			FROM "information_schema"."routines"
+			WHERE "specific_schema" NOT IN
+				('pg_catalog', 'information_schema')
+			AND "type_udt_name" != 'trigger';
+SQL;
+		$res = $this->query($sql);
+		return db_filter($res->fetchAll(PDO::FETCH_ASSOC), 'routine_name');
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
 	 * Return list of triggers for the current database
 	 *
 	 * @return array
 	 */
 	public function get_triggers()
 	{
-		// @todo Implement
-		return FALSE;
+		$sql = <<<SQL
+			SELECT *
+			FROM "information_schema"."triggers"
+			WHERE "trigger_schema" NOT IN
+				('pg_catalog', 'information_schema')
+SQL;
+		$res = $this->query($sql);
+		return $res->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	// --------------------------------------------------------------------------

@@ -107,8 +107,21 @@ class MySQL extends DB_PDO {
 	 */
 	public function get_functions()
 	{
-		// @todo Implement
-		return FALSE;
+		$res = $this->query('SHOW FUNCTION STATUS');
+		return $res->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Retrun list of stored procedures for the current database
+	 *
+	 * @return array
+	 */
+	public function get_procedures()
+	{
+		$res = $this->query('SHOW PROCEDURE STATUS');
+		return $res->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	// --------------------------------------------------------------------------
@@ -120,8 +133,8 @@ class MySQL extends DB_PDO {
 	 */
 	public function get_triggers()
 	{
-		// @todo Implement
-		return FALSE;
+		$res = $this->query('SHOW TRIGGERS');
+		return $res->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	// --------------------------------------------------------------------------

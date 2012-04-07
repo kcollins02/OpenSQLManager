@@ -130,6 +130,19 @@ SQL;
 	// --------------------------------------------------------------------------
 
 	/**
+	 * Retrun list of stored procedures for the current database
+	 *
+	 * @return array
+	 */
+	public function get_procedures()
+	{
+		// @todo Implement
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
 	 * Return list of triggers for the current database
 	 *
 	 * @return array
