@@ -74,7 +74,6 @@ class firebird extends DB_PDO {
 	 * Wrapper public function to better match PDO
 	 *
 	 * @param string $sql
-	 * @param  array $params
 	 * @return $this
 	 */
 	public function query($sql)
@@ -135,7 +134,7 @@ class firebird extends DB_PDO {
 			SELECT "RDB\$RELATION_NAME" FROM "RDB\$RELATIONS"
 			WHERE "RDB\$RELATION_NAME" NOT LIKE 'RDB$%'
 			AND "RDB\$RELATION_NAME" NOT LIKE 'MON$%'
-			AND RDB\$VIEW_CONTEXT IS NULL
+			AND "RDB\$VIEW_BLR" IS NOT NULL
 			ORDER BY "RDB\$RELATION_NAME" ASC
 SQL;
 
@@ -183,7 +182,7 @@ SQL;
 		$sql = <<<SQL
 			SELECT "RDB\$GENERATOR_NAME"
 			FROM "RDB\$GENERATORS"
-			WHERE "RDB\$SYSTEM_FLAG"=0;
+			WHERE "RDB\$SYSTEM_FLAG" = 0
 SQL;
 		$res = $this->query($sql);
 
@@ -199,8 +198,13 @@ SQL;
 	 */
 	public function get_functions()
 	{
-		// @todo Implement
-		return FALSE;
+		$sql = <<<SQL
+			SELECT * FROM "RDB\$TRIGGERS"
+			WHERE "RDB\$SYSTEM_FLAG" = 0
+SQL;
+		$res = $this->query($sql);
+
+		return $res->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	// --------------------------------------------------------------------------
@@ -212,8 +216,13 @@ SQL;
 	 */
 	public function get_triggers()
 	{
-		// @todo Implement
-		return FALSE;
+		$sql = <<<SQL
+			SELECT * FROM "RDB\$FUNCTIONS"
+			WHERE "RDB\$SYSTEM_FLAG" = 0
+SQL;
+		$res = $this->query($sql);
+
+		return $res->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	// --------------------------------------------------------------------------
@@ -318,8 +327,6 @@ SQL;
 		return fbird_rollback($this->trans);
 	}
 
-
-
 	// --------------------------------------------------------------------------
 
 	/**
@@ -347,7 +354,7 @@ SQL;
 	 * @param string $str
 	 * @return string
 	 */
-	public function quote($str)
+	public function quote($str, $param_type = NULL)
 	{
 		if(is_numeric($str))
 		{
@@ -379,7 +386,7 @@ SQL;
 	 *
 	 * @return FALSE
 	 */
-	public function prepare_query()
+	public function prepare_query($sql, $params)
 	{
 		// You can't bind query statements before execution with
 		// the firebird database
