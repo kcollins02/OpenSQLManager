@@ -134,9 +134,6 @@ abstract class DB_PDO extends PDO {
 			$this->statement = $statement;
 		}
 
-		// Execute the query
-		//$this->statement->execute();
-
 		// Return number of rows affected
 		return $this->statement->rowCount();
 	}
@@ -210,74 +207,125 @@ abstract class DB_PDO extends PDO {
 	 * Method to simplify retreiving db results for meta-data queries
 	 *
 	 * @param string $sql
-	 * @param string $filtered_index
+	 * @param bool $filtered_index
+	 * @return mixed
 	 */
-	protected function driver_query($sql, $filtered_index="")
+	protected function driver_query($sql, $filtered_index=TRUE)
 	{
-		$res = $this->query($sql);
-		$all = $res->fetchAll(PDO::FETCH_ASSOC);
-
-		if ( ! empty($filtered_index))
+		if ($sql === FALSE)
 		{
-			return db_filter($all, $filtered_index);
+			return FALSE;
 		}
-
-		return $all;
+	
+		$res = $this->query($sql);
+		
+		$flag = ($filtered_index) ? PDO::FETCH_NUM : PDO::FETCH_ASSOC;
+		$all = $res->fetchAll($flag);
+		
+		return ($filtered_index) ? db_filter($all, 0) : $all;
 	}
-
-
+	
 	// -------------------------------------------------------------------------
-	// ! Abstract public functions to override in child classes
-	// -------------------------------------------------------------------------
-
+	
 	/**
 	 * Return list of tables for the current database
 	 *
 	 * @return array
 	 */
-	abstract public function get_tables();
+	public function get_tables()
+	{
+		return $this->driver_query($this->sql->table_list());
+	}
+	
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Return list of dbs for the current connection, if possible
 	 *
 	 * @return array
 	 */
-	abstract public function get_dbs();
+	public function get_dbs()
+	{
+		return $this->driver_query($this->sql->db_list());
+	}
+	
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Return list of views for the current database
 	 *
 	 * @return array
 	 */
-	abstract public function get_views();
+	public function get_views()
+	{
+		return $this->driver_query($this->sql->view_list());
+	}
+	
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Return list of sequences for the current database, if they exist
 	 *
 	 * @return array
 	 */
-	abstract public function get_sequences();
+	public function get_sequences()
+	{
+		return $this->driver_query($this->sql->sequence_list());
+	}
+	
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Return list of function for the current database
 	 *
 	 * @return array
 	 */
-	abstract public function get_functions();
+	public function get_functions()
+	{
+		return $this->driver_query($this->sql->function_list(), FALSE);
+	}
+	
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Return list of stored procedures for the current database
 	 *
 	 * @return array
 	 */
-	abstract public function get_procedures();
+	public function get_procedures()
+	{
+		return $this->driver_query($this->sql->procedure_list(), FALSE);
+	}
+	
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Return list of triggers for the current database
 	 *
 	 * @return array
 	 */
-	abstract public function get_triggers();
+	public function get_triggers()
+	{
+		return $this->driver_query($this->sql->trigger_list(), FALSE);
+	}
+	
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * Retreives an array of non-user-created tables for
+	 * the connection/database
+	 *
+	 * @return array
+	 */
+	public function get_system_tables()
+	{
+		return $this->driver_query($this->sql->system_table_list());
+	}
+
+
+	// -------------------------------------------------------------------------
+	// ! Abstract public functions to override in child classes
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Empty the passed table
@@ -294,14 +342,6 @@ abstract class DB_PDO extends PDO {
 	 * @return int
 	 */
 	abstract public function num_rows();
-
-	/**
-	 * Retreives an array of non-user-created tables for
-	 * the connection/database
-	 *
-	 * @return array
-	 */
-	abstract public function get_system_tables();
 
 	/**
 	 * Connect to a different database

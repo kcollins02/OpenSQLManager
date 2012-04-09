@@ -60,6 +60,7 @@ abstract class DB_SQL {
 	/**
 	 * Return an SQL file with the database table structure
 	 *
+	 * @abstract
 	 * @return string
 	 */
 	abstract public function backup_structure();
@@ -67,6 +68,7 @@ abstract class DB_SQL {
 	/**
 	 * Return an SQL file with the database data as insert statements
 	 *
+	 * @abstract
 	 * @return string
 	 */
 	abstract public function backup_data();

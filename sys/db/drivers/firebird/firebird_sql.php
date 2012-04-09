@@ -209,5 +209,126 @@ class Firebird_SQL extends DB_SQL {
 
 		return $output_sql;
 	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Returns sql to list other databases
+	 *
+	 * @return FALSE
+	 */
+	public function db_list()
+	{
+		return FALSE;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Returns sql to list tables
+	 *
+	 * @return string
+	 */
+	public function table_list()
+	{
+		return <<<SQL
+			SELECT "RDB\$RELATION_NAME" FROM "RDB\$RELATIONS"
+			WHERE "RDB\$RELATION_NAME" NOT LIKE 'RDB$%'
+			AND "RDB\$RELATION_NAME" NOT LIKE 'MON$%'
+			AND "RDB\$VIEW_BLR" IS NOT NULL
+			ORDER BY "RDB\$RELATION_NAME" ASC
+SQL;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Returns sql to list system tables
+	 *
+	 * @return string
+	 */
+	public function system_table_list()
+	{
+		return <<<SQL
+			SELECT "RDB\$RELATION_NAME" FROM "RDB\$RELATIONS"
+			WHERE "RDB\$RELATION_NAME" LIKE 'RDB$%'
+			OR "RDB\$RELATION_NAME" LIKE 'MON$%';
+SQL;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Returns sql to list views
+	 *
+	 * @return string
+	 */
+	public function view_list()
+	{
+		return <<<SQL
+			SELECT "RDB\$RELATION_NAME"
+			FROM "RDB\$RELATIONS"
+			WHERE "RDB\$VIEW_BLR" IS NOT NULL
+			AND ("RDB\$SYSTEM_FLAG" IS NULL OR "RDB\$SYSTEM_FLAG" = 0)
+SQL;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Returns sql to list triggers
+	 *
+	 * @return string
+	 */
+	public function trigger_list()
+	{
+		return <<<SQL
+			SELECT * FROM "RDB\$FUNCTIONS"
+			WHERE "RDB\$SYSTEM_FLAG" = 0
+SQL;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Return sql to list functions
+	 *
+	 * @return string
+	 */
+	public function function_list()
+	{
+		return <<<SQL
+			SELECT * FROM "RDB\$FUNCTIONS"
+			WHERE "RDB\$SYSTEM_FLAG" = 0
+SQL;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Return sql to list stored procedures
+	 *
+	 * @return string
+	 */
+	public function procedure_list()
+	{
+		return 'SELECT * FROM "RDB$PROCEDURES"';
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Return sql to list sequences
+	 *
+	 * @return string
+	 */
+	public function sequence_list()
+	{
+		return <<<SQL
+			SELECT "RDB\$GENERATOR_NAME"
+			FROM "RDB\$GENERATORS"
+			WHERE "RDB\$SYSTEM_FLAG" = 0
+SQL;
+	}
 }
 //End of firebird_sql.php
