@@ -165,4 +165,9 @@ SQL;
 	{
 		$this->assertFalse($this->db->get_dbs());
 	}
+	
+	function TestGetSchemas()
+	{
+		$this->assertFalse($this->db->get_schemas());
+	}
 }

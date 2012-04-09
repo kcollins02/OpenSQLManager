@@ -84,5 +84,25 @@ class MySQLTest extends DBTest {
 		$this->assertTrue(in_array('create_test', $dbs));
 
 	}
+	
+	function TestGetSchemas()
+	{
+		$this->assertFalse($this->db->get_schemas());
+	}
+	
+	function TestGetsProcedures()
+	{
+		$this->assertTrue(is_array($this->db->get_procedures()));
+	}
+	
+	function TestGetTriggers()
+	{
+		$this->assertTrue(is_array($this->db->get_triggers()));
+	}
+	
+	function TestGetSequences()
+	{
+		$this->assertFalse($this->db->get_sequences());
+	}
 }
 

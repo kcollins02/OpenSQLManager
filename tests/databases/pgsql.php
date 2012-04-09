@@ -101,4 +101,24 @@ class PgTest extends DBTest {
 		$this->assertTrue(in_array('create_test', $dbs));
 
 	}
+	
+	function TestGetSchemas()
+	{
+		$this->assertTrue(is_array($this->db->get_schemas()));
+	}
+	
+	function TestGetSequences()
+	{
+		$this->assertTrue(is_array($this->db->get_sequences()));
+	}
+	
+	function TestGetsProcedures()
+	{
+		$this->assertTrue(is_array($this->db->get_procedures()));
+	}
+	
+	function TestGetTriggers()
+	{
+		$this->assertTrue(is_array($this->db->get_triggers()));
+	}
 }

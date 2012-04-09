@@ -314,12 +314,13 @@ abstract class QBTest extends UnitTestCase {
 
 		$this->assertIsA($query, 'PDOStatement');
 	}
-
-	function TestGetDBs()
+	
+	function TestGetViews()
 	{
-		$this->assertTrue(is_array($this->db->get_dbs()));
+		if (empty($this->db))  return;
+	
+		$this->assertTrue(is_array($this->db->get_views()));
 	}
-
 }
 
 // End of parent.php
