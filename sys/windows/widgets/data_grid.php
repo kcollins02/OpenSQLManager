@@ -56,19 +56,6 @@ class Data_Grid extends GtkTreeView {
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Set the value of the cell at the provided coordinate array
-	 *
-	 * @param array $coord
-	 * @param mixed $val
-	 */
-	public function set(array $coord, $val)
-	{
-		// @todo implement
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
 	 * Empty the model
 	 */
 	public function reset()

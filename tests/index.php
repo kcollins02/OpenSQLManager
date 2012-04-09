@@ -19,6 +19,19 @@ define('TEST_DIR', dirname(__FILE__));
 define('BASE_DIR', str_replace(basename(TEST_DIR), '', TEST_DIR).'/sys/');
 define('DS', DIRECTORY_SEPARATOR);
 
+// --------------------------------------------------------------------------
+
+/**
+ * Alias for require_once for array_map
+ *
+ * @param string $path
+ * @return void
+ */
+function do_include($path)
+{
+	require_once($path);
+}
+
 
 // Include simpletest
 // it has to be set in your php path, or put in the tests folder
@@ -26,7 +39,6 @@ require_once('simpletest/autorun.php');
 
 // Require base testing classes
 require_once(TEST_DIR.'/parent.php');
-require_once(TEST_DIR.'/settings.php');
 
 // Bulk loading wrapper workaround for PHP < 5.4
 function do_include($path)
@@ -38,10 +50,8 @@ function do_include($path)
 require_once("core.php");
 
 // Include required methods
-require_once(BASE_DIR.'common/functions.php');
-require_once(BASE_DIR.'common/settings.php');
-require_once(BASE_DIR.'db/db_pdo.php');
-require_once(BASE_DIR.'db/query_builder.php');
+array_map('do_include', glob(BASE_DIR . 'common/*.php'));
+array_map('do_include', glob(BASE_DIR . 'db/*.php'));
 
 
 // Include db tests
