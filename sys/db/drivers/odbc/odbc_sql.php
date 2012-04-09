@@ -88,5 +88,101 @@ class ODBC_SQL extends DB_SQL {
 		// Not applicable to ODBC
 		return '';
 	}
+
+		// --------------------------------------------------------------------------
+
+	/**
+	 * Returns sql to list other databases
+	 *
+	 * @return FALSE
+	 */
+	public function db_list()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Returns sql to list tables
+	 *
+	 * @return FALSE
+	 */
+	public function table_list()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Returns sql to list system tables
+	 *
+	 * @return FALSE
+	 */
+	public function system_table_list()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Returns sql to list views
+	 *
+	 * @return FALSE
+	 */
+	public function view_list()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Returns sql to list triggers
+	 *
+	 * @return FALSE
+	 */
+	public function trigger_list()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Return sql to list functions
+	 *
+	 * @return FALSE
+	 */
+	public function function_list()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Return sql to list stored procedures
+	 *
+	 * @return FALSE
+	 */
+	public function procedure_list()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Return sql to list sequences
+	 *
+	 * @return FALSE
+	 */
+	public function sequence_list()
+	{
+		return FALSE;
+	}
 }
 // End of odbc_sql.php
