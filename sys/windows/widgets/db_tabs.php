@@ -46,9 +46,6 @@ class DB_tabs extends GTKNotebook {
 	public function __construct()
 	{
 		parent::__construct();
-
-		// Move the tab bar to the bottom
-		//$this->set_tab_pos(Gtk::POS_BOTTOM);
 	}
 
 	// --------------------------------------------------------------------------
@@ -155,7 +152,7 @@ class DB_tabs extends GTKNotebook {
 	 */
 	public static function reset()
 	{
-		for($i=0, $max=self::$instance->get_n_pages(); $i <= $max; $i++)
+		for($i=self::$instance->get_n_pages(); $i >= 0; $i--)
 		{
 			self::$instance->remove_page($i);
 		}
@@ -193,36 +190,5 @@ class DB_tabs extends GTKNotebook {
 
 		}
 	}
-
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Simplify adding multi-level array to the Notebook object
-	 *
-	 * @param object $conn
-	 * @param string $tab_name
-	 * @param string $col_name
-	 * @param string $method
-	 * @return void
-	 */
-	/*private static function _add_multi_level_tab(&$conn, $tab_name, $col_name, $method, $params=array())
-	{
-		$tab = new Data_Grid();
-		$tab_model = $tab->get_model();
-
-		$tab_data = call_user_func_array(array($conn, $method), $params);
-
-		if ($tab_data !== FALSE)
-		{
-			for($i=0, $c=count($tab_data); $i < $c; $i++)
-			{
-				$j = 0;
-				foreach($tab_data[$i] as $key => $val)
-				{
-
-				}
-			}
-		}
-	}*/
 }
 // End of db_tabs.php

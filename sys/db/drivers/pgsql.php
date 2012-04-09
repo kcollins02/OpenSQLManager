@@ -121,10 +121,10 @@ SQL;
 	 */
 	public function get_schemas()
 	{
-			$sql = <<<SQL
-				SELECT DISTINCT "schemaname" FROM "pg_tables"
-				WHERE "schemaname" NOT LIKE 'pg\_%'
-				AND "schemaname" != 'information_schema'
+		$sql = <<<SQL
+			SELECT DISTINCT "schemaname" FROM "pg_tables"
+			WHERE "schemaname" NOT LIKE 'pg\_%'
+			AND "schemaname" != 'information_schema'
 SQL;
 
 		$res = $this->query($sql);
