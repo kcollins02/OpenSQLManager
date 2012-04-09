@@ -21,18 +21,6 @@ define('DS', DIRECTORY_SEPARATOR);
 
 // --------------------------------------------------------------------------
 
-/**
- * Alias for require_once for array_map
- *
- * @param string $path
- * @return void
- */
-function do_include($path)
-{
-	require_once($path);
-}
-
-
 // Include simpletest
 // it has to be set in your php path, or put in the tests folder
 require_once('simpletest/autorun.php');
