@@ -107,20 +107,18 @@ foreach(pdo_drivers() as $d)
 		continue;
 	}
 
-	$file = "{$path}{$d}.php";
+	$dir = "{$path}{$d}";
 
-	if(is_file($file))
+	if(is_dir($dir))
 	{
-		require_once("{$path}{$d}.php");
-		require_once("{$path}{$d}_sql.php");
+		array_map('do_include', glob($dir.'/*.php'));
 	}
 }
 
 // Load Firebird if there is support
 if(function_exists('fbird_connect'))
 {
-	require_once("{$path}firebird.php");
-	require_once("{$path}firebird_sql.php");
+	array_map('do_include', glob($path.'*.php'));
 }
 
 // --------------------------------------------------------------------------

@@ -82,7 +82,9 @@ class DB_tabs extends GTKNotebook {
 
 		// 'Databases' Tab
 		{
-			self::_add_tab($conn, 'Databases', 'Db Name', 'get_dbs');
+			self::_add_tab($conn, 'Databases', 'Db Name', 'get_dbs', array(), array(
+				'row-activated' => array(self::$instance, '_switch_db'),
+			));
 		}
 
 		// 'Schemas' Tab
@@ -179,7 +181,7 @@ class DB_tabs extends GTKNotebook {
 	 * @param string $method
 	 * @return void
 	 */
-	private static function _add_tab(&$conn, $tab_name, $col_name, $method, $params=array())
+	private static function _add_tab(&$conn, $tab_name, $col_name, $method, $params=array(), $events=array())
 	{
 		$tab = new Data_Grid();
 		$tab_model = $tab->get_model();
@@ -195,6 +197,14 @@ class DB_tabs extends GTKNotebook {
 
 			$cell_renderer = new GtkCellRendererText();
 			$tab->insert_column_with_data_func(0, $col_name, $cell_renderer, array(self::$instance, 'add_data_col'));
+
+			if ( ! empty($events))
+			{
+				foreach($events as $name => $method)
+				{
+					$tab->connect($name, $method);
+				}
+			}
 
 			self::$instance->add_tab($tab_name, $tab);
 
@@ -259,6 +269,23 @@ class DB_tabs extends GTKNotebook {
 		}
 
 		return;
+	}
+
+	/**
+	 * Connects to a different database than the one currently in use
+	 *
+	 * @param type $view
+	 * @param type $path
+	 * @param type $column
+	 * @param type $data
+	 */
+	public function _switch_db($view, $path, $column, $data=array())
+	{
+		// Get the selected database
+		$new_db = $view->get(0);
+
+		
+
 	}
 }
 // End of db_tabs.php

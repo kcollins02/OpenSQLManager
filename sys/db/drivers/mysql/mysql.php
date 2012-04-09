@@ -38,6 +38,19 @@ class MySQL extends DB_PDO {
 	// --------------------------------------------------------------------------
 
 	/**
+	 * Connect to a different database
+	 *
+	 * @param string $name
+	 */
+	public function switch_db($name)
+	{
+		// @todo Implement
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
 	 * Empty a table
 	 *
 	 * @param string $table

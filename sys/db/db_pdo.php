@@ -294,5 +294,13 @@ abstract class DB_PDO extends PDO {
 	 * @return string
 	 */
 	abstract public function backup_data();
+
+	/**
+	 * Connect to a different database
+	 *
+	 * @param string $name
+	 * @return void
+	 */
+	abstract public function switch_db($name);
 }
 // End of db_pdo.php

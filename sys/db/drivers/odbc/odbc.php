@@ -32,6 +32,16 @@ class ODBC extends DB_PDO {
 	// --------------------------------------------------------------------------
 
 	/**
+	 * Doesn't apply to ODBC
+	 */
+	public function switch_db($name)
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
 	 * List tables for the current database
 	 *
 	 * @return mixed
