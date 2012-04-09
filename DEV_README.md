@@ -3,6 +3,7 @@
 ##Programming Style
 Follow the CodeIgniter [Style Guide](https://github.com/timw4mail/CodeIgniter/blob/develop/user_guide_src/source/general/styleguide.rst) - and:
 
+* Stick to PHP 5.2 features - unless I have a PHP 5.3 bundle with PHP-GTK for Windows attached
 * Do not use spaces to align code
 * Do not use `global`, `eval`
 * Do not use the error suppressor `@`
@@ -20,6 +21,7 @@ Follow the CodeIgniter [Style Guide](https://github.com/timw4mail/CodeIgniter/bl
 ### Firebird
 * [Interbase 6 Lang Ref](http://fbclient.googlecode.com/files/LangRef.pdf) - SQL Syntax (pdf)
 * [Firebird Lang Update Ref](http://www.firebirdsql.org/file/documentation/reference_manuals/reference_material/html/langrefupd25.html) - SQL Syntax Updates
+* [Meta Data Queries](http://www.alberton.info/firebird_sql_meta_info.html)
 
 ### MySQL
 * [MySQL Syntax](http://dev.mysql.com/doc/refman/5.1/en/sql-syntax.html)
@@ -28,6 +30,7 @@ Follow the CodeIgniter [Style Guide](https://github.com/timw4mail/CodeIgniter/bl
 ### PostgreSQL
 * [PostgreSQL Syntax](http://www.postgresql.org/docs/9.0/interactive/sql.html)
 * [Performance Tips](http://www.postgresql.org/docs/9.0/interactive/performance-tips.html)
+* [Meta Data Queries](http://www.alberton.info/postgresql_meta_info.html)
 
 ### SQLite
 * [SQL Syntax](http://www.sqlite.org/lang.html)
