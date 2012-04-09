@@ -146,8 +146,7 @@ class MySQL extends DB_PDO {
 	 */
 	public function get_system_tables()
 	{
-		//MySQL doesn't have system tables
-		return array();
+		return array('information_schema');
 	}
 
 	// --------------------------------------------------------------------------

@@ -95,6 +95,11 @@ class DB_tabs extends GTKNotebook {
 			self::_add_tab($conn, 'Tables', 'Table Name', 'get_tables');
 		}
 
+		// 'System Tables' Tab
+		{
+			self::_add_tab($conn, 'System Tables', 'Table Name', 'get_system_tables');
+		}
+
 		// 'Views' Tab
 		{
 			self::_add_tab($conn, 'Views', 'View Name', 'get_views');
