@@ -13,7 +13,10 @@
 // --------------------------------------------------------------------------
 
 /**
- * Firebird result class to emulate PDOStatement Class
+ * Firebird result class to emulate PDOStatement Class - only implements
+ * data-fetching methods
+ *
+ * @todo Implement more of the PDOStatement Class
  */
 class Firebird_Result {
 

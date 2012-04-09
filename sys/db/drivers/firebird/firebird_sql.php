@@ -7,7 +7,7 @@
  * @author 		Timothy J. Warren
  * @copyright	Copyright (c) 2012
  * @link 		https://github.com/aviat4ion/OpenSQLManager
- * @license 	http://philsturgeon.co.uk/code/dbad-license 
+ * @license 	http://philsturgeon.co.uk/code/dbad-license
  */
 
 // --------------------------------------------------------------------------
@@ -19,18 +19,18 @@ class Firebird_SQL extends DB_SQL {
 
 	/**
 	 * Convienience public function to generate sql for creating a db table
-	 * 
-	 * @param string $name 
+	 *
+	 * @param string $name
 	 * @param array $fields
 	 * @param array $constraints=array()
 	 * @param array $indexes=array()
-	 * 
+	 *
 	 * @return string
 	 */
 	public function create_table($name, $fields, array $constraints=array(), array $indexes=array())
 	{
 		$column_array = array();
-		
+
 		// Reorganize into an array indexed with column information
 		// Eg $column_array[$colname] = array(
 		// 		'type' => ...,
@@ -56,7 +56,7 @@ class Firebird_SQL extends DB_SQL {
 			}
 		}
 
-		// Join column definitons together 
+		// Join column definitons together
 		$columns = array();
 		foreach($column_array as $n => $props)
 		{
@@ -74,12 +74,12 @@ class Firebird_SQL extends DB_SQL {
 
 		return $sql;
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
 	 * Drop the selected table
-	 * 
+	 *
 	 * @param string $name
 	 * @return string
 	 */
@@ -87,7 +87,7 @@ class Firebird_SQL extends DB_SQL {
 	{
 		return 'DROP TABLE "'.$name.'"';
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
@@ -102,21 +102,21 @@ class Firebird_SQL extends DB_SQL {
 	{
 		// Keep the current sql string safe for a moment
 		$orig_sql = $sql;
-	
+
 		$sql = 'FIRST '. (int) $limit;
-		
+
 		if ($offset > 0)
 		{
 			$sql .= ' SKIP '. (int) $offset;
 		}
-		
+
 		$sql = preg_replace("`SELECT`i", "SELECT {$sql}", $orig_sql);
-		
+
 		return $sql;
-	} 
-	
+	}
+
 	// --------------------------------------------------------------------------
-	
+
 	/**
 	 * Random ordering keyword
 	 *
@@ -125,6 +125,89 @@ class Firebird_SQL extends DB_SQL {
 	public function random()
 	{
 		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Create an SQL backup file for the current database's structure
+	 *
+	 * @return string
+	 */
+	public function backup_structure()
+	{
+		// @todo Implement Backup function
+		return '';
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Create an SQL backup file for the current database's data
+	 *
+	 * @param array $exclude
+	 * @param bool $system_tables
+	 * @return string
+	 */
+	public function backup_data($exclude=array(), $system_tables=FALSE)
+	{
+		// Determine which tables to use
+		if($system_tables == TRUE)
+		{
+			$tables = array_merge($this->get_system_tables(), $this->get_tables());
+		}
+		else
+		{
+			$tables = $this->get_tables();
+		}
+
+		// Filter out the tables you don't want
+		if( ! empty($exclude))
+		{
+			$tables = array_diff($tables, $exclude);
+		}
+
+		$output_sql = '';
+
+		// Get the data for each object
+		foreach($tables as $t)
+		{
+			$sql = 'SELECT * FROM "'.trim($t).'"';
+			$res = $this->query($sql);
+			$obj_res = $this->fetchAll(PDO::FETCH_ASSOC);
+
+			unset($res);
+
+			// Nab the column names by getting the keys of the first row
+			$columns = @array_keys($obj_res[0]);
+
+			$insert_rows = array();
+
+			// Create the insert statements
+			foreach($obj_res as $row)
+			{
+				$row = array_values($row);
+
+				// Quote values as needed by type
+				if(stripos($t, 'RDB$') === FALSE)
+				{
+					$row = array_map(array(&$this, 'quote'), $row);
+					$row = array_map('trim', $row);
+				}
+
+				$row_string = 'INSERT INTO "'.trim($t).'" ("'.implode('","', $columns).'") VALUES ('.implode(',', $row).');';
+
+				unset($row);
+
+				$insert_rows[] = $row_string;
+			}
+
+			unset($obj_res);
+
+			$output_sql .= "\n\nSET TRANSACTION;\n".implode("\n", $insert_rows)."\nCOMMIT;";
+		}
+
+		return $output_sql;
 	}
 }
 //End of firebird_sql.php

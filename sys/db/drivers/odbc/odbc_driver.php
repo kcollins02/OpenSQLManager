@@ -161,31 +161,5 @@ class ODBC extends DB_PDO {
 	{
 		// @TODO: Implement
 	}
-
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Create an SQL backup file for the current database's structure
-	 *
-	 * @return string
-	 */
-	public function backup_structure()
-	{
-		// Not applicable to ODBC
-		return '';
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Create an SQL backup file for the current database's data
-	 *
-	 * @return string
-	 */
-	public function backup_data()
-	{
-		// Not applicable to ODBC
-		return '';
-	}
 }
 // End of odbc_driver.php

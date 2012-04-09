@@ -7,7 +7,7 @@
  * @author 		Timothy J. Warren
  * @copyright	Copyright (c) 2012
  * @link 		https://github.com/aviat4ion/OpenSQLManager
- * @license 	http://philsturgeon.co.uk/code/dbad-license 
+ * @license 	http://philsturgeon.co.uk/code/dbad-license
  */
 
  // --------------------------------------------------------------------------
@@ -35,7 +35,7 @@ class ODBC_SQL extends DB_SQL {
 	{
 		return "DROP TABLE {$name}";
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
@@ -50,9 +50,9 @@ class ODBC_SQL extends DB_SQL {
 	{
 		return $sql;
 	}
-	
+
 	// --------------------------------------------------------------------------
-	
+
 	/**
 	 * Random ordering keyword
 	 *
@@ -61,6 +61,32 @@ class ODBC_SQL extends DB_SQL {
 	public function random()
 	{
 		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Create an SQL backup file for the current database's structure
+	 *
+	 * @return string
+	 */
+	public function backup_structure()
+	{
+		// Not applicable to ODBC
+		return '';
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Create an SQL backup file for the current database's data
+	 *
+	 * @return string
+	 */
+	public function backup_data()
+	{
+		// Not applicable to ODBC
+		return '';
 	}
 }
 // End of odbc_sql.php

@@ -7,7 +7,7 @@
  * @author 		Timothy J. Warren
  * @copyright	Copyright (c) 2012
  * @link 		https://github.com/aviat4ion/OpenSQLManager
- * @license 	http://philsturgeon.co.uk/code/dbad-license 
+ * @license 	http://philsturgeon.co.uk/code/dbad-license
  */
 
 // --------------------------------------------------------------------------
@@ -16,11 +16,11 @@
  * PostgreSQL specifc SQL
  */
 class pgSQL_SQL extends DB_SQL {
-	
+
 	public function create_table($name, $columns, array $constraints=array(), array $indexes=array())
 	{
 		$column_array = array();
-		
+
 		// Reorganize into an array indexed with column information
 		// Eg $column_array[$colname] = array(
 		// 		'type' => ...,
@@ -46,7 +46,7 @@ class pgSQL_SQL extends DB_SQL {
 			}
 		}
 
-		// Join column definitons together 
+		// Join column definitons together
 		$columns = array();
 		foreach($column_array as $n => $props)
 		{
@@ -64,14 +64,14 @@ class pgSQL_SQL extends DB_SQL {
 
 		return $sql;
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	public function delete_table($name)
 	{
 		return 'DROP TABLE "'.$name.'"';
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
@@ -93,9 +93,9 @@ class pgSQL_SQL extends DB_SQL {
 
 		return $sql;
 	}
-	
+
 	// --------------------------------------------------------------------------
-	
+
 	/**
 	 * Random ordering keyword
 	 *
@@ -104,6 +104,32 @@ class pgSQL_SQL extends DB_SQL {
 	public function random()
 	{
 		return ' RANDOM()';
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Create an SQL backup file for the current database's structure
+	 *
+	 * @return string
+	 */
+	public function backup_structure()
+	{
+		// @todo Implement Backup function
+		return '';
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Create an SQL backup file for the current database's data
+	 *
+	 * @return string
+	 */
+	public function backup_data()
+	{
+		// @todo Implement Backup function
+		return '';
 	}
 
 }

@@ -177,32 +177,6 @@ class MySQL extends DB_PDO {
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Create an SQL backup file for the current database's structure
-	 *
-	 * @return string
-	 */
-	public function backup_structure()
-	{
-		// @todo Implement Backup function
-		return '';
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Create an SQL backup file for the current database's data
-	 *
-	 * @return string
-	 */
-	public function backup_data()
-	{
-		// @todo Implement Backup function
-		return '';
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
 	 * Surrounds the string with the databases identifier escape characters
 	 *
 	 * @param string $ident

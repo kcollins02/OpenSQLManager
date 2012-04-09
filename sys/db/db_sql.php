@@ -56,5 +56,19 @@ abstract class DB_SQL {
 	 * @return string
 	 */
 	abstract public function random();
+
+	/**
+	 * Return an SQL file with the database table structure
+	 *
+	 * @return string
+	 */
+	abstract public function backup_structure();
+
+	/**
+	 * Return an SQL file with the database data as insert statements
+	 *
+	 * @return string
+	 */
+	abstract public function backup_data();
 }
 // End of db_sql.php

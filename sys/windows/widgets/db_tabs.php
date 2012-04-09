@@ -284,7 +284,19 @@ class DB_tabs extends GTKNotebook {
 		// Get the selected database
 		$new_db = $view->get(0);
 
-		
+		// Get existing connections
+		$conns = DB_REG::get_connections();
+
+		// Get connection info for existing connections
+		$conn_info = array();
+
+		foreach($conns as $c)
+		{
+			$conn_info[$c] = Settings::get_instance()->get_db($c);
+		}
+
+		// @todo figure out how to single out the current db connection
+
 
 	}
 }

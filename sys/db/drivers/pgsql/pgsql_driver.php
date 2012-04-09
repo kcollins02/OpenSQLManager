@@ -254,31 +254,5 @@ SQL;
 	{
 		return (isset($this->statement)) ? $this->statement->rowCount : FALSE;
 	}
-
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Create an SQL backup file for the current database's structure
-	 *
-	 * @return string
-	 */
-	public function backup_structure()
-	{
-		// @todo Implement Backup function
-		return '';
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Create an SQL backup file for the current database's data
-	 *
-	 * @return string
-	 */
-	public function backup_data()
-	{
-		// @todo Implement Backup function
-		return '';
-	}
 }
 //End of pgsql_driver.php

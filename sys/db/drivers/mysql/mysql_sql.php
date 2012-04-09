@@ -7,11 +7,11 @@
  * @author 		Timothy J. Warren
  * @copyright	Copyright (c) 2012
  * @link 		https://github.com/aviat4ion/OpenSQLManager
- * @license 	http://philsturgeon.co.uk/code/dbad-license 
+ * @license 	http://philsturgeon.co.uk/code/dbad-license
  */
 
 // --------------------------------------------------------------------------
- 
+
 /**
  * MySQL specifc SQL
  */
@@ -19,18 +19,18 @@ class MySQL_SQL extends DB_SQL{
 
  	/**
  	 * Convienience public function for creating a new MySQL table
- 	 * 
+ 	 *
  	 * @param [type] $name [description]
  	 * @param [type] $columns [description]
  	 * @param array $constraints=array() [description]
  	 * @param array $indexes=array() [description]
- 	 * 
+ 	 *
  	 * @return [type]
  	 */
 	public function create_table($name, $columns, array $constraints=array(), array $indexes=array())
 	{
 		$column_array = array();
-		
+
 		// Reorganize into an array indexed with column information
 		// Eg $column_array[$colname] = array(
 		// 		'type' => ...,
@@ -56,25 +56,25 @@ class MySQL_SQL extends DB_SQL{
 			}
 		}
 
-		// Join column definitons together 
+		// Join column definitons together
 		$columns = array();
 		foreach($column_array as $n => $props)
 		{
 			$n = trim($n, '`');
-		
+
 			$str = "`{$n}` ";
 			$str .= (isset($props['type'])) ? "{$props['type']} " : "";
 
 			$columns[] = $str;
 		}
-		
+
 		// Add constraints
 		foreach($column_array as $n => $props)
-		{			
+		{
 			if (isset($props['constraint']))
 			{
 				$columns[] = $props['constraint'];
-			}	
+			}
 		}
 
 		// Generate the sql for the creation of the table
@@ -84,12 +84,12 @@ class MySQL_SQL extends DB_SQL{
 
 		return $sql;
 	}
-	
+
 	// --------------------------------------------------------------------------
-	
+
 	/**
 	 * Convience public function for droping a MySQL table
-	 * 
+	 *
 	 * @param string $name
 	 * @return  string
 	 */
@@ -97,7 +97,7 @@ class MySQL_SQL extends DB_SQL{
 	{
 		return "DROP TABLE `{$name}`";
 	}
-	
+
 	// --------------------------------------------------------------------------
 
 	/**
@@ -117,9 +117,9 @@ class MySQL_SQL extends DB_SQL{
 
 		return $sql." LIMIT {$offset}, {$limit}";
 	}
-	
+
 	// --------------------------------------------------------------------------
-	
+
 	/**
 	 * Random ordering keyword
 	 *
@@ -128,6 +128,32 @@ class MySQL_SQL extends DB_SQL{
 	public function random()
 	{
 		return ' RAND()';
-	}	
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Create an SQL backup file for the current database's structure
+	 *
+	 * @return string
+	 */
+	public function backup_structure()
+	{
+		// @todo Implement Backup function
+		return '';
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Create an SQL backup file for the current database's data
+	 *
+	 * @return string
+	 */
+	public function backup_data()
+	{
+		// @todo Implement Backup function
+		return '';
+	}
 }
 //End of mysql_sql.php
