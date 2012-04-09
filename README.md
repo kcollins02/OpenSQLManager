@@ -40,16 +40,15 @@ See [Dev Guide](https://github.com/aviat4ion/OpenSQLManager/blob/master/DEV_READ
 
 The databases currently slated to be supported are:
 
-* [Firebird](http://www.firebirdsql.org/)
-* [MySQL](http://www.mysql.com/) / [MariaDB](http://mariadb.org/)
-* [PostgreSQL](http://www.postgresql.org)
-* [SQLite](http://sqlite.org/)
+* [Firebird](http://www.firebirdsql.org/) version 2.5+
+* [MySQL](http://www.mysql.com/) / [MariaDB](http://mariadb.org/) version 5.1+
+* [PostgreSQL](http://www.postgresql.org) version 9.0+
+* [SQLite](http://sqlite.org/) version 3+
 
 
 Plan to implement, not support:
 
 * ODBC
-
 
 ## Won't Support
 Closed source DBs, like Oracle, MSSQL, etc. 
