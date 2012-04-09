@@ -80,14 +80,9 @@ class firebird extends DB_PDO {
 	{
 		$this->count = 0;
 
-		if (isset($this->trans))
-		{
-			$this->statement_link = @fbird_query($this->trans, $sql);
-		}
-		else
-		{
-			$this->statement_link = @fbird_query($this->conn, $sql);
-		}
+		$this->statement_link = (isset($this->trans))
+			? @fbird_query($this->trans, $sql)
+			: @fbird_query($this->conn, $sql);
 
 		// Throw the error as a exception
 		if ($this->statement_link === FALSE)
@@ -217,7 +212,7 @@ SQL;
 	public function get_procedures()
 	{
 		$sql = 'SELECT * FROM "RDB$PROCEDURES"';
-		
+
 		$res = $this->query($sql);
 
 		return $res->fetchAll(PDO::FETCH_ASSOC);
