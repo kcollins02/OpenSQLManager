@@ -112,12 +112,17 @@ class DB_tabs extends GTKNotebook {
 
 		// 'Triggers' Tab
 		{
-			//self::_add_tab($conn, 'Triggers', 'Trigger Name', 'get_triggers');
+			self::_add_row_tab($conn, 'Triggers','get_triggers');
 		}
 
 		// 'Procedures' Tab
 		{
-			//self::_add_tab($conn, 'Procedures', 'Procedure Name', 'get_procedures');
+			self::_add_tab($conn, 'Procedures', 'Procedure name', 'get_procedures');
+		}
+
+		// 'Functions' Tab
+		{
+			self::_add_row_tab($conn, 'Functions', 'get_functions');
 		}
 
 
@@ -194,6 +199,66 @@ class DB_tabs extends GTKNotebook {
 			self::$instance->add_tab($tab_name, $tab);
 
 		}
+
+		return;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Add a multidimensional array to a tab
+	 *
+	 * @param object $conn
+	 * @param string $tab_name
+	 * @param string $method
+	 * @return void
+	 */
+	private static function _add_row_tab(&$conn, $tab_name, $method)
+	{
+		$tab_data = call_user_func_array(array($conn, $method), array());
+
+		if ( ! empty($tab_data))
+		{
+			$tab_model = new StdClass();
+
+			$cols = array_keys($tab_data[0]);
+
+			// Add columns to model
+			$model_args = array_fill(0, count($cols), Gobject::TYPE_PHP_VALUE);
+			$eval_string = '$tab_model = new GTKTreeStore('.implode(',', $model_args).');';
+
+			// Shame, shame, but how else?
+			eval($eval_string);
+			$tab= new Data_Grid($tab_model);
+
+			// Set the data in the model
+			for($i=0, $c = count($tab_data); $i < $c; $i++)
+			{
+				// Add a row
+				$row = $tab_model->insert($i);
+
+				$j = -1;
+				$vals = array($row);
+				foreach($tab_data[$i] as $v)
+				{
+					$vals[] = ++$j;
+					$vals[] = $v;
+				}
+
+				call_user_func_array(array($tab_model, 'set'), $vals);
+			}
+
+			// Add columns to view
+			foreach($cols as $i => $c)
+			{
+				$renderer = new GtkCellRendererText();
+				$tab->insert_column_with_data_func($i, $c, $renderer, array(self::$instance, 'add_data_col'), $i);
+			}
+
+			self::$instance->add_tab($tab_name, $tab);
+		}
+
+		return;
 	}
 }
 // End of db_tabs.php

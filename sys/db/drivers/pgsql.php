@@ -205,6 +205,8 @@ SQL;
 				('pg_catalog', 'information_schema')
 			AND "type_udt_name" != 'trigger';
 SQL;
+
+
 		$res = $this->query($sql);
 		return db_filter($res->fetchAll(PDO::FETCH_ASSOC), 'routine_name');
 	}
@@ -219,7 +221,7 @@ SQL;
 	public function get_triggers()
 	{
 		$sql = <<<SQL
-			SELECT *
+			SELECT DISTINCT trigger_name
 			FROM "information_schema"."triggers"
 			WHERE "trigger_schema" NOT IN
 				('pg_catalog', 'information_schema')

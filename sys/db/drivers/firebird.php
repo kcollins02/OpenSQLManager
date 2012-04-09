@@ -609,4 +609,4 @@ class Firebird_Result {
 		return array(0, $code, $msg);
 	}
 }
-// End of firebird-ibase.php
+// End of firebird.php
