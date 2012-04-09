@@ -161,4 +161,8 @@ SQL;
 		$this->assertFalse(in_array('create_test', $dbs));
 	}*/
 
+	function TestGetDBs()
+	{
+		$this->assertFalse($this->db->get_dbs());
+	}
 }
