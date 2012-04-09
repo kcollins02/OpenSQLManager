@@ -281,4 +281,4 @@ SQL;
 		return '';
 	}
 }
-//End of pgsql.php
+//End of pgsql_driver.php

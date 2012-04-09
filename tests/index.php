@@ -56,9 +56,10 @@ foreach(pdo_drivers() as $d)
 		continue;
 	}
 
-	$src_file = "{$src_path}{$d}.php";
+	// Load by driver folder
+	$src_dir = "{$src_path}{$d}";
 
-	if(is_file($src_file))
+	if(is_dir($src_dir))
 	{
 		array_map('do_include', glob($src_path.$d.'/*.php'));
 		require_once("{$test_path}{$d}.php");

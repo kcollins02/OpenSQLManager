@@ -188,4 +188,4 @@ class ODBC extends DB_PDO {
 		return '';
 	}
 }
-// End of odbc.php
+// End of odbc_driver.php
