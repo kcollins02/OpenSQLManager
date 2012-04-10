@@ -23,6 +23,7 @@ abstract class DB_PDO extends PDO {
 
 	public $manip;
 	protected $statement;
+	protected $escape_char = '"';
 
 	/**
 	 * PDO constructor wrapper
@@ -172,7 +173,9 @@ abstract class DB_PDO extends PDO {
 		// Split each identifier by the period
 		$hiers = explode('.', $ident);
 
-		return '"'.implode('"."', $hiers).'"';
+		return $this->escape_char .
+			implode("{$this->escape_char}.{$this->escape_char}", $hiers) . 
+			$this->escape_char;
 	}
 
 	// -------------------------------------------------------------------------

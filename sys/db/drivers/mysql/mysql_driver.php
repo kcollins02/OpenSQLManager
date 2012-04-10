@@ -19,6 +19,8 @@
  */
 class MySQL extends DB_PDO {
 
+	protected $escape_char = '`';
+
 	/**
 	 * Connect to MySQL Database
 	 *
@@ -82,27 +84,6 @@ class MySQL extends DB_PDO {
 	public function num_rows()
 	{
 		return isset($this->statement) ? $this->statement->rowCount() : FALSE;
-	}
-
-	// --------------------------------------------------------------------------
-
-	/**
-	 * Surrounds the string with the databases identifier escape characters
-	 *
-	 * @param string $ident
-	 * @return string
-	 */
-	public function quote_ident($ident)
-	{
-		if (is_array($ident))
-		{
-			return array_map(array($this, 'quote_ident'), $ident);
-		}
-
-		// Split each identifier by the period
-		$hiers = explode('.', $ident);
-
-		return '`'.implode('`.`', $hiers).'`';
 	}
 }
 //End of mysql_driver.php
