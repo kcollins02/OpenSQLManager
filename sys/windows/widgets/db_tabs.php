@@ -218,6 +218,7 @@ class DB_tabs extends GTKNotebook {
 			}
 
 			$cell_renderer = new GtkCellRendererText();
+			$cell_renderer->set_property('editable', FALSE);
 			$tab->insert_column_with_data_func(0, $col_name, $cell_renderer, array(self::$instance, 'add_data_col'));
 
 			if ( ! empty($events))
@@ -298,6 +299,7 @@ class DB_tabs extends GTKNotebook {
 			foreach($cols as $i => $c)
 			{
 				$renderer = new GtkCellRendererText();
+				$renderer->set_property('editable', TRUE);
 				$tab->insert_column_with_data_func($i, $c, $renderer, array(self::$instance, 'add_data_col'), $i);
 			}
 
