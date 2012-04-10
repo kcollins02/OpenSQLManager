@@ -123,7 +123,7 @@ class DB_tabs extends GTKNotebook {
 
 		// 'Procedures' Tab
 		{
-			self::_add_tab($conn, 'Procedures', 'Procedure name', 'get_procedures');
+			self::_add_row_tab($conn, 'Procedures', 'get_procedures');
 		}
 
 		// 'Functions' Tab
@@ -289,7 +289,7 @@ class DB_tabs extends GTKNotebook {
 				foreach($tab_data[$i] as $v)
 				{
 					$vals[] = ++$j;
-					$vals[] = $v;
+					$vals[] = trim($v);
 				}
 
 				call_user_func_array(array($tab_model, 'set'), $vals);
@@ -307,33 +307,6 @@ class DB_tabs extends GTKNotebook {
 		}
 
 		return;
-	}
-
-	/**
-	 * Connects to a different database than the one currently in use
-	 *
-	 * @param type $view
-	 * @param type $path
-	 * @param type $column
-	 * @param type $data
-	 */
-	public function _switch_db($view, $path, $column, $data=array())
-	{
-		// Get the selected database
-		$new_db = $view->get(0);
-
-		// Get existing connections
-		$conns = DB_REG::get_connections();
-
-		// Get connection info for existing connections
-		$conn_info = array();
-
-		foreach($conns as $c)
-		{
-			$conn_info[$c] = Settings::get_instance()->get_db($c);
-		}
-
-		// @todo figure out how to single out the current db connection
 	}
 }
 // End of db_tabs.php

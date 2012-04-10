@@ -51,7 +51,7 @@ class Firebird_Result {
 		switch($fetch_style)
 		{
 			case PDO::FETCH_OBJ:
-				return fbird_fetch_object($this->statement, IBASE_FETCH_BLOBS);
+				return fbird_fetch_object($this->statement, F_FETCH_BLOBS);
 			break;
 
 			case PDO::FETCH_NUM:
@@ -84,6 +84,20 @@ class Firebird_Result {
 		$this->result = $all;
 
 		return $all;
+	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Emulate PDOStatement::fetchColumn
+	 * 
+	 * @param int $colum_num
+	 * @return mixed 
+	 */
+	public function fetchColumn($column_num=0)
+	{
+		$row = $this->fetch(PDO::FETCH_NUM);
+		return $row[$column_num];
 	}
 
 	// --------------------------------------------------------------------------

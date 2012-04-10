@@ -366,7 +366,7 @@ class DB_Info_Widget extends GtkTable {
 
 		$res = $this->settings->add_db($data['name'], $data);
 
-		if ( ! $res)
+		if ($res === FALSE)
 		{
 			error("Failed to add database - Connection information invalid");
 		}

@@ -128,7 +128,7 @@ foreach(pdo_drivers() as $d)
 // Load Firebird if there is support
 if(function_exists('fbird_connect'))
 {
-	array_map('do_include', glob($path.'*.php'));
+	array_map('do_include', glob($path.'firebird/*.php'));
 }
 
 // --------------------------------------------------------------------------
