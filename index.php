@@ -26,7 +26,7 @@ error_reporting(-1 & ~(E_STRICT));
 // Set the stupid timezone so PHP shuts up.
 date_default_timezone_set('GMT');
 
-// Don't set an arbitary memory limit!
+// Don't set an arbitrary memory limit!
 ini_set('memory_limit', -1);
 
 // Set the current directory as the base for included files
@@ -72,6 +72,16 @@ if( ! class_exists('pdo'))
 	trigger_error("PHP support for PDO is required.", E_USER_ERROR);
 	die();
 }
+
+// --------------------------------------------------------------------------
+
+// Convert Errors to Exceptions
+// Do this after the two compatibility checks for cleaner output
+function exception_error_handler($errno, $errstr, $errfile, $errline) 
+{
+    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+}
+set_error_handler("exception_error_handler", -1);
 
 // --------------------------------------------------------------------------
 

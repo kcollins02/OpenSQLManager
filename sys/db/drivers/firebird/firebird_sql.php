@@ -136,7 +136,7 @@ class Firebird_SQL extends DB_SQL {
 	 */
 	public function backup_structure()
 	{
-		// @todo Implement Backup function
+		// @todo Implement Backup structure function
 		return '';
 	}
 

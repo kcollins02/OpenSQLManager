@@ -30,14 +30,14 @@ class firebird extends DB_PDO {
 	 */
 	public function __construct($dbpath, $user='sysdba', $pass='masterkey')
 	{
-		$this->conn = @fbird_connect($dbpath, $user, $pass, 'utf-8');
+		$this->conn = fbird_connect($dbpath, $user, $pass, 'utf-8');
 
 		// Throw an exception to make this match other pdo classes
-		if ( ! is_resource($this->conn))
+		/*if ( ! is_resource($this->conn))
 		{
 			throw new PDOException(fbird_errmsg());
 			die();
-		}
+		}*/
 
 		$class = __CLASS__."_sql";
 		$this->sql = new $class;
@@ -91,8 +91,8 @@ class firebird extends DB_PDO {
 		$this->count = 0;
 
 		$this->statement_link = (isset($this->trans))
-			? @fbird_query($this->trans, $sql)
-			: @fbird_query($this->conn, $sql);
+			? fbird_query($this->trans, $sql)
+			: fbird_query($this->conn, $sql);
 
 		// Throw the error as a exception
 		if ($this->statement_link === FALSE)
@@ -115,7 +115,7 @@ class firebird extends DB_PDO {
 	 */
 	public function prepare($query, $options=NULL)
 	{
-		$this->statement_link = @fbird_prepare($this->conn, $query);
+		$this->statement_link = fbird_prepare($this->conn, $query);
 
 		// Throw the error as an exception
 		if ($this->statement_link === FALSE)
