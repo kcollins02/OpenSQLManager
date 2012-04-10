@@ -224,7 +224,7 @@ SQL;
 	public function trigger_list()
 	{
 		return <<<SQL
-			SELECT *
+			SELECT * 
 			FROM "information_schema"."triggers"
 			WHERE "trigger_schema" NOT IN
 				('pg_catalog', 'information_schema')
