@@ -15,7 +15,7 @@
 /**
  * Unit test bootstrap - Using php simpletest
  */
-define('TEST_DIR', dirname(__FILE__));
+define('TEST_DIR', dirname(__FILE__).'/');
 define('BASE_DIR', str_replace(basename(TEST_DIR), '', TEST_DIR).'/sys/');
 define('DS', DIRECTORY_SEPARATOR);
 
@@ -25,9 +25,6 @@ define('DS', DIRECTORY_SEPARATOR);
 // it has to be set in your php path, or put in the tests folder
 require_once('simpletest/autorun.php');
 
-// Require base testing classes
-require_once(TEST_DIR.'/parent.php');
-
 // Bulk loading wrapper workaround for PHP < 5.4
 function do_include($path)
 {
@@ -35,7 +32,7 @@ function do_include($path)
 }
 
 // Include core tests
-require_once("core.php");
+array_map('do_include', glob(TEST_DIR . 'core/*.php'));
 
 // Include required methods
 array_map('do_include', glob(BASE_DIR . 'common/*.php'));
@@ -45,7 +42,7 @@ array_map('do_include', glob(BASE_DIR . 'db/*.php'));
 // Include db tests
 // Load db classes based on capability
 $src_path = BASE_DIR.'db/drivers/';
-$test_path = TEST_DIR.'/databases/';
+$test_path = TEST_DIR.'databases/';
 
 foreach(pdo_drivers() as $d)
 {
