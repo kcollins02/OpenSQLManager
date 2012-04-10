@@ -102,6 +102,69 @@ class PgTest extends DBTest {
 
 	}
 	
+	function TestTruncate()
+	{
+		$this->db->truncate('create_test');
+		$this->db->truncate('create_join');
+		
+		$ct_query = $this->db->query('SELECT * FROM create_test');
+		$cj_query = $this->db->query('SELECT * FROM create_join');
+	}
+	
+	function TestPreparedStatements()
+	{
+		if (empty($this->db))  return;
+
+		$sql = <<<SQL
+			INSERT INTO "create_test" ("id", "key", "val")
+			VALUES (?,?,?)
+SQL;
+		$statement = $this->db->prepare_query($sql, array(1,"boogers", "Gross"));
+
+		$statement->execute();
+
+	}
+
+	function TestPrepareExecute()
+	{
+		if (empty($this->db))  return;
+
+		$sql = <<<SQL
+			INSERT INTO "create_test" ("id", "key", "val")
+			VALUES (?,?,?)
+SQL;
+		$this->db->prepare_execute($sql, array(
+			2, "works", 'also?'
+		));
+
+	}
+
+	function TestCommitTransaction()
+	{
+		if (empty($this->db))  return;
+
+		$res = $this->db->beginTransaction();
+
+		$sql = 'INSERT INTO "create_test" ("id", "key", "val") VALUES (10, 12, 14)';
+		$this->db->query($sql);
+
+		$res = $this->db->commit();
+		$this->assertTrue($res);
+	}
+
+	function TestRollbackTransaction()
+	{
+		if (empty($this->db))  return;
+
+		$res = $this->db->beginTransaction();
+
+		$sql = 'INSERT INTO "create_test" ("id", "key", "val") VALUES (182, 96, 43)';
+		$this->db->query($sql);
+
+		$res = $this->db->rollback();
+		$this->assertTrue($res);
+	}
+	
 	function TestGetSchemas()
 	{
 		$this->assertTrue(is_array($this->db->get_schemas()));

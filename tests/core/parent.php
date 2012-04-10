@@ -48,60 +48,6 @@ abstract class DBTest extends UnitTestCase {
 		$res = $this->db->beginTransaction();
 		$this->assertTrue($res);
 	}
-
-	function TestPreparedStatements()
-	{
-		if (empty($this->db))  return;
-
-		$sql = <<<SQL
-			INSERT INTO "create_test" ("id", "key", "val")
-			VALUES (?,?,?)
-SQL;
-		$statement = $this->db->prepare_query($sql, array(1,"boogers", "Gross"));
-
-		$statement->execute();
-
-	}
-
-	function TestPrepareExecute()
-	{
-		if (empty($this->db))  return;
-
-		$sql = <<<SQL
-			INSERT INTO "create_test" ("id", "key", "val")
-			VALUES (?,?,?)
-SQL;
-		$this->db->prepare_execute($sql, array(
-			2, "works", 'also?'
-		));
-
-	}
-
-	function TestCommitTransaction()
-	{
-		if (empty($this->db))  return;
-
-		$res = $this->db->beginTransaction();
-
-		$sql = 'INSERT INTO "create_test" ("id", "key", "val") VALUES (10, 12, 14)';
-		$this->db->query($sql);
-
-		$res = $this->db->commit();
-		$this->assertTrue($res);
-	}
-
-	function TestRollbackTransaction()
-	{
-		if (empty($this->db))  return;
-
-		$res = $this->db->beginTransaction();
-
-		$sql = 'INSERT INTO "create_test" ("id", "key", "val") VALUES (182, 96, 43)';
-		$this->db->query($sql);
-
-		$res = $this->db->rollback();
-		$this->assertTrue($res);
-	}
 }
 
 // --------------------------------------------------------------------------
@@ -236,6 +182,7 @@ abstract class QBTest extends UnitTestCase {
 			->where('id >', 0)
 			->where('id <', 9000)
 			->group_by('k')
+			->group_by('id')
 			->group_by('val')
 			->order_by('id', 'DESC')
 			->order_by('k', 'ASC')
