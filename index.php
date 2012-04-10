@@ -77,11 +77,11 @@ if( ! class_exists('pdo'))
 
 // Convert Errors to Exceptions
 // Do this after the two compatibility checks for cleaner output
-function exception_error_handler($errno, $errstr, $errfile, $errline) 
+function exception_error_handler($errno, $errstr, $errfile, $errline)
 {
     throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 }
-set_error_handler("exception_error_handler", -1);
+set_error_handler("exception_error_handler");
 
 // --------------------------------------------------------------------------
 

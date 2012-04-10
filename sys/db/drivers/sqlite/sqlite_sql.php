@@ -270,16 +270,11 @@ SQL;
 	/**
 	 * Returns sql to list triggers
 	 *
-	 * @return string
+	 * @return FALSE
 	 */
 	public function trigger_list()
 	{
-		return <<<SQL
-			SELECT *
-			FROM "information_schema"."triggers"
-			WHERE "trigger_schema" NOT IN
-				('pg_catalog', 'information_schema')
-SQL;
+		return FALSE;
 	}
 
 	// --------------------------------------------------------------------------

@@ -123,6 +123,12 @@ class Settings {
 	 */
 	public function add_db($name, $params)
 	{
+		// Return on bad data
+		if (empty($name) || empty($params))
+		{
+			return FALSE;
+		}
+
 		if( ! isset($this->current->dbs->{$name}))
 		{
 			$params['name'] = $name;
@@ -148,6 +154,12 @@ class Settings {
 	 */
 	public function edit_db($name, $params)
 	{
+		// Return on bad data
+		if (empty($name) || empty($params))
+		{
+			return FALSE;
+		}
+		
 		if (isset($this->current->dbs->{$name}) && ($name === $params['name']))
 		{
 			$this->current->dbs->{$name} = $params;

@@ -49,6 +49,12 @@ class Data_Grid extends GtkTreeView {
 		// Get the model and iterator for the selected row
 		list($model, $iter) = $sel->get_selected();
 
+		// Return on lack of $iter
+		if (is_null($iter))
+		{
+			return;
+		}
+
 		// Get the data from the model
 		return $model->get_value($iter, $pos);
 	}

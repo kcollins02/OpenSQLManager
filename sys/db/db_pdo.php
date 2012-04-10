@@ -30,6 +30,8 @@ abstract class DB_PDO extends PDO {
 	public function __construct($dsn, $username=NULL, $password=NULL, $driver_options=array())
 	{
 		parent::__construct($dsn, $username, $password, $driver_options);
+
+		$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 
 	// -------------------------------------------------------------------------
@@ -216,17 +218,17 @@ abstract class DB_PDO extends PDO {
 		{
 			return FALSE;
 		}
-	
+
 		$res = $this->query($sql);
-		
+
 		$flag = ($filtered_index) ? PDO::FETCH_NUM : PDO::FETCH_ASSOC;
 		$all = $res->fetchAll($flag);
-		
+
 		return ($filtered_index) ? db_filter($all, 0) : $all;
 	}
-	
+
 	// -------------------------------------------------------------------------
-	
+
 	/**
 	 * Return list of tables for the current database
 	 *
@@ -236,7 +238,7 @@ abstract class DB_PDO extends PDO {
 	{
 		return $this->driver_query($this->sql->table_list());
 	}
-	
+
 	// -------------------------------------------------------------------------
 
 	/**
@@ -248,7 +250,7 @@ abstract class DB_PDO extends PDO {
 	{
 		return $this->driver_query($this->sql->db_list());
 	}
-	
+
 	// -------------------------------------------------------------------------
 
 	/**
@@ -260,7 +262,7 @@ abstract class DB_PDO extends PDO {
 	{
 		return $this->driver_query($this->sql->view_list());
 	}
-	
+
 	// -------------------------------------------------------------------------
 
 	/**
@@ -272,7 +274,7 @@ abstract class DB_PDO extends PDO {
 	{
 		return $this->driver_query($this->sql->sequence_list());
 	}
-	
+
 	// -------------------------------------------------------------------------
 
 	/**
@@ -284,7 +286,7 @@ abstract class DB_PDO extends PDO {
 	{
 		return $this->driver_query($this->sql->function_list(), FALSE);
 	}
-	
+
 	// -------------------------------------------------------------------------
 
 	/**
@@ -296,7 +298,7 @@ abstract class DB_PDO extends PDO {
 	{
 		return $this->driver_query($this->sql->procedure_list(), FALSE);
 	}
-	
+
 	// -------------------------------------------------------------------------
 
 	/**
@@ -308,9 +310,9 @@ abstract class DB_PDO extends PDO {
 	{
 		return $this->driver_query($this->sql->trigger_list(), FALSE);
 	}
-	
+
 	// -------------------------------------------------------------------------
-	
+
 	/**
 	 * Retreives an array of non-user-created tables for
 	 * the connection/database

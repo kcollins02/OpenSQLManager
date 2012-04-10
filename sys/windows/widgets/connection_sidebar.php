@@ -257,6 +257,13 @@ class Connection_Sidebar extends GtkVBox {
 		$data = $this->treeview->get(0);
 		$conns = DB_Reg::get_connections();
 
+		// Don't try to set up popup menu
+		// on ambiguous areas
+		if ( ! is_object($data))
+		{
+			return;
+		}
+
 		// Set up menu items
 		{
 			// Show disconnect

@@ -73,9 +73,9 @@ class pgSQL extends DB_PDO {
 	{
 		return (isset($this->statement)) ? $this->statement->rowCount : FALSE;
 	}
-	
+
 	// --------------------------------------------------------------------------
-	
+
 	/**
 	 * Get a list of schemas for the current connection
 	 *

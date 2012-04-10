@@ -121,8 +121,16 @@ class DB_Info_Widget extends GtkTable {
 				$this->db_file->set_filename($db->file);
 			}
 
+			// Re-populate the text fields with their actual values
+			// This seems to work around a PHP-GTK bug...it SHOULD work
+			// to set them the first time...
+			$this->conn->set_text($db->name);
+			$this->host->set_text($db->host);
+			$this->user->set_text($db->user);
 			$this->pass->set_text($db->pass);
 			$this->conn_db->set_text($db->conn_db);
+			$this->port->set_text($db->port);
+
 		}
 	}
 
@@ -356,14 +364,18 @@ class DB_Info_Widget extends GtkTable {
 			'name' => $this->conn->get_text(),
 		);
 
-		$this->settings->add_db($data['name'], $data);
+		$res = $this->settings->add_db($data['name'], $data);
+
+		if ( ! $res)
+		{
+			error("Failed to add database - Connection information invalid");
+		}
 
 		// Pass to connection sidebar to update
 		Connection_Sidebar::get_instance()->refresh();
 
 		// Destroy the parent window
-		$parent_window =& $this->get_parent_window();
-
+		$parent_window = $this->get_parent_window();
 		$parent_window->destroy();
 	}
 
@@ -399,8 +411,7 @@ class DB_Info_Widget extends GtkTable {
 		Connection_Sidebar::get_instance()->refresh();
 
 		// Destroy the parent window
-		$parent_window =& $this->get_parent_window();
-
+		$parent_window = $this->get_parent_window();
 		$parent_window->destroy();
 	}
 
@@ -426,6 +437,7 @@ class DB_Info_Widget extends GtkTable {
 		// silly user input.
 		if( empty($params->type))
 		{
+			error("Failed to connect - Invalid connection settings");
 			return;
 		}
 
