@@ -20,12 +20,12 @@ class MySQL_SQL extends DB_SQL{
  	/**
  	 * Convienience public function for creating a new MySQL table
  	 *
- 	 * @param [type] $name [description]
- 	 * @param [type] $columns [description]
- 	 * @param array $constraints=array() [description]
- 	 * @param array $indexes=array() [description]
+ 	 * @param string $name
+ 	 * @param array $columns
+ 	 * @param array $constraints=array()
+ 	 * @param array $indexes=array()
  	 *
- 	 * @return [type]
+ 	 * @return string
  	 */
 	public function create_table($name, $columns, array $constraints=array(), array $indexes=array())
 	{
@@ -154,6 +154,102 @@ class MySQL_SQL extends DB_SQL{
 	{
 		// @todo Implement Backup function
 		return '';
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Returns sql to list other databases
+	 *
+	 * @return string
+	 */
+	public function db_list()
+	{
+		return "SHOW DATABASES WHERE `Database` !='information_schema'";
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Returns sql to list tables
+	 *
+	 * @return string
+	 */
+	public function table_list()
+	{
+		return 'SHOW TABLES';
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Overridden in MySQL class
+	 *
+	 * @return string
+	 */
+	public function system_table_list()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Returns sql to list views
+	 *
+	 * @return string
+	 */
+	public function view_list()
+	{
+		return 'SELECT `table_name` FROM `information_schema`.`views`';
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Returns sql to list triggers
+	 *
+	 * @return string
+	 */
+	public function trigger_list()
+	{
+		return 'SHOW TRIGGERS';
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Return sql to list functions
+	 *
+	 * @return string
+	 */
+	public function function_list()
+	{
+		return 'SHOW FUNCTION STATUS';
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Return sql to list stored procedures
+	 *
+	 * @return string
+	 */
+	public function procedure_list()
+	{
+		return 'SHOW PROCEDURE STATUS';
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Return sql to list sequences
+	 *
+	 * @return FALSE
+	 */
+	public function sequence_list()
+	{
+		return FALSE;
 	}
 }
 //End of mysql_sql.php

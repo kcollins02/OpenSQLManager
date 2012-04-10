@@ -209,5 +209,114 @@ class SQLite_SQL extends DB_SQL {
 
 		return $sql_structure;
 	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Returns sql to list other databases
+	 *
+	 * @return FALSE
+	 */
+	public function db_list()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Returns sql to list tables
+	 *
+	 * @return string
+	 */
+	public function table_list()
+	{
+		return <<<SQL
+			SELECT "name"
+			FROM "sqlite_master"
+			WHERE "type"='table'
+			ORDER BY "name" DESC
+SQL;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Overridden in SQLite class
+	 *
+	 * @return string
+	 */
+	public function system_table_list()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Returns sql to list views
+	 *
+	 * @return string
+	 */
+	public function view_list()
+	{
+		return <<<SQL
+			SELECT "name" FROM "sqlite_master" WHERE "type" = 'view'
+SQL;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Returns sql to list triggers
+	 *
+	 * @return string
+	 */
+	public function trigger_list()
+	{
+		return <<<SQL
+			SELECT *
+			FROM "information_schema"."triggers"
+			WHERE "trigger_schema" NOT IN
+				('pg_catalog', 'information_schema')
+SQL;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Return sql to list functions
+	 *
+	 * @return FALSE
+	 */
+	public function function_list()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Return sql to list stored procedures
+	 *
+	 * @return FALSE
+	 */
+	public function procedure_list()
+	{
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Return sql to list sequences
+	 *
+	 * @return FALSE
+	 */
+	public function sequence_list()
+	{
+		return FALSE;
+	}
+
 }
 //End of sqlite_sql.php
