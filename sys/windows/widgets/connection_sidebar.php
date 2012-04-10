@@ -67,7 +67,6 @@ class Connection_Sidebar extends GtkVBox {
 			// Set up context menu event
 			$this->treeview->connect('button-press-event', array($this, 'on_button'));
 
-
 			$selection = $this->treeview->get_selection();
 			$selection->set_mode(GTK::SELECTION_SINGLE);
 		}
@@ -124,6 +123,10 @@ class Connection_Sidebar extends GtkVBox {
 
 		// Connect event to change database tabs
 		$this->treeview->connect('cursor-changed', array($this, 'switch_tab'));
+
+		// Connect event to connect on double-click
+		$this->treeview->connect('row-activated', array($this, 'db_connect'));
+
 	}
 
 	// --------------------------------------------------------------------------
@@ -354,7 +357,6 @@ class Connection_Sidebar extends GtkVBox {
 	/**
 	 * Create connection to a database
 	 *
-	 * @param string $name
 	 * @return void
 	 */
 	public function db_connect()
