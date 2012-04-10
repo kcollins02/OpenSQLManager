@@ -4,3 +4,4 @@ settings.json
 errors.txt
 tests/test_dbs/*
 test_config.json
+nbproject/*
