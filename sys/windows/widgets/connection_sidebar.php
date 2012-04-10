@@ -19,6 +19,7 @@ class Connection_Sidebar extends GtkVBox {
 
 	protected $settings, $menu, $treeview;
 	private static $instance;
+	private $conn_name;
 
 	/**
 	 * Return the current instance of the class
@@ -120,6 +121,9 @@ class Connection_Sidebar extends GtkVBox {
 		// Status column
 		$cell_renderer = new GtkCellRendererPixbuf();
 		$this->treeview->insert_column_with_data_func(2, 'Status', $cell_renderer, array($this, 'set_status_icon'));
+
+		// Connect event to change database tabs
+		$this->treeview->connect('cursor-changed', array($this, 'switch_tab'));
 	}
 
 	// --------------------------------------------------------------------------
@@ -361,6 +365,7 @@ class Connection_Sidebar extends GtkVBox {
 		try
 		{
 			$conn =& DB_Reg::get_db($data->name);
+			$this->conn_name = $data->name;
 		}
 		catch(PDOException $e)
 		{
@@ -384,6 +389,30 @@ class Connection_Sidebar extends GtkVBox {
 		DB_Tabs::reset();
 
 		$this->refresh();
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Change tabs based on db connection selected
+	 *
+	 * @param type $view
+	 */
+	public function switch_tab($view)
+	{
+		$data = $view->get(0);
+		$conns = DB_Reg::get_connections();
+
+		// Don't reset if you are over the same database
+		if ($data->name === $this->conn_name)
+		{
+			return;
+		}
+
+		if (in_array($data->name, $conns))
+		{
+			$this->db_connect();
+		}
 	}
 }
 // End of connection_sidebar.php

@@ -22,6 +22,7 @@ class DB_tabs extends GTKNotebook {
 	 * @var DB_Tabs
 	 */
 	private static $instance;
+	private $data;
 
 	/**
 	 * Return the db tabs object if it exists, or create and return
@@ -46,6 +47,7 @@ class DB_tabs extends GTKNotebook {
 	public function __construct()
 	{
 		parent::__construct();
+		$this->data = new StdClass();
 	}
 
 	// --------------------------------------------------------------------------
@@ -80,9 +82,11 @@ class DB_tabs extends GTKNotebook {
 		// Empty the tabs
 		self::reset();
 
+		self::$instance->hide_all();
+
 		// 'Databases' Tab
 		{
-			self::_add_tab($conn, 'Databases', 'Db Name', 'get_dbs', array(), array(
+			self::_add_tab($conn, 'Databases', 'Db Name', 'get_dbs', array(
 				'row-activated' => array(self::$instance, '_switch_db'),
 			));
 		}
@@ -164,10 +168,14 @@ class DB_tabs extends GTKNotebook {
 	 */
 	public static function reset()
 	{
+		self::$instance->hide_all();
+
 		for($i=self::$instance->get_n_pages(); $i >= 0; $i--)
 		{
 			self::$instance->remove_page($i);
 		}
+
+		self::$instance->show_all();
 	}
 
 	// --------------------------------------------------------------------------
@@ -179,14 +187,28 @@ class DB_tabs extends GTKNotebook {
 	 * @param string $tab_name
 	 * @param string $col_name
 	 * @param string $method
+	 * @param array $events
 	 * @return void
 	 */
-	private static function _add_tab(&$conn, $tab_name, $col_name, $method, $params=array(), $events=array())
+	private static function _add_tab(&$conn, $tab_name, $col_name, $method, $events=array())
 	{
 		$tab = new Data_Grid();
 		$tab_model = $tab->get_model();
 
-		$tab_data = call_user_func_array(array($conn, $method), $params);
+		$conn_name = $conn->conn_name;
+
+		if ( ! isset(self::$instance->data->{$conn_name}))
+		{
+			self::$instance->data->{$conn_name}= array();
+		}
+
+		$instance_data =& self::$instance->data->{$conn_name};
+
+		$tab_data =  (empty($instance_data[$tab_name]))
+			? call_user_func_array(array($conn, $method), array())
+			: $instance_data[$tab_name];
+
+		$instance_data[$tab_name] = $tab_data;
 
 		if ($tab_data !== FALSE)
 		{
@@ -225,7 +247,21 @@ class DB_tabs extends GTKNotebook {
 	 */
 	private static function _add_row_tab(&$conn, $tab_name, $method)
 	{
-		$tab_data = call_user_func_array(array($conn, $method), array());
+
+		$conn_name = $conn->conn_name;
+
+		if ( ! isset(self::$instance->data->{$conn_name}))
+		{
+			self::$instance->data->{$conn_name}= array();
+		}
+
+		$instance_data =& self::$instance->data->{$conn_name};
+
+		$tab_data =  (empty($instance_data[$tab_name]))
+			? call_user_func_array(array($conn, $method), array())
+			: $instance_data[$tab_name];
+
+		$instance_data[$tab_name] = $tab_data;
 
 		if ( ! empty($tab_data))
 		{
@@ -296,8 +332,6 @@ class DB_tabs extends GTKNotebook {
 		}
 
 		// @todo figure out how to single out the current db connection
-
-
 	}
 }
 // End of db_tabs.php
