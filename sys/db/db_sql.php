@@ -72,5 +72,61 @@ abstract class DB_SQL {
 	 * @return string
 	 */
 	abstract public function backup_data();
+	
+	/**
+	 * Returns sql to list other databases
+	 *
+	 * @return string
+	 */
+	abstract public function db_list();
+
+	/**
+	 * Returns sql to list tables
+	 *
+	 * @return string
+	 */
+	abstract public function table_list();
+
+	/**
+	 * Returns sql to list system tables
+	 *
+	 * @return string
+	 */
+	abstract public function system_table_list();
+
+	/**
+	 * Returns sql to list views
+	 *
+	 * @return string
+	 */
+	abstract public function view_list();
+
+	/**
+	 * Returns sql to list triggers
+	 *
+	 * @return string
+	 */
+	abstract public function trigger_list();
+
+	/**
+	 * Return sql to list functions
+	 *
+	 * @return FALSE
+	 */
+	abstract public function function_list();
+
+	/**
+	 * Return sql to list stored procedures
+	 *
+	 * @return string
+	 */
+	abstract public function procedure_list();
+
+	/**
+	 * Return sql to list sequences
+	 *
+	 * @return string
+	 */
+	abstract public function sequence_list();
 }
 // End of db_sql.php

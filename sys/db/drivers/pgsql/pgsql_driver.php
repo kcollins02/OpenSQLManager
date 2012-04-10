@@ -73,5 +73,23 @@ class pgSQL extends DB_PDO {
 	{
 		return (isset($this->statement)) ? $this->statement->rowCount : FALSE;
 	}
+	
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Get a list of schemas for the current connection
+	 *
+	 * @return array
+	 */
+	public function get_schemas()
+	{
+		$sql = <<<SQL
+			SELECT DISTINCT "schemaname" FROM "pg_tables"
+			WHERE "schemaname" NOT LIKE 'pg\_%'
+			AND "schemaname" != 'information_schema'
+SQL;
+
+		return $this->driver_query($sql);
+	}
 }
 //End of pgsql_driver.php

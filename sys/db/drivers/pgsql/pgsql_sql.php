@@ -17,6 +17,15 @@
  */
 class pgSQL_SQL extends DB_SQL {
 
+	/**
+	 * Database-specific method to create a new table
+	 *
+	 * @param string $name
+	 * @param array $columns
+	 * @param array $constraints
+	 * @param array $indexes
+	 * @return string
+	 */
 	public function create_table($name, $columns, array $constraints=array(), array $indexes=array())
 	{
 		$column_array = array();
@@ -67,6 +76,12 @@ class pgSQL_SQL extends DB_SQL {
 
 	// --------------------------------------------------------------------------
 
+	/**
+	 * Database-specific SQL for dropping a table
+	 *
+	 * @param string $name
+	 * @return string
+	 */
 	public function delete_table($name)
 	{
 		return 'DROP TABLE "'.$name.'"';
