@@ -54,7 +54,7 @@ class Query_Builder {
 	private $query_map;
 
 	// Convenience property for connection management
-	public $conn_name;
+	public $conn_name = "";
 
 	/**
 	 * Constructor
@@ -115,7 +115,11 @@ class Query_Builder {
 			$this->db = new $dbtype($dsn);
 		}
 		
-		$this->conn_name = $params->name;
+		if (isset($params->name))
+		{
+			$this->conn_name = $params->name;
+		}
+		
 
 		// Make things just slightly shorter
 		$this->sql =& $this->db->sql;
