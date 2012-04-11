@@ -59,8 +59,7 @@ foreach(pdo_drivers() as $d)
 	if(is_dir($src_dir))
 	{
 		array_map('do_include', glob($src_path.$d.'/*.php'));
-		require_once("{$test_path}{$d}.php");
-		require_once("{$test_path}{$d}-qb.php");
+		array_map('do_include', glob($test_path.$d.'/*.php'));
 	}
 }
 
@@ -68,6 +67,5 @@ foreach(pdo_drivers() as $d)
 if(function_exists('fbird_connect'))
 {
 	array_map('do_include', glob($src_path.'firebird/*.php'));
-	require_once("{$test_path}firebird.php");
-	require_once("{$test_path}firebird-qb.php");
+	array_map('do_include', glob($test_path.'firebird/*.php'));
 }
