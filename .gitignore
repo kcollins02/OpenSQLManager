@@ -2,6 +2,6 @@
 *.DS_Store
 settings.json
 errors.txt
-tests/test_dbs/*
+tests/db_files/*
 test_config.json
 nbproject/*
